@@ -1,0 +1,45 @@
+<div
+  style="height: 65vh;"
+  class="mt-20 grid place-items-center">
+  <div class="w-126 bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
+    <h1 class="text-accent text-4xl marcellus
+               font-bold mt-2 mr-2 drop-shadow-md
+               select-none">Welcome!</h1>
+    <form [formGroup]="loginForm" class="flex flex-col gap-4 items-center">
+    <div class="flex flex-col gap-2 w-full">
+      <div class="flex flex-col gap-2">
+        <label for="email" class="marcellus text-accent">Email</label>
+        <input
+          [class.border-red-700]="loginForm.get('email')?.touched&&(
+          loginForm.get('email')!.hasError('required') ||
+          loginForm.get('email')!.hasError('email')
+          )"
+          type="text" class="input input-bordered w-full max-w-xs" pInputText formControlName="email" id="email"/>
+      </div>
+      <p class="text-red-700" *ngIf="loginForm.get('email')?.touched&&loginForm.get('email')!.hasError('required')">Email required.</p>
+      <p class="text-red-700" *ngIf="loginForm.get('email')?.touched&&loginForm.get('email')!.hasError('email')">Email invalid.</p>
+    </div>
+    <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2">
+        <label for="password" class="marcellus text-accent">Password</label>
+        <input
+          [class.border-red-700]="loginForm.get('password')?.touched&&(
+          loginForm.get('password')!.hasError('required')
+          )"
+          type="password" class="input input-bordered w-full max-w-xs" pInputText formControlName="password" id="password"/>
+      </div>
+      <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('required')">Password required.</p>
+<!--      <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('minlength')">Password must have at least 8 characters.</p>
+      <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('maxlength')">Password must have maximum 128 characters.</p>
+      <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('noCapitalLetter')">Password must contain a capital letter.</p>
+      <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('noDigit')">Password must contain a digit.</p>
+      <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('noSymbol')">Password must contain a symbol.</p>-->
+    </div>
+    </form>
+    <section class="w-full flex flex-col justify-center items-center">
+      <button class="btn btn-accent btn-lg mb-3" (click)="login()" [disabled]="loginForm.invalid">Login</button>
+      <p class="text-accent">Don't have an account?</p>
+      <p class="text-primary cursor-pointer underline" (click)="navigateToRegister()">Register</p>
+    </section>
+  </div>
+</div>
