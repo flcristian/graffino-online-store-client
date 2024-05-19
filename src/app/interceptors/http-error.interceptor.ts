@@ -43,6 +43,10 @@ export class HttpErrorInterceptor implements HttpInterceptor{
   }
 
   private getErrorMessage(error: HttpErrorResponse): string{
+    if(error.status === 401){
+      return `Invalid login credentials! Please try again.`;
+    }
+
     if(error.error instanceof ErrorEvent){
       return `Client-side error: ${error.error.message}`
     }
@@ -52,7 +56,7 @@ export class HttpErrorInterceptor implements HttpInterceptor{
   }
 
   private displayError(error: HttpErrorResponse, errorMessage: string): void {
-    const summary = `${error.status}`;
+    const summary = `${error.statusText}`;
 
     this.messageService.add({
       severity: 'error',

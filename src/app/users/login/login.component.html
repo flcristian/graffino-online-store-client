@@ -29,11 +29,6 @@
           type="password" class="input input-bordered w-full max-w-xs" pInputText formControlName="password" id="password"/>
       </div>
       <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('required')">Password required.</p>
-<!--      <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('minlength')">Password must have at least 8 characters.</p>
-      <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('maxlength')">Password must have maximum 128 characters.</p>
-      <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('noCapitalLetter')">Password must contain a capital letter.</p>
-      <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('noDigit')">Password must contain a digit.</p>
-      <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('noSymbol')">Password must contain a symbol.</p>-->
     </div>
     </form>
     <section class="w-full flex flex-col justify-center items-center">
@@ -43,3 +38,5 @@
     </section>
   </div>
 </div>
+<p-toast></p-toast>
+

@@ -8,6 +8,7 @@ import {User} from "../models/user.model";
 import {LoginRequest} from "../models/login-request.model";
 import {LoginResponse} from "../models/login-response.model";
 import {Router} from "@angular/router";
+import {RegisterRequest} from "../models/register-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,24 @@ export class CurrentUserStateService {
   ) { }
 
   // SERVICE CALLS
+  register(request: RegisterRequest) {
+    this.setLoading(true)
+    this.service.register(request).subscribe({
+      next: () => {
+        setTimeout(() => {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: `Successfully registered your account! You can now sign in.` });
+        }, 150)
+        this.router.navigate(["login"])
+      },
+      error: (error) => {
+        this.setError(error)
+      },
+      complete: () => {
+        this.setLoading(false)
+      }
+    })
+  }
+
   login(request: LoginRequest){
     this.setLoading(true)
     this.service.login(request).subscribe({

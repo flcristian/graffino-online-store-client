@@ -1,1 +1,59 @@
-<p>register works!</p>
+<div
+  style="height: 65vh;"
+  class="mt-20 grid place-items-center">
+  <div class="w-126 bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
+    <h1 class="text-accent text-4xl marcellus
+               font-bold mt-2 mr-2 drop-shadow-md
+               select-none">Register a new account</h1>
+    <form [formGroup]="registerForm" class="flex flex-col gap-4 items-center">
+      <div class="flex flex-col gap-2 w-full">
+        <div class="flex flex-col gap-2">
+          <label for="email" class="marcellus text-accent">Email</label>
+          <input
+            [class.border-red-700]="registerForm.get('email')?.touched&&(
+          registerForm.get('email')!.hasError('required') ||
+          registerForm.get('email')!.hasError('email')
+          )"
+            type="text" class="input input-bordered w-full max-w-xs" pInputText formControlName="email" id="email"/>
+        </div>
+        <p class="text-red-700" *ngIf="registerForm.get('email')?.touched&&registerForm.get('email')!.hasError('required')">Email required.</p>
+        <p class="text-red-700" *ngIf="registerForm.get('email')?.touched&&registerForm.get('email')!.hasError('email')">Email invalid.</p>
+      </div>
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2">
+          <label for="password" class="marcellus text-accent">Password</label>
+          <input
+            [class.border-red-700]="registerForm.get('password')?.touched&&(
+          registerForm.get('password')!.hasError('required')
+          )"
+            type="password" class="input input-bordered w-full max-w-xs" pInputText formControlName="password" id="password"/>
+        </div>
+        <p class="text-red-700" *ngIf="registerForm.get('password')?.touched&&registerForm.get('password')!.hasError('required')">Password required.</p>
+        <p class="text-red-700" *ngIf="registerForm.get('password')?.touched&&registerForm.get('password')!.hasError('minlength')&&!registerForm.get('password')!.hasError('required')">Password must have at least 8 characters.</p>
+        <p class="text-red-700" *ngIf="registerForm.get('password')?.touched&&registerForm.get('password')!.hasError('maxlength')&&!registerForm.get('password')!.hasError('required')">Password must have maximum 128 characters.</p>
+        <p class="text-red-700" *ngIf="registerForm.get('password')?.touched&&registerForm.get('password')!.hasError('noCapitalLetter')&&!registerForm.get('password')!.hasError('required')">Password must contain a capital letter.</p>
+        <p class="text-red-700" *ngIf="registerForm.get('password')?.touched&&registerForm.get('password')!.hasError('noDigit')&&!registerForm.get('password')!.hasError('required')">Password must contain a digit.</p>
+        <p class="text-red-700" *ngIf="registerForm.get('password')?.touched&&registerForm.get('password')!.hasError('noSymbol')&&!registerForm.get('password')!.hasError('required')">Password must contain a symbol.</p>
+      </div>
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2">
+          <label for="confirmPassword" class="marcellus text-accent">Confirm Password</label>
+          <input
+            [class.border-red-700]="registerForm.get('confirmPassword')?.touched&&(
+          registerForm.get('confirmPassword')!.hasError('required') ||
+          registerForm.hasError('passwordsDoNotMatch')
+          )"
+            type="password" class="input input-bordered w-full max-w-xs" pInputText formControlName="confirmPassword" id="confirmPassword"/>
+        </div>
+        <p class="text-red-700" *ngIf="registerForm.get('confirmPassword')?.touched&&registerForm.get('confirmPassword')!.hasError('required')">You must confirm your password.</p>
+        <p class="text-red-700" *ngIf="registerForm.get('confirmPassword')?.touched&&registerForm.hasError('passwordsDoNotMatch')&&!registerForm.get('confirmPassword')!.hasError('required')">Passwords do not match.</p>
+      </div>
+    </form>
+    <section class="w-full flex flex-col justify-center items-center">
+      <button class="btn btn-accent btn-lg mb-3" (click)="register()" [disabled]="registerForm.invalid">Register</button>
+      <p class="text-accent">Already have an account?</p>
+      <p class="text-primary cursor-pointer underline" (click)="navigateToLogin()">Sign in</p>
+    </section>
+  </div>
+</div>
+<p-toast></p-toast>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {LoginRequest} from "../models/login-request.model";
+import {RegisterRequest} from "../models/register-request.model";
 import {Observable} from "rxjs";
 import {LoginResponse} from "../models/login-response.model";
 import {Token} from "../models/token.model";
@@ -24,7 +25,10 @@ export class UserService {
       'Authorization': `${token.tokenType} ${token.accessToken}`
     });
 
-
     return this.http.get<User>(`${this.userServer}/details`, { headers })
+  }
+
+  register(request: RegisterRequest): Observable<any> {
+    return this.http.post(`${this.authenticationServer}/register`, request)
   }
 }
