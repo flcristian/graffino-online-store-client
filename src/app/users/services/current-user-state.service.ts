@@ -73,6 +73,12 @@ export class CurrentUserStateService {
     let token = this.stateSubject.value.token!;
     this.service.getUserDetails(token).subscribe({
       next: (user: User) => {
+        if(user.roles.indexOf("Banned") !== -1) {
+          this.messageService.add({ severity: 'error', summary: 'Unauthorized', detail: `Your account has been locked from logging in.` });
+          this.setToken(null)
+          return;
+        }
+
         this.setUser(user)
         this.router.navigate(["home"])
       },
