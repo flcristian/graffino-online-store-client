@@ -29,18 +29,27 @@
 
   <!-- RIGHT (ACCOUNT) -->
   <section class="flex flex-row gap-2">
-<!--    <h2 *ngIf="!this.user; else loggedIn" class="text-black text-2xl marcellus
-               font-bold mt-2 mr-2 drop-shadow-md select-none
-               cursor-pointer transition-all hover:drop-shadow-2xl"
-        (click)="navigateToLogin()">Sign In</h2>-->
-    <div class="flex flex-row gap-10">
-      <i class="pi pi-shopping-bag text-3xl text-accent drop-shadow-md
-                  cursor-pointer transition-all hover:drop-shadow-2xl"></i>
-      <i class="pi pi-user text-3xl text-accent drop-shadow-md select-none
-                  cursor-pointer transition-all hover:drop-shadow-2xl"></i>
+    <div *ngIf="!this.user; else loggedIn"
+        class="flex flex-col drop-shadow-md items-center
+        hover:drop-shadow-2xl transition-all cursor-pointer"
+        (click)="navigateToLogin()">
+      <i class="pi pi-sign-in text-3xl text-accent"></i>
+      <p class="text-sm font-bold">Sign In</p>
     </div>
     <ng-template #loggedIn>
-
+      <div class="flex flex-row gap-10">
+        <div class="flex flex-col drop-shadow-md items-center
+        hover:drop-shadow-2xl transition-all cursor-pointer">
+          <i class="pi pi-shopping-bag text-3xl text-accent"></i>
+          <p class="text-sm font-bold">Cart</p>
+        </div>
+        <div (click)="navigateToAccount()"
+          class="flex flex-col drop-shadow-md items-center
+          hover:drop-shadow-2xl transition-all cursor-pointer">
+          <i class="pi pi-user text-3xl text-accent"></i>
+          <p class="text-sm font-bold">Account</p>
+        </div>
+      </div>
     </ng-template>
   </section>
 </nav>

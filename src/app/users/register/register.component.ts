@@ -13,7 +13,6 @@ import {RegisterRequest} from "../models/register-request.model";
 export class RegisterComponent {
   private subscriptions = new Subscription()
   registerForm: FormGroup = new FormGroup({})
-  error: string | null = null
 
   constructor(
     private messageService: MessageService,

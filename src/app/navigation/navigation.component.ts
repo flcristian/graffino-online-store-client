@@ -4,6 +4,7 @@ import {filter, Subscription} from "rxjs";
 import {CurrentUserStateService} from "../users/services/current-user-state.service";
 import {LoginRequest} from "../users/models/login-request.model";
 import {User} from "../users/models/user.model";
+import {Order} from "../orders/models/order.model";
 
 @Component({
   selector: 'app-navigation',
@@ -30,6 +31,35 @@ export class NavigationComponent implements OnInit, OnDestroy {
         this.user = data.user
       })
     )
+
+    let user: User = {
+      id: "1b1e51da-9870-4472-ac4f-a816420436e2",
+      email: "ruskihvh@gmail.com",
+      emailConfirmed: true,
+      roles: []
+    }
+    this.state.setUser(user)
+
+    let orders: Order[] = [
+      {
+        id: 1,
+        customerId: "1b1e51da-9870-4472-ac4f-a816420436e2",
+        customer: user,
+        orderDetails: [],
+        status: 2,
+        lastDateUpdated: new Date()
+      },
+      {
+        id: 2,
+        customerId: "1b1e51da-9870-4472-ac4f-a816420436e2",
+        customer: user,
+        orderDetails: [],
+        status: 4,
+        lastDateUpdated: new Date()
+      }
+    ]
+
+    this.state.setOrders(orders)
   }
 
   ngOnDestroy() {

@@ -1,0 +1,23 @@
+<ng-container *ngIf="state.state$ | async as state">
+  <div class="flex flex-col gap-6 p-5 w-126">
+    <div *ngFor="let order of state.orders"
+         class="flex flex-row justify-between w-full
+         cursor-pointer hover:drop-shadow-2xl transition-all
+         bg-base-200 p-3 rounded-lg drop-shadow-md">
+      <div class="flex flex-col justify-between gap-3">
+        <h1 class="text-lg font-bold">Order #{{order.id}}</h1>
+        <div class="flex flex-row gap-2">
+          <h1 class="font-bold">Status: </h1>
+          <h1>{{ order.status | orderStatus}}</h1>
+        </div>
+      </div>
+      <div class="flex flex-col justify-end">
+        <div class="flex flex-row gap-2">
+          <h1 class="font-bold">Last Date Updated: </h1>
+          <h1>{{ order.lastDateUpdated | date}}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>

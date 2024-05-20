@@ -3,7 +3,7 @@ import {OrderDetail} from "../../order-details/models/order-detail.model";
 
 export interface Order {
   id: number,
-  customerId: number,
+  customerId: string,
   status: number,
   lastDateUpdated: Date,
   customer: User,

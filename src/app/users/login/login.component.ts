@@ -5,6 +5,7 @@ import {MessageService} from "primeng/api";
 import {CurrentUserStateService} from "../services/current-user-state.service";
 import {Router} from "@angular/router";
 import {LoginRequest} from "../models/login-request.model";
+import {CurrentUserState} from "../services/current-user-state";
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,6 @@ import {LoginRequest} from "../models/login-request.model";
 export class LoginComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription()
   loginForm: FormGroup = new FormGroup({})
-  error: string | null = null
 
   constructor(
     private messageService: MessageService,

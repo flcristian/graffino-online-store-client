@@ -31,11 +31,16 @@
       <p class="text-red-700" *ngIf="loginForm.get('password')?.touched&&loginForm.get('password')!.hasError('required')">Password required.</p>
     </div>
     </form>
-    <section class="w-full flex flex-col justify-center items-center">
-      <button class="btn btn-accent btn-lg mb-3" (click)="login()" [disabled]="loginForm.invalid">Login</button>
-      <p class="text-accent">Don't have an account?</p>
-      <p class="text-primary cursor-pointer underline" (click)="navigateToRegister()">Register</p>
-    </section>
+    <ng-container *ngIf="state.state$ | async as state">
+      <section class="w-full flex flex-col justify-center items-center">
+        <div class="h-20 flex flex-row items-center justify-center">
+          <button *ngIf="!state.loadingUser" class="btn btn-accent btn-lg mb-3 marcellus" (click)="login()" [disabled]="loginForm.invalid">Login</button>
+          <span *ngIf="state.loadingUser" class="loading loading-spinner loading-lg text-primary"></span>
+        </div>
+        <p class="text-accent">Don't have an account?</p>
+        <p class="text-primary cursor-pointer underline" (click)="navigateToRegister()">Register</p>
+      </section>
+    </ng-container>
   </div>
 </div>
 <p-toast></p-toast>
