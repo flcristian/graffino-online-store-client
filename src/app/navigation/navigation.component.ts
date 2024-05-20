@@ -32,7 +32,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
       })
     )
 
-    let user: User = {
+    /*let user: User = {
       id: "1b1e51da-9870-4472-ac4f-a816420436e2",
       email: "ruskihvh@gmail.com",
       emailConfirmed: true,
@@ -59,7 +59,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
       }
     ]
 
-    this.state.setOrders(orders)
+    this.state.setOrders(orders)*/
   }
 
   ngOnDestroy() {
