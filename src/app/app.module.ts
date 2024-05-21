@@ -21,6 +21,10 @@ import {ChangePasswordComponent} from "./users/change-password/change-password.c
 import {YourOrdersComponent} from "./users/your-orders/your-orders.component";
 import {OrderStatusPipe} from "./pipes/order-status.pipe";
 import {ProductsListComponent} from "./products/products-list/products-list.component";
+import {ClothingListComponent} from "./products/clothing-list/clothing-list.component";
+import {TelevisionsListComponent} from "./products/televisions-list/televisions-list.component";
+import {RippleModule} from "primeng/ripple";
+import {DataViewModule} from "primeng/dataview";
 
 @NgModule({
   declarations: [
@@ -34,6 +38,8 @@ import {ProductsListComponent} from "./products/products-list/products-list.comp
     YourOrdersComponent,
     OrderStatusPipe,
     ProductsListComponent,
+    ClothingListComponent,
+    TelevisionsListComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,7 +50,9 @@ import {ProductsListComponent} from "./products/products-list/products-list.comp
     InputTextModule,
     MessageModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    RippleModule,
+    DataViewModule
   ],
   providers: [
     ConfirmationService,

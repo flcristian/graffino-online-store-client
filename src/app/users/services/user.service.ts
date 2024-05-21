@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {LoginResponse} from "../models/login-response.model";
 import {Token} from "../models/token.model";
 import {User} from "../models/user.model";
+import {ChangePasswordRequest} from "../models/change-password-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +31,9 @@ export class UserService {
 
   register(request: RegisterRequest): Observable<any> {
     return this.http.post(`${this.authenticationServer}/register`, request)
+  }
+
+  changePassword(request: ChangePasswordRequest): Observable<any> {
+    return this.http.post(`${this.userServer}/change-password`, request)
   }
 }

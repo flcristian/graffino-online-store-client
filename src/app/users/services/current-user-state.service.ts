@@ -11,6 +11,7 @@ import {Router} from "@angular/router";
 import {RegisterRequest} from "../models/register-request.model";
 import {OrderService} from "../../orders/services/order.service";
 import {Order} from "../../orders/models/order.model";
+import {ChangePasswordRequest} from "../models/change-password-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -115,6 +116,33 @@ export class CurrentUserStateService {
       },
       complete: () => {
         this.setLoadingOrders(false)
+      }
+    })
+  }
+
+  changePassword(currentPassword: string, newPassword: string) {
+    this.setLoadingUser(true)
+
+    let email: string = this.stateSubject.value.user!.email;
+    let request: ChangePasswordRequest = {
+      email: email,
+      currentPassword: currentPassword,
+      newPassword: newPassword
+    }
+
+    this.userService.changePassword(request).pipe(
+        finalize(() => {
+          this.setLoadingUser(false);
+        })
+      ).subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: `Successfully changed your password.` });
+      },
+      error: (error) => {
+        this.setErrorUser(error)
+      },
+      complete: () => {
+        this.setLoadingUser(false)
       }
     })
   }
