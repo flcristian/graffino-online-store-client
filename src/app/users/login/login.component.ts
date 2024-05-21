@@ -5,6 +5,7 @@ import {MessageService} from "primeng/api";
 import {CurrentUserStateService} from "../services/current-user-state.service";
 import {Router} from "@angular/router";
 import {LoginRequest} from "../models/login-request.model";
+import {CurrentUserState} from "../services/current-user-state";
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,6 @@ import {LoginRequest} from "../models/login-request.model";
 export class LoginComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription()
   loginForm: FormGroup = new FormGroup({})
-  error: string | null = null
 
   constructor(
     private messageService: MessageService,
@@ -36,12 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         Validators.email
       ]),
       password: new FormControl("", [
-        Validators.required,
-/*        Validators.minLength(8),
-        Validators.maxLength(128),
-        this.validateContainsCapitalLetter,
-        this.validateContainsDigit,
-        this.validateContainsSymbol*/
+        Validators.required
       ])
     }, {updateOn:'change'});
   }
@@ -53,44 +48,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       twoFactorCode: "",
       twoFactorRecoveryCode: ""
     };
-    console.log(request)
 
     this.state.login(request)
   }
 
   navigateToRegister() {
     this.router.navigate(["register"])
-  }
-
-  // PRIVATE METHODS
-
-  private validateContainsCapitalLetter(control: FormControl): ValidationErrors | null {
-    const password = control.value;
-
-    if(!/[A-Z]/.test(password)) {
-      return { noCapitalLetter: true }
-    }
-
-    return null;
-  }
-
-  private validateContainsDigit(control: FormControl): ValidationErrors | null {
-    const password = control.value;
-
-    if(!/[0-9]/.test(password)) {
-      return { noDigit: true }
-    }
-
-    return null;
-  }
-
-  private validateContainsSymbol(control: FormControl): ValidationErrors | null {
-    const password = control.value;
-
-    if(!/[@$!%*?&]/.test(password)) {
-      return { noSymbol: true }
-    }
-
-    return null;
   }
 }

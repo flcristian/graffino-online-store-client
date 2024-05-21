@@ -1,8 +1,6 @@
 export interface User {
-  id: number,
-  name: string,
+  id: string,
   email: string,
   emailConfirmed: boolean,
-  phoneNumber: string,
   roles: string[]
 }

@@ -1,20 +1,30 @@
-import { NgModule } from '@angular/core';
-import {BrowserModule, provideClientHydration} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {FloatLabelModule} from "primeng/floatlabel";
+import { ReactiveFormsModule} from "@angular/forms";
 import { NavigationComponent } from './navigation/navigation.component';
 import { HomeComponent } from './home/home.component';
 import {ConfirmationService, MessageService} from "primeng/api";
-import {HTTP_INTERCEPTORS, provideHttpClient, withFetch} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {HttpErrorInterceptor} from "./interceptors/http-error.interceptor";
 import {ButtonModule} from "primeng/button";
 import {LoginComponent} from "./users/login/login.component";
 import {RegisterComponent} from "./users/register/register.component";
 import {ToastModule} from "primeng/toast";
 import {InputTextModule} from "primeng/inputtext";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MessageModule} from "primeng/message";
+import {CustomerAccountPageComponent} from "./users/customer-account-page/customer-account-page.component";
+import {ChangePasswordComponent} from "./users/change-password/change-password.component";
+import {YourOrdersComponent} from "./users/your-orders/your-orders.component";
+import {OrderStatusPipe} from "./pipes/order-status.pipe";
+import {ProductsListComponent} from "./products/products-list/products-list.component";
+import {ClothingListComponent} from "./products/clothing-list/clothing-list.component";
+import {TelevisionsListComponent} from "./products/televisions-list/televisions-list.component";
+import {RippleModule} from "primeng/ripple";
+import {DataViewModule} from "primeng/dataview";
 
 @NgModule({
   declarations: [
@@ -22,20 +32,29 @@ import {InputTextModule} from "primeng/inputtext";
     NavigationComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    CustomerAccountPageComponent,
+    ChangePasswordComponent,
+    YourOrdersComponent,
+    OrderStatusPipe,
+    ProductsListComponent,
+    ClothingListComponent,
+    TelevisionsListComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FloatLabelModule,
     ReactiveFormsModule,
     ButtonModule,
     ToastModule,
     InputTextModule,
+    MessageModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    RippleModule,
+    DataViewModule
   ],
   providers: [
-    provideClientHydration(),
-    provideHttpClient(withFetch()),
     ConfirmationService,
     MessageService,
     {
@@ -46,4 +65,5 @@ import {InputTextModule} from "primeng/inputtext";
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

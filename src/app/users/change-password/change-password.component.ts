@@ -1,21 +1,16 @@
-import { Component } from '@angular/core';
-import {Subscription} from "rxjs";
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
-import {MessageService} from "primeng/api";
 import {CurrentUserStateService} from "../services/current-user-state.service";
 import {Router} from "@angular/router";
-import {RegisterRequest} from "../models/register-request.model";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html'
+  selector: 'app-change-password',
+  templateUrl: './change-password.component.html'
 })
-export class RegisterComponent {
-  private subscriptions = new Subscription()
-  registerForm: FormGroup = new FormGroup({})
+export class ChangePasswordComponent implements OnInit {
+  changePasswordForm: FormGroup = new FormGroup({})
 
   constructor(
-    private messageService: MessageService,
     public state: CurrentUserStateService,
     private router: Router
   ) { }
@@ -24,17 +19,12 @@ export class RegisterComponent {
     this.initializeForms();
   }
 
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe()
-  }
-
   private initializeForms(){
-    this.registerForm = new FormGroup({
-      email: new FormControl("", [
-        Validators.required,
-        Validators.email
+    this.changePasswordForm = new FormGroup({
+      currentPassword: new FormControl("", [
+        Validators.required
       ]),
-      password: new FormControl("", [
+      newPassword: new FormControl("", [
         Validators.required,
         Validators.minLength(8),
         Validators.maxLength(128),
@@ -42,19 +32,17 @@ export class RegisterComponent {
         this.validateContainsDigit,
         this.validateContainsSymbol
       ]),
-      confirmPassword: new FormControl("", [
+      confirmNewPassword: new FormControl("", [
         Validators.required
       ])
     }, { validators: this.confirmedPasswordValidator, updateOn: "change" });
   }
 
-  register() {
-    let request: RegisterRequest = {
-      email: this.registerForm.value.email as string,
-      password: this.registerForm.value.password as string
-    };
+  changePassword() {
+    let currentPassword = this.changePasswordForm.value.currentPassword as string;
+    let newPassword = this.changePasswordForm.value.newPassword as string;
 
-    this.state.register(request)
+    this.state.changePassword(currentPassword, newPassword)
   }
 
   navigateToLogin() {
@@ -94,9 +82,9 @@ export class RegisterComponent {
   }
 
   private confirmedPasswordValidator(group: AbstractControl): ValidationErrors | null {
-    const password = group.get('password')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
+    const newPassword = group.get('newPassword')?.value;
+    const confirmNewPassword = group.get('confirmNewPassword')?.value;
 
-    return password === confirmPassword ? null : { passwordsDoNotMatch: true };
+    return newPassword === confirmNewPassword ? null : { passwordsDoNotMatch: true };
   }
 }

@@ -4,60 +4,52 @@ import { MessageService } from "primeng/api";
 import { catchError, Observable, throwError } from "rxjs";
 
 @Injectable()
-export class HttpErrorInterceptor implements HttpInterceptor{
-  constructor(private messageService: MessageService){}
+export class HttpErrorInterceptor implements HttpInterceptor {
+  constructor(private messageService: MessageService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           const errorMessage = this.getErrorMessage(error);
-          if(!this.ignoreMessage(error)){
+          if (!this.shouldIgnoreError(error, request.url)) {
             this.displayError(error, errorMessage);
           }
-          return throwError(() => new Error(errorMessage))
+          return throwError(() => new Error(errorMessage));
         })
-      )
+      );
   }
 
-  ignoredMessages: string[] = [
-
-  ]
-
-  private ignoreMessage(error: HttpErrorResponse): boolean {
-    let msg: string;
-
-    if(error.error instanceof ErrorEvent){
-      msg = error.error.message;
-    }
-    else{
-      msg = error.error;
-    }
-
-    for(let i = 0; i < this.ignoredMessages.length; i++){
-      if(this.ignoredMessages[i] === msg){
-        return true;
-      }
+  private shouldIgnoreError(error: HttpErrorResponse, url: string): boolean {
+    if (url.includes('/register') && error.status === 400) {
+      return true;
     }
     return false;
   }
 
-  private getErrorMessage(error: HttpErrorResponse): string{
-    if(error.error instanceof ErrorEvent){
-      return `Client-side error: ${error.error.message}`
+  private getErrorMessage(error: HttpErrorResponse): string {
+    if (error.status === 401) {
+      return `Invalid login credentials! Please try again.`;
     }
-    else{
-      return `Server-side error: ${error.error}`
+
+    if (error.error instanceof ErrorEvent) {
+      return `Client-side error: ${error.error.message}`;
     }
+
+    if (typeof error.error === 'string') {
+      return `Server-side error: ${error.error}`;
+    }
+
+    return `Unexpected error occurred.`;
   }
 
   private displayError(error: HttpErrorResponse, errorMessage: string): void {
-    const summary = `${error.status}`;
+    const summary = `${error.statusText}`;
 
     this.messageService.add({
       severity: 'error',
       summary,
       detail: errorMessage
-    })
+    });
   }
 }
