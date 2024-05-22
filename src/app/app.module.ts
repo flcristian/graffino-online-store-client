@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { NavigationComponent } from './navigation/navigation.component';
 import { HomeComponent } from './home/home.component';
 import {ConfirmationService, MessageService} from "primeng/api";
@@ -25,6 +25,7 @@ import {ClothingListComponent} from "./products/clothing-list/clothing-list.comp
 import {TelevisionsListComponent} from "./products/televisions-list/televisions-list.component";
 import {RippleModule} from "primeng/ripple";
 import {DataViewModule} from "primeng/dataview";
+import { CartComponent } from './cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -40,20 +41,22 @@ import {DataViewModule} from "primeng/dataview";
     ProductsListComponent,
     ClothingListComponent,
     TelevisionsListComponent,
+    CartComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    ButtonModule,
-    ToastModule,
-    InputTextModule,
-    MessageModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    RippleModule,
-    DataViewModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        ButtonModule,
+        ToastModule,
+        InputTextModule,
+        MessageModule,
+        BrowserAnimationsModule,
+        HttpClientModule,
+        RippleModule,
+        DataViewModule,
+        FormsModule
+    ],
   providers: [
     ConfirmationService,
     MessageService,

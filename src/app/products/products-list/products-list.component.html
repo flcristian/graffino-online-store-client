@@ -1,14 +1,14 @@
 <div class="w-full h-20 flex justify-center items-center">
-  <div class="flex flex-row cursor-pointer select-none drop-shadow-md">
+  <div class="flex flex-row cursor-pointer select-none drop-shadow-md bg-secondary rounded-lg">
     <h1
-        class="bg-secondary py-4 px-8 h-14 text-white
+        class="py-4 px-8 h-14 text-white
         hover:bg-primary transition-all rounded-l-lg
         w-30 border-r-white border-r-2"
         [class.bg-primary]="selected === 1"
         (click)="selectClothing()">
       Clothing</h1>
     <h1
-        class="bg-secondary py-4 px-8 h-14 text-white
+        class="py-4 px-8 h-14 text-white
         hover:bg-primary transition-all
         w-30 rounded-r-lg"
         [class.bg-primary]="selected === 2"

@@ -1,9 +1,8 @@
 import {Clothing} from "../models/clothing.model";
-import {Television} from "../models/television.model";
 
-export interface ProductState {
+export interface ClothingState {
   clothing: Clothing[],
-  televisions: Television[],
+  filteredClothing: Clothing[],
   error: string | null,
   loading: boolean
 }

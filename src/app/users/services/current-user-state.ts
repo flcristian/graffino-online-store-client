@@ -5,9 +5,12 @@ import {Order} from "../../orders/models/order.model";
 export interface CurrentUserState {
   token: Token | null,
   user: User | null,
-  orders: Order[]
+  orders: Order[],
+  cart: Order | null,
   errorUser: string | null,
   loadingUser: boolean,
   errorOrders: string | null,
-  loadingOrders: boolean
+  loadingOrders: boolean,
+  errorCart: string | null,
+  loadingCart: boolean
 }
