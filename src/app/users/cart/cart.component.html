@@ -1,1 +1,53 @@
-<p>cart works!</p>
+<div *ngIf="cart && cart!.orderDetails.length > 0; else noCart" class="grid grid-cols-5 p-10 gap-10">
+  <div class="col-span-3 flex flex-col gap-10">
+    <h1 class="text-4xl text-accent font-bold">My Cart</h1>
+    <div class="flex flex-col gap-4">
+      <div *ngFor="let orderDetail of cart.orderDetails"
+           class="w-full bg-base-200 rounded-lg shadow-inner p-5 flex flex-row justify-between">
+        <ng-container *ngIf="orderDetail.product as product">
+          <div class="flex flex-row gap-5">
+            <img src="{{product.imageUrl}}" class="max-w-24 rounded-sm drop-shadow-md cursor-pointer transition-all hover:drop-shadow-2xl" alt="">
+            <div class="flex flex-col justify-between">
+              <h2 class="text-lg text-accent cursor-pointer font-bold hover:underline">{{product.name}}</h2>
+            </div>
+          </div>
+          <div class="flex flex-col justify-between items-end gap-4">
+            <p class="text-xl text-accent font-bold">${{product.price.toFixed(2)}}</p>
+            <div class="flex flex-row gap-2">
+              <input type="number" placeholder="Count" class="input input-bordered w-20 text-sm" [(ngModel)]="orderDetail.count" (ngModelChange)="updateProductCount()"/>
+              <button class="btn btn-accent">Submit</button>
+            </div>
+            <div class="flex flex-col items-end">
+              <p class="text-lg text-accent cursor-pointer underline hover:font-bold select-none">Wishlist</p>
+              <p class="text-lg text-accent cursor-pointer underline hover:font-bold select-none" (click)="removeFromCart(product.id)">Delete</p>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="col-span-2 w-full h-80 p-5 bg-base-200 shadow-inner rounded-xl flex flex-col justify-between gap-4">
+    <h1 class="text-2xl font-bold text-accent">Order Summary</h1>
+    <div class="flex flex-col gap-2 w-full">
+      <div class="flex flex-row justify-between">
+        <p>Products Cost:</p>
+        <p>${{getProductsCost().toFixed(2)}}</p>
+      </div>
+      <div class="flex flex-row justify-between">
+        <p>Transport Cost:</p>
+        <p>$10.00</p>
+      </div>
+    </div>
+    <div class="flex flex-col">
+      <h1 class="text-lg font-bold">Total:</h1>
+      <h1 class="text-lg font-bold">${{getTotalCost().toFixed(2)}}</h1>
+    </div>
+    <button class="btn btn-accent" (click)="this.state.checkout()">Place Order</button>
+  </div>
+</div>
+<ng-template #noCart>
+  <div class="flex flex-col gap-2 items-center justify-center h-80">
+    <h1 class="text-2xl font-bold">You have no items in your cart!</h1>
+    <p>Add some products to your cart and you will see them here.</p>
+  </div>
+</ng-template>

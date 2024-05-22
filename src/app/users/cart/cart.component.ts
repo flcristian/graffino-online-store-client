@@ -34,4 +34,24 @@ export class CartComponent implements OnInit, OnDestroy {
   navigateToHome() {
     this.router.navigate(["home"])
   }
+
+  updateProductCount() {
+    this.state.setCart(this.cart)
+  }
+
+  getProductsCost(): number {
+    let total: number = 0;
+
+    this.cart!.orderDetails.forEach(od => total += od.product!.price * od.count)
+
+    return total
+  }
+
+  getTotalCost(): number {
+    return this.getProductsCost() + 10
+  }
+
+  removeFromCart(id: number) {
+    this.state.removeFromCart(id)
+  }
 }

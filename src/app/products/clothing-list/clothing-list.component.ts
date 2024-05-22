@@ -112,8 +112,8 @@ export class ClothingListComponent implements OnInit, OnDestroy {
 
   }
 
-  addToCart(id: number) {
-    this.userState.addToCart(id)
+  addToCart(id: number, product: Product) {
+    this.userState.addToCart(id, product)
   }
 
   clearFilters(){

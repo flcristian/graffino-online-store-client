@@ -6,7 +6,7 @@
     <h1 class="text-black text-4xl marcellus
                font-bold mt-2 mr-2 drop-shadow-md select-none
                cursor-pointer transition-all hover:drop-shadow-2xl"
-        (click)="navigateToHome()">Your Logo</h1>
+        (click)="navigateToHome()">LOGO</h1>
   </section>
 
   <!-- CENTER (LINKS) -->
@@ -38,11 +38,14 @@
     </div>
     <ng-template #loggedIn>
       <div class="flex flex-row gap-10">
-        <div (click)="navigateToCart()"
-          class="flex flex-col drop-shadow-md items-center
-          hover:drop-shadow-2xl transition-all cursor-pointer">
-          <i class="pi pi-shopping-bag text-3xl text-accent"></i>
-          <p class="text-sm font-bold">Cart</p>
+        <div class="indicator">
+          <span *ngIf="cart!.orderDetails.length > 0" class="indicator-item badge bg-red-400 text-white pointer-events-none">{{cart!.orderDetails.length}}</span>
+          <div (click)="navigateToCart()"
+               class="flex flex-col drop-shadow-md items-center
+               hover:drop-shadow-2xl transition-all cursor-pointer">
+            <i class="pi pi-shopping-bag text-3xl text-accent"></i>
+            <p class="text-sm font-bold">Cart</p>
+          </div>
         </div>
         <div (click)="navigateToAccount()"
           class="flex flex-col drop-shadow-md items-center
