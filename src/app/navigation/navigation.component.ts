@@ -33,7 +33,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     )
 
     let user: User = {
-      id: "bd1ddba4-e622-4c5b-9930-73c31c636424",
+      id: "614176e5-98c8-473a-986e-e87515b2291a",
       email: "qflorescucristian@gmail.com",
       emailConfirmed: true,
       roles: []

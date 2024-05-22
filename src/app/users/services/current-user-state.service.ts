@@ -12,6 +12,9 @@ import {RegisterRequest} from "../models/register-request.model";
 import {OrderService} from "../../orders/services/order.service";
 import {Order} from "../../orders/models/order.model";
 import {ChangePasswordRequest} from "../models/change-password-request.model";
+import {Product} from "../../products/models/product.model";
+import {CreateOrderDetailRequest} from "../../order-details/models/create-order-detail-request.model";
+import {OrderDetail} from "../../order-details/models/order-detail.model";
 
 @Injectable({
   providedIn: 'root'
@@ -155,8 +158,9 @@ export class CurrentUserStateService {
   createCart() {
     this.setLoadingCart(true)
     let customerId: string = this.stateSubject.value.user!.id;
+    let token: Token = this.stateSubject.value.token!
 
-    this.orderService.createCart(customerId).subscribe({
+    this.orderService.createCart(customerId, token).subscribe({
       next: (cart: Order) => {
         this.setCart(cart)
       },
@@ -165,6 +169,24 @@ export class CurrentUserStateService {
       },
       complete: () => {
         this.setLoadingCart(false)
+      }
+    })
+  }
+
+  addToCart(id: number, token: Token) {
+    let cart = this.stateSubject.value.cart
+    this.setLoadingCart(true)
+
+    let request: CreateOrderDetailRequest = {
+      orderId: cart!.id,
+      productId: id,
+      count: 1
+    }
+
+    this.orderService.addToCart(request, token).subscribe({
+      next: (od: OrderDetail) => {
+        let index = cart!.orderDetails.indexOf(o => o.id == id)
+
       }
     })
   }

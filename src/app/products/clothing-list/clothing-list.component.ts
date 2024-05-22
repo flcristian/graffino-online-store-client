@@ -3,6 +3,8 @@ import {debounceTime, Subject, Subscription} from "rxjs";
 import {ClothingStateService} from "../services/clothing-state.service";
 import {Clothing} from "../models/clothing.model";
 import {ColorMap} from "../../utlity/color-map"
+import {CurrentUserStateService} from "../../users/services/current-user-state.service";
+import {Product} from "../models/product.model";
 
 @Component({
   selector: 'app-clothing-list',
@@ -17,7 +19,8 @@ export class ClothingListComponent implements OnInit, OnDestroy {
   colorMap = ColorMap
 
   constructor(
-    protected state: ClothingStateService
+    protected state: ClothingStateService,
+    protected userState: CurrentUserStateService
   ) { }
 
   ngOnInit() {
@@ -107,6 +110,10 @@ export class ClothingListComponent implements OnInit, OnDestroy {
   };
   navigateToProduct(id: number) {
 
+  }
+
+  addToCart(id: number) {
+    this.userState.addToCart(id)
   }
 
   clearFilters(){

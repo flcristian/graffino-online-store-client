@@ -1,16 +1,16 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CurrentUserStateService} from "../services/current-user-state.service";
 import {Subscription} from "rxjs";
-import {User} from "../models/user.model";
+import {Order} from "../../orders/models/order.model";
 import {Router} from "@angular/router";
+import {CurrentUserStateService} from "../services/current-user-state.service";
 
 @Component({
-  selector: 'app-customer-account-page',
-  templateUrl: './customer-account-page.component.html'
+  selector: 'app-cart',
+  templateUrl: './cart.component.html'
 })
-export class CustomerAccountPageComponent implements OnInit, OnDestroy{
+export class CartComponent implements OnInit, OnDestroy {
   subscriptions = new Subscription()
-  user: User | null = null
+  cart: Order | null = null
 
   constructor(
     private router: Router,
@@ -21,21 +21,14 @@ export class CustomerAccountPageComponent implements OnInit, OnDestroy{
     this.subscriptions.add(
       this.state.state$.subscribe(data => {
         if(data.user == null) this.navigateToHome()
-        this.user = data.user
+        this.cart = data.cart
+        console.log(this.cart)
       })
     )
   }
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe()
-  }
-
-  selectYourOrders() {
-    this.router.navigate(["account/your-orders"])
-  }
-
-  selectChangePassword() {
-    this.router.navigate(["account/change-password"])
   }
 
   navigateToHome() {
