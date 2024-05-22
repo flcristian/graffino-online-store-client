@@ -1,0 +1,105 @@
+<div class="flex flex-col w-full px-10 relative z-[100]">
+  <div class="w-full h-14 bg-base-200 shadow-inner drop-shadow-sm rounded-full flex justify-between items-center py-2 px-8">
+    <label for="my-drawer">
+      <a class="font-bold text-lg bg-white px-4 py-1 rounded-full shadow-inner
+                transition-all select-none
+                drop-shadow-sm cursor-pointer hover:bg-base-300" pRipple>Filters</a>
+    </label>
+    <input type="text" [(ngModel)]="searchText" (ngModelChange)="onSearchTextChange()" placeholder="Search television"
+           class="input w-full max-w-xs h-9 focus:bg-base-300 hover:bg-base-300 transition-all
+             font-bold text-md placeholder-accent bg-white marcellus rounded-full" />
+    <div class="dropdown dropdown-bottom dropdown-end">
+      <a tabindex="0" class="font-bold text-lg bg-white px-4 py-1 rounded-full shadow-inner
+                transition-all select-none
+                drop-shadow-sm cursor-pointer hover:bg-base-300">Sort</a>
+      <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 gap-2">
+        <li>
+          <ul>
+            <h1 class="text-accent font-bold marcellus text-xl mb-1">Price</h1>
+            <li><a class="text-accent font-bold" (click)="sortByPriceAscending()">Ascending</a></li>
+            <li><a class="text-accent font-bold" (click)="sortByPriceDescending()">Descending</a></li>
+          </ul>
+        </li>
+        <li>
+          <ul>
+            <h1 class="text-accent font-bold marcellus text-xl mb-1">Date Added</h1>
+            <li><a class="text-accent font-bold" (click)="sortByDateAddedAscending()">Ascending</a></li>
+            <li><a class="text-accent font-bold" (click)="sortByDateAddedDescending()">Descending</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="drawer z-[1]">
+    <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-side">
+      <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+      <ul class="flex flex-col gap-4 menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+        <li>
+          <button class="btn btn-accent marcellus text-xl text-white" (click)="clearFilters()">Clear Filters</button>
+        </li>
+
+        <li class="flex flex-col gap-2 w-72">
+          <ul class="z-[1] menu p-2 shadow bg-base-100 rounded-box gap-2 m-0">
+            <h1 class="bg-base-100 text-xl marcellus text-accent font-bold m-auto mt-2 mb-2">Diameters</h1>
+            <li *ngFor="let diameter of diameters">
+              <a class="text-accent font-bold hover:text-accent" (click)="filterDiameter(diameter)"
+                 [class.bg-accent]="usedDiameter === diameter"
+                 [class.text-white]="usedDiameter === diameter"
+                 [class.border-2]="usedDiameter === diameter"
+                 [class.border-accent]="usedDiameter === diameter"
+                 [class.hover:border-2]="usedDiameter === diameter"
+                 [class.hover:border-accent]="usedDiameter === diameter">{{diameter}}</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="flex flex-col gap-2 w-72">
+          <ul class="z-[1] menu p-2 shadow bg-base-100 rounded-box gap-2 m-0">
+            <h1 class="bg-base-100 text-xl marcellus text-accent font-bold m-auto mt-2 mb-2">Resolutions</h1>
+            <li *ngFor="let resolution of resolutions">
+              <a class="text-accent font-bold hover:text-accent" (click)="filterResolution(resolution)"
+                 [class.bg-accent]="usedResolution === resolution"
+                 [class.text-white]="usedResolution === resolution"
+                 [class.border-2]="usedResolution === resolution"
+                 [class.border-accent]="usedResolution === resolution"
+                 [class.hover:border-2]="usedResolution === resolution"
+                 [class.hover:border-accent]="usedResolution === resolution">{{resolution}}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="state.state$ | async as state">
+  <div>
+    <div *ngIf="state.error || state.loading"
+         class="w-full flex flex-col gap-2 justify-center items-center h-80">
+    <span *ngIf="state.loading" class="loading loading-ring w-20"
+          [class.text-red-700]="state.error"></span>
+      <p *ngIf="state.error" class="text-red-700 text-lg">Something went wrong</p>
+    </div>
+    <div *ngIf="!state.error && !state.loading" class="w-full grid grid-cols-4 gap-10 p-10">
+      <section *ngFor="let product of state.filteredTelevisions" class="card card-compact bg-base-100 drop-shadow-lg transition-all hover:drop-shadow-2xl relative">
+        <div *ngIf="isNotOlderThanThreeDays(product.dateAdded)" class="absolute -top-2 -right-2 p-2 notosansjp bg-red-500 text-white font-bold rounded-lg">NEW</div>
+        <figure><img (click)="navigateToProduct(product.id)" class="rounded-t-2xl cursor-pointer" src="{{product.imageUrl}}" alt="{{product.name}}"/></figure>
+        <article class="card-body flex flex-col justify-between">
+          <div>
+            <h2 class="card-title text-accent text-2xl">{{product.name}}</h2>
+            <div class="flex flex-wrap gap-x-2">
+              <h2 class="font-extrabold text-xl text-accent">
+                {{product.price.toFixed(2)}} RON</h2>
+            </div>
+          </div>
+          <div class="w-full flex flex-row gap-4">
+            <button class="btn btn-primary flex-1" (click)="navigateToProduct(product.id)">View Details</button>
+            <button class="btn btn-secondary text-white flex-1" (click)="navigateToProduct(product.id)">Add To Cart</button>
+          </div>
+        </article>
+      </section>
+    </div>
+  </div>
+</ng-container>

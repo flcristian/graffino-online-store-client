@@ -33,33 +33,14 @@ export class NavigationComponent implements OnInit, OnDestroy {
     )
 
     let user: User = {
-      id: "1b1e51da-9870-4472-ac4f-a816420436e2",
-      email: "ruskihvh@gmail.com",
+      id: "bd1ddba4-e622-4c5b-9930-73c31c636424",
+      email: "qflorescucristian@gmail.com",
       emailConfirmed: true,
       roles: []
     }
     this.state.setUser(user)
 
-    let orders: Order[] = [
-      {
-        id: 1,
-        customerId: "1b1e51da-9870-4472-ac4f-a816420436e2",
-        customer: user,
-        orderDetails: [],
-        status: 2,
-        lastDateUpdated: new Date()
-      },
-      {
-        id: 2,
-        customerId: "1b1e51da-9870-4472-ac4f-a816420436e2",
-        customer: user,
-        orderDetails: [],
-        status: 4,
-        lastDateUpdated: new Date()
-      }
-    ]
-
-    this.state.setOrders(orders)
+    this.state.getCart();
   }
 
   ngOnDestroy() {

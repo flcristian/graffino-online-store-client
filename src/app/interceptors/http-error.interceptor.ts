@@ -12,7 +12,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       .pipe(
         catchError((error: HttpErrorResponse) => {
           const errorMessage = this.getErrorMessage(error);
-          if (!this.shouldIgnoreError(error, request.url)) {
+          if (!this.ignoreError(error, request.url)) {
             this.displayError(error, errorMessage);
           }
           return throwError(() => new Error(errorMessage));
@@ -20,7 +20,16 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       );
   }
 
-  private shouldIgnoreError(error: HttpErrorResponse, url: string): boolean {
+  ignoredMessages = [
+    "The customer has no cart.",
+    "Unexpected error occurred."
+  ]
+
+  private ignoreError(error: HttpErrorResponse, url: string): boolean {
+    if(this.ignoredMessages.indexOf(error.error.message) !== -1 ||
+        this.ignoredMessages.indexOf(error.error) !== -1) {
+      return true;
+    }
     if (url.includes('/register') && error.status === 400) {
       return true;
     }

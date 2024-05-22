@@ -21,10 +21,13 @@ export class CurrentUserStateService {
     token: null,
     user: null,
     orders: [],
+    cart: null,
     errorUser: null,
     loadingUser: false,
     errorOrders: null,
-    loadingOrders: false
+    loadingOrders: false,
+    errorCart: null,
+    loadingCart: false
   })
   state$: Observable<CurrentUserState> = this.stateSubject.asObservable()
 
@@ -92,6 +95,9 @@ export class CurrentUserStateService {
         }
 
         this.setUser(user)
+
+        this.getOrders()
+        this.getCart()
         this.router.navigate(["home"])
       },
       error: (error) => {
@@ -107,7 +113,11 @@ export class CurrentUserStateService {
     this.setLoadingOrders(true)
 
     let customerId: string = this.stateSubject.value.user!.id;
-    this.orderService.getOrdersByCustomerId(customerId).subscribe({
+    this.orderService.getOrdersByCustomerId(customerId).pipe(
+      finalize(() => {
+        this.setLoadingOrders(false);
+      })
+    ).subscribe({
       next: (orders: Order[]) => {
         this.setOrders(orders)
       },
@@ -116,6 +126,45 @@ export class CurrentUserStateService {
       },
       complete: () => {
         this.setLoadingOrders(false)
+      }
+    })
+  }
+
+  getCart() {
+    this.setLoadingCart(true)
+
+    let customerId: string = this.stateSubject.value.user!.id;
+    this.orderService.getCartByCustomerId(customerId).pipe(
+      finalize(() => {
+        this.setLoadingCart(false);
+      })
+    ).subscribe({
+      next: (cart: Order) => {
+        this.setCart(cart)
+      },
+      error: (error) => {
+        this.createCart();
+        this.setErrorCart(error)
+      },
+      complete: () => {
+        this.setLoadingCart(false)
+      }
+    })
+  }
+
+  createCart() {
+    this.setLoadingCart(true)
+    let customerId: string = this.stateSubject.value.user!.id;
+
+    this.orderService.createCart(customerId).subscribe({
+      next: (cart: Order) => {
+        this.setCart(cart)
+      },
+      error: (error) => {
+        this.setErrorCart(error)
+      },
+      complete: () => {
+        this.setLoadingCart(false)
       }
     })
   }
@@ -160,6 +209,10 @@ export class CurrentUserStateService {
     this.setState({orders})
   }
 
+  setCart(cart: Order | null) {
+    this.setState({cart})
+  }
+
   setErrorUser(errorUser: string | null) {
     this.setState({errorUser})
   }
@@ -174,6 +227,14 @@ export class CurrentUserStateService {
 
   setLoadingOrders(loadingOrders: boolean) {
     this.setState({loadingOrders})
+  }
+
+  setErrorCart(errorCart: string | null) {
+    this.setState({errorCart})
+  }
+
+  setLoadingCart(loadingCart: boolean) {
+    this.setState({loadingCart})
   }
 
   setState(partialState: Partial<CurrentUserState>){

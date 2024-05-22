@@ -14,4 +14,12 @@ export class OrderService {
   getOrdersByCustomerId(customerId: string): Observable<Order[]> {
     return this.http.get<Order[]>(`${this.server}/${customerId}`)
   }
+
+  getCartByCustomerId(customerId: string): Observable<Order> {
+    return this.http.get<Order>(`${this.server}/cart/${customerId}`)
+  }
+
+  createCart(customerId: string): Observable<Order> {
+    return this.http.post<Order>(`${this.server}/create`, { customerId: customerId })
+  }
 }
