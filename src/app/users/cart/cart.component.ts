@@ -22,7 +22,6 @@ export class CartComponent implements OnInit, OnDestroy {
       this.state.state$.subscribe(data => {
         if(data.user == null) this.navigateToHome()
         this.cart = data.cart
-        console.log(this.cart)
       })
     )
   }

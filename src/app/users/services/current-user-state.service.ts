@@ -14,6 +14,8 @@ import {Order} from "../../orders/models/order.model";
 import {ChangePasswordRequest} from "../models/change-password-request.model";
 import {OrderDetail} from "../../order-details/models/order-detail.model";
 import {Product} from "../../products/models/product.model";
+import {CheckoutProductDetailDTO} from "../../orders/models/checkout-product-detail-dto";
+import {CheckoutRequest} from "../../orders/models/checkout-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -201,7 +203,31 @@ export class CurrentUserStateService {
   }
 
   checkout() {
-    this.orderService.createCheckoutSession()
+    let cart = this.stateSubject.value.cart!
+    let productDetails: CheckoutProductDetailDTO[] = []
+
+    let request: CheckoutRequest = {
+      productDetails: productDetails,
+      orderRequest: {
+        customerId: cart.customerId,
+        orderDetails: []
+      }
+    }
+
+    cart.orderDetails.forEach(od => {
+      productDetails.push({
+        name: od.product!.name,
+        price: od.product!.price,
+        count: od.count
+      })
+
+      request.orderRequest.orderDetails.push({
+        productId: od.productId,
+        count: od.count
+      })
+    })
+
+    this.orderService.createCheckoutSession(request)
   }
 
   private getIndexOfOrderDetail(productId: number): number {

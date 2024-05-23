@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Order} from "../models/order.model";
 import {Observable} from "rxjs";
 import {loadStripe, Stripe} from "@stripe/stripe-js";
+import {CheckoutRequest} from "../models/checkout-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +23,9 @@ export class OrderService {
     return this.http.get<Order[]>(`${this.server}/orders/${customerId}`)
   }
 
-  async createCheckoutSession() {
+  async createCheckoutSession(request: CheckoutRequest) {
     await this.ensureStripeInitialized();
-    this.http.post(`${this.checkoutServer}/create-checkout-session`, {}).subscribe((session: any) => {
+    this.http.post(`${this.checkoutServer}/create-checkout-session`, request).subscribe((session: any) => {
       if (this.stripe) {
         this.stripe.redirectToCheckout({ sessionId: session.id }).then((result: any) => {
           if (result.error) {
@@ -37,7 +38,7 @@ export class OrderService {
 
   private async ensureStripeInitialized() {
     if (!this.stripe) {
-      this.stripe = await loadStripe('your-publishable-key-here');
+      this.initializeStripe()
     }
   }
 }
