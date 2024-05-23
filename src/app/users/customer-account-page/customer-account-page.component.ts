@@ -19,7 +19,10 @@ export class CustomerAccountPageComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
     this.subscriptions.add(
-      this.state.state$.subscribe(data => this.user = data.user)
+      this.state.state$.subscribe(data => {
+        if(data.user == null) this.navigateToHome()
+        this.user = data.user
+      })
     )
   }
 
@@ -33,5 +36,9 @@ export class CustomerAccountPageComponent implements OnInit, OnDestroy{
 
   selectChangePassword() {
     this.router.navigate(["account/change-password"])
+  }
+
+  navigateToHome() {
+    this.router.navigate(["home"])
   }
 }

@@ -12,6 +12,10 @@ import {RegisterRequest} from "../models/register-request.model";
 import {OrderService} from "../../orders/services/order.service";
 import {Order} from "../../orders/models/order.model";
 import {ChangePasswordRequest} from "../models/change-password-request.model";
+import {OrderDetail} from "../../order-details/models/order-detail.model";
+import {Product} from "../../products/models/product.model";
+import {CheckoutProductDetailDTO} from "../../orders/models/checkout-product-detail-dto";
+import {CheckoutRequest} from "../../orders/models/checkout-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -95,9 +99,17 @@ export class CurrentUserStateService {
         }
 
         this.setUser(user)
-
         this.getOrders()
-        this.getCart()
+        let cart: Order = {
+          id: 0,
+          customer: user,
+          customerId: user.id,
+          status: 0,
+          lastDateUpdated: new Date(),
+          orderDetails: []
+        }
+        this.setCart(cart)
+
         this.router.navigate(["home"])
       },
       error: (error) => {
@@ -130,43 +142,37 @@ export class CurrentUserStateService {
     })
   }
 
-  getCart() {
-    this.setLoadingCart(true)
+  addToCart(id: number, product: Product) {
+    let cart = this.stateSubject.value.cart!
 
-    let customerId: string = this.stateSubject.value.user!.id;
-    this.orderService.getCartByCustomerId(customerId).pipe(
-      finalize(() => {
-        this.setLoadingCart(false);
-      })
-    ).subscribe({
-      next: (cart: Order) => {
-        this.setCart(cart)
-      },
-      error: (error) => {
-        this.createCart();
-        this.setErrorCart(error)
-      },
-      complete: () => {
-        this.setLoadingCart(false)
-      }
-    })
+    let orderDetail: OrderDetail = {
+      id: 1,
+      orderId: cart!.id,
+      productId: id,
+      count: 1,
+      product: product
+    }
+
+    let index = this.getIndexOfOrderDetail(orderDetail.productId)
+    if(index === -1) {
+      cart.orderDetails.push(orderDetail)
+    }
+    else {
+      this.messageService.add({ summary: 'Failed', detail: `Item is already in your cart.` });
+    }
+
+    this.setCart(cart)
   }
 
-  createCart() {
-    this.setLoadingCart(true)
-    let customerId: string = this.stateSubject.value.user!.id;
+  removeFromCart(id: number) {
+    let cart = this.stateSubject.value.cart!
 
-    this.orderService.createCart(customerId).subscribe({
-      next: (cart: Order) => {
-        this.setCart(cart)
-      },
-      error: (error) => {
-        this.setErrorCart(error)
-      },
-      complete: () => {
-        this.setLoadingCart(false)
-      }
-    })
+    let index = this.getIndexOfOrderDetail(id)
+    if(index !== -1) {
+      cart.orderDetails.splice(index, 1)
+    }
+
+    this.setCart(cart)
   }
 
   changePassword(currentPassword: string, newPassword: string) {
@@ -194,6 +200,47 @@ export class CurrentUserStateService {
         this.setLoadingUser(false)
       }
     })
+  }
+
+  checkout() {
+    let cart = this.stateSubject.value.cart!
+    let productDetails: CheckoutProductDetailDTO[] = []
+
+    let request: CheckoutRequest = {
+      productDetails: productDetails,
+      orderRequest: {
+        customerId: cart.customerId,
+        orderDetails: []
+      }
+    }
+
+    cart.orderDetails.forEach(od => {
+      productDetails.push({
+        name: od.product!.name,
+        price: od.product!.price,
+        count: od.count
+      })
+
+      request.orderRequest.orderDetails.push({
+        productId: od.productId,
+        count: od.count
+      })
+    })
+
+    this.orderService.createCheckoutSession(request)
+  }
+
+  private getIndexOfOrderDetail(productId: number): number {
+    let orderDetails = this.stateSubject.value.cart!.orderDetails;
+
+    let index = -1;
+    for(let i = 0; i < orderDetails.length; i++){
+      if(orderDetails[i].productId == productId) {
+        index = i;
+      }
+    }
+
+    return index;
   }
 
   // STATE SETTERS

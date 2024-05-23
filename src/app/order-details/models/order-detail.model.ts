@@ -5,5 +5,5 @@ export interface OrderDetail {
   orderId: number,
   productId: number,
   count: number,
-  product: Product
+  product: Product | null
 }

@@ -9,6 +9,9 @@ import {YourOrdersComponent} from "./users/your-orders/your-orders.component";
 import {ProductsListComponent} from "./products/products-list/products-list.component";
 import {ClothingListComponent} from "./products/clothing-list/clothing-list.component";
 import {TelevisionsListComponent} from "./products/televisions-list/televisions-list.component";
+import {CartComponent} from "./users/cart/cart.component";
+import {PaymentSuccessfulComponent} from "./orders/payment-successful/payment-successful.component";
+import {PaymentCanceledComponent} from "./orders/payment-canceled/payment-canceled.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -17,6 +20,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'cart', component: CartComponent },
   { path: 'products',
     component: ProductsListComponent,
     children: [
@@ -31,6 +35,8 @@ const routes: Routes = [
       { path: 'your-orders', component: YourOrdersComponent },
     ]
   },
+  { path: 'payment-successful', component: PaymentSuccessfulComponent },
+  { path: 'payment-canceled', component: PaymentCanceledComponent }
 ];
 
 @NgModule({
