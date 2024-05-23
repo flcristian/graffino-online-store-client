@@ -26,6 +26,8 @@ import {TelevisionsListComponent} from "./products/televisions-list/televisions-
 import {RippleModule} from "primeng/ripple";
 import {DataViewModule} from "primeng/dataview";
 import {CartComponent} from "./users/cart/cart.component";
+import {PaymentCanceledComponent} from "./orders/payment-canceled/payment-canceled.component";
+import {PaymentSuccessfulComponent} from "./orders/payment-successful/payment-successful.component";
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import {CartComponent} from "./users/cart/cart.component";
     ClothingListComponent,
     TelevisionsListComponent,
     CartComponent,
+    PaymentSuccessfulComponent,
+    PaymentCanceledComponent,
   ],
     imports: [
         BrowserModule,
