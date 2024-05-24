@@ -21,6 +21,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   }
 
   ignoredMessages = [
+    "There are no products matching your search and filter criteria.",
     "The customer has no cart.",
     "Unexpected error occurred."
   ]
@@ -30,9 +31,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         this.ignoredMessages.indexOf(error.error) !== -1) {
       return true;
     }
-    if (url.includes('/register') && error.status === 400) {
-      return true;
-    }
+
+    if (url.includes('/register') && error.status === 400) return true;
+
     return false;
   }
 

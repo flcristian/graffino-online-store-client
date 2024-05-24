@@ -7,8 +7,6 @@ import {CustomerAccountPageComponent} from "./users/customer-account-page/custom
 import {ChangePasswordComponent} from "./users/change-password/change-password.component";
 import {YourOrdersComponent} from "./users/your-orders/your-orders.component";
 import {ProductsListComponent} from "./products/products-list/products-list.component";
-import {ClothingListComponent} from "./products/clothing-list/clothing-list.component";
-import {TelevisionsListComponent} from "./products/televisions-list/televisions-list.component";
 import {CartComponent} from "./users/cart/cart.component";
 import {PaymentSuccessfulComponent} from "./orders/payment-successful/payment-successful.component";
 import {PaymentCanceledComponent} from "./orders/payment-canceled/payment-canceled.component";
@@ -16,18 +14,12 @@ import {PaymentCanceledComponent} from "./orders/payment-canceled/payment-cancel
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'account', redirectTo: 'account/your-orders', pathMatch: 'full' },
-  { path: 'products', redirectTo: 'products/clothing', pathMatch: 'full' },
+  { path: 'products', redirectTo: 'products', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'cart', component: CartComponent },
-  { path: 'products',
-    component: ProductsListComponent,
-    children: [
-      { path: 'clothing', component: ClothingListComponent },
-      { path: 'televisions', component: TelevisionsListComponent }
-    ]
-  },
+  { path: 'products', component: ProductsListComponent },
   { path: 'account',
     component: CustomerAccountPageComponent,
     children: [

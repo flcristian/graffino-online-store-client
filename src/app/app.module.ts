@@ -21,8 +21,6 @@ import {ChangePasswordComponent} from "./users/change-password/change-password.c
 import {YourOrdersComponent} from "./users/your-orders/your-orders.component";
 import {OrderStatusPipe} from "./pipes/order-status.pipe";
 import {ProductsListComponent} from "./products/products-list/products-list.component";
-import {ClothingListComponent} from "./products/clothing-list/clothing-list.component";
-import {TelevisionsListComponent} from "./products/televisions-list/televisions-list.component";
 import {RippleModule} from "primeng/ripple";
 import {DataViewModule} from "primeng/dataview";
 import {CartComponent} from "./users/cart/cart.component";
@@ -41,8 +39,6 @@ import {PaymentSuccessfulComponent} from "./orders/payment-successful/payment-su
     YourOrdersComponent,
     OrderStatusPipe,
     ProductsListComponent,
-    ClothingListComponent,
-    TelevisionsListComponent,
     CartComponent,
     PaymentSuccessfulComponent,
     PaymentCanceledComponent,

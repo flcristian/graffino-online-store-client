@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Product} from "../models/product.model";
-import {Clothing} from "../models/clothing.model";
-import {Television} from "../models/television.model";
+import {Category} from "../models/category.model";
 
 @Injectable({
   providedIn: 'root'
@@ -13,19 +12,36 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getAllClothing(): Observable<Clothing[]> {
-    return this.http.get<Clothing[]>(this.server + "/all-clothing")
+  filterProducts(categoryId: number | null, search: string | null,
+                 properties: Map<string, string>, page: number | null,
+                 itemsPerPage: number | null): Observable<Product[]>
+  {
+    let params = new HttpParams();
+
+    if (categoryId !== null) {
+      params = params.set('categoryId', categoryId.toString());
+    }
+
+    if (search !== null) {
+      params = params.set('search', search);
+    }
+
+    properties.forEach((value, key) => {
+      params = params.set(key, value);
+    });
+
+    if (page !== null) {
+      params = params.set('page', page.toString());
+    }
+
+    if (itemsPerPage !== null) {
+      params = params.set('itemsPerPage', itemsPerPage.toString());
+    }
+
+    return this.http.get<Product[]>(`${this.server}/filter-products`, { params });
   }
 
-  getAllTelevisions(): Observable<Television[]> {
-    return this.http.get<Television[]>(this.server + "/all-televisions")
-  }
-
-  getClothingById(id: number): Observable<Clothing> {
-    return this.http.get<Clothing>(this.server + `/clothing/${id}`)
-  }
-
-  getTelevisionById(id: number): Observable<Television> {
-    return this.http.get<Television>(this.server + `/television/${id}`)
+  getFilterCriteria(categoryId: number): Observable<{ [key: string]: string[] }> {
+    return this.http.get<{ [key: string]: string[] }>(`${this.server}/filter-criteria/${categoryId}`)
   }
 }
