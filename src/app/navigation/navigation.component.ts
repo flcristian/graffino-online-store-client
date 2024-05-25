@@ -89,10 +89,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
     this.router.navigate(["products"])
   }
 
-  navigateToContact() {
-    this.router.navigate(["contact"])
-  }
-
   navigateToCart(){
     this.router.navigate(["cart"])
   }
