@@ -4,16 +4,20 @@ import {ProductState} from "./product-state";
 import {ProductService} from "./product.service";
 import {MessageService} from "primeng/api";
 import {Product} from "../models/product.model";
+import {Category} from "../models/category.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductStateService {
   stateSubject = new BehaviorSubject<ProductState>({
+    categories: [],
     products: [],
     filterCriteria: {},
+    errorCategories: null,
     errorProducts: null,
     errorFilterCriteria: null,
+    loadingCategories: false,
     loadingProducts: false,
     loadingFilterCriteria: false
   })
@@ -27,10 +31,10 @@ export class ProductStateService {
 
   filterProducts(categoryId: number | null, search: string | null,
                  properties: Map<string, string>, page: number | null,
-                 itemsPerPage: number | null)
+                 itemsPerPage: number | null, sort: string | null)
   {
     this.setLoadingProducts(true)
-    this.productService.filterProducts(categoryId, search, properties, page, itemsPerPage).pipe(
+    this.productService.filterProducts(categoryId, search, properties, page, itemsPerPage, sort).pipe(
       finalize(() => {
 
         this.setLoadingProducts(false)
@@ -68,7 +72,16 @@ export class ProductStateService {
     })
   }
 
+  getAllCategories() {
+    this.setLoadingCategoires(true)
+    return this.productService.getAllCategories()
+  }
+
   // STATE SETTERS
+
+  setCategories(categories: Category[]) {
+    this.setState({categories})
+  }
 
   setProducts(products: Product[]) {
     this.setState({products})
@@ -78,21 +91,30 @@ export class ProductStateService {
     this.setState({filterCriteria})
   }
 
-  setErrorProducts(errorProducts: string | null) {
-    this.setState({errorProducts})
+  setErrorCategories(errorCategories: string | null) {
+    this.setState({errorCategories})
   }
 
-  setLoadingProducts(loadingProducts: boolean) {
-    this.setState({loadingProducts})
+  setErrorProducts(errorProducts: string | null) {
+    this.setState({errorProducts})
   }
 
   setErrorFilterCriteria(errorFilterCriteria: string | null) {
     this.setState({errorFilterCriteria})
   }
 
+  setLoadingCategoires(loadingCategories: boolean) {
+    this.setState({loadingCategories})
+  }
+
+  setLoadingProducts(loadingProducts: boolean) {
+    this.setState({loadingProducts})
+  }
+
   setLoadingFilterCriteria(loadingFilterCriteria: boolean) {
     this.setState({loadingFilterCriteria})
   }
+
 
   setState(partialState: Partial<ProductState>){
     this.stateSubject.next({...this.stateSubject.value,...partialState})

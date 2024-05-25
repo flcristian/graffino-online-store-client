@@ -14,7 +14,7 @@ export class ProductService {
 
   filterProducts(categoryId: number | null, search: string | null,
                  properties: Map<string, string>, page: number | null,
-                 itemsPerPage: number | null): Observable<Product[]>
+                 itemsPerPage: number | null, sort: string | null): Observable<Product[]>
   {
     let params = new HttpParams();
 
@@ -38,10 +38,18 @@ export class ProductService {
       params = params.set('itemsPerPage', itemsPerPage.toString());
     }
 
+    if(sort !== null) {
+      params = params.set('sort', sort);
+    }
+
     return this.http.get<Product[]>(`${this.server}/filter-products`, { params });
   }
 
   getFilterCriteria(categoryId: number): Observable<{ [key: string]: string[] }> {
     return this.http.get<{ [key: string]: string[] }>(`${this.server}/filter-criteria/${categoryId}`)
+  }
+
+  getAllCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.server}/all-categories`);
   }
 }
