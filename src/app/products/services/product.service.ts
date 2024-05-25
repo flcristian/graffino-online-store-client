@@ -52,4 +52,8 @@ export class ProductService {
   getAllCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.server}/all-categories`);
   }
+
+  getProductById(id: number): Observable<Product> {
+    return this.http.get<Product>(`${this.server}/product/${id}`)
+  }
 }

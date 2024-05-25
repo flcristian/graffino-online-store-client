@@ -10,11 +10,13 @@ import {ProductsListComponent} from "./products/products-list/products-list.comp
 import {CartComponent} from "./users/cart/cart.component";
 import {PaymentSuccessfulComponent} from "./orders/payment-successful/payment-successful.component";
 import {PaymentCanceledComponent} from "./orders/payment-canceled/payment-canceled.component";
+import {ProductPageComponent} from "./products/product-page/product-page.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'account', redirectTo: 'account/your-orders', pathMatch: 'full' },
   { path: 'products', redirectTo: 'products', pathMatch: 'full' },
+  { path: 'product/:id', component: ProductPageComponent },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

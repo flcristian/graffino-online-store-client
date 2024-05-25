@@ -53,4 +53,8 @@ export class CartComponent implements OnInit, OnDestroy {
   removeFromCart(id: number) {
     this.state.removeFromCart(id)
   }
+
+  navigateToProduct(id: number) {
+    this.router.navigate(['/product', id]);
+  }
 }

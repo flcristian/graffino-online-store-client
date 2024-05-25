@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
-import {ProductStateService} from "../services/product-state.service";
 import {Product} from "../models/product.model";
 import {CurrentUserStateService} from "../../users/services/current-user-state.service";
 import {Category} from "../models/category.model";
+import {ProductsStateService} from "../services/products-state.service";
 
 @Component({
   selector: 'app-products-list',
@@ -17,7 +17,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    protected productState: ProductStateService,
+    protected productState: ProductsStateService,
     protected userState: CurrentUserStateService
   ) { }
 
@@ -211,7 +211,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   navigateToProduct(id: number) {
-
+    this.router.navigate(['/product', id]);
   }
 
   addToCart(id: number, product: Product) {

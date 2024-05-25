@@ -26,6 +26,7 @@ import {DataViewModule} from "primeng/dataview";
 import {CartComponent} from "./users/cart/cart.component";
 import {PaymentCanceledComponent} from "./orders/payment-canceled/payment-canceled.component";
 import {PaymentSuccessfulComponent} from "./orders/payment-successful/payment-successful.component";
+import {ProductPageComponent} from "./products/product-page/product-page.component";
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {PaymentSuccessfulComponent} from "./orders/payment-successful/payment-su
     CartComponent,
     PaymentSuccessfulComponent,
     PaymentCanceledComponent,
+    ProductPageComponent,
   ],
     imports: [
         BrowserModule,
