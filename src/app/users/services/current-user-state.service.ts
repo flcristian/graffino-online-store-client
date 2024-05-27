@@ -142,13 +142,13 @@ export class CurrentUserStateService {
     })
   }
 
-  addToCart(id: number, product: Product) {
+  addToCart(product: Product) {
     let cart = this.stateSubject.value.cart!
 
     let orderDetail: OrderDetail = {
       id: 1,
       orderId: cart!.id,
-      productId: id,
+      productId: product.id,
       count: 1,
       product: product
     }

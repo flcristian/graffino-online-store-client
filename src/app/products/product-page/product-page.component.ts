@@ -46,4 +46,8 @@ export class ProductPageComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+  addToCart(product: Product) {
+    this.userState.addToCart(product)
+  }
 }

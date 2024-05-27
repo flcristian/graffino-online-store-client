@@ -2,7 +2,7 @@
   <main *ngIf="state.product as product" class="p-10">
     <section class="flex flex-row justify-center gap-2">
       <img onclick="image_zoom.showModal()"
-           class="max-h-96 rounded-xl object-cover self-end shadow-gray-400 shadow-lg cursor-zoom-in"
+           class="max-h-136 rounded-xl object-cover self-end shadow-gray-400 shadow-lg cursor-zoom-in"
            src="{{product.imageUrl}}" alt="PRODUCT IMAGE">
 
       <dialog id="image_zoom" class="modal">
@@ -23,12 +23,21 @@
         </div>
       </dialog>
       <section class="xl:col-span-2 min-w-96">
-        <div class="card bg-base-100 shadow-xl">
-          <div class="card-body">
-            <h1 class="card-title marcellus text-3xl text-primary text-shadow">{{product.name}}</h1>
+        <div class="flex flex-col bg-base-100 shadow-xl p-5 justify-between gap-16 rounded-lg">
+          <div>
+            <h1 class="text-3xl font-bold text-primary text-shadow">{{product.name}}</h1>
             <h2 class="text-2xl text-secondary font-bold text-shadow">${{product.price.toFixed(2)}}</h2>
-            <br>
           </div>
+          <div class="flex flex-col gap-2">
+            <h1 class="text-2xl font-bold text-primary text-shadow">Details:</h1>
+            <div class="flex flex-col">
+              <div *ngFor="let property of product.productProperties" class="flex flex-row gap-2">
+                <h2 class="text-lg text-primary font-bold text-shadow">{{property.property.name}}:</h2>
+                <h2 class="text-lg text-secondary text-shadow">{{property.value}}</h2>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary" (click)="addToCart(product)">Add To Cart</button>
         </div>
       </section>
     </section>
