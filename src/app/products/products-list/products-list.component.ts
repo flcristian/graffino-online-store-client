@@ -44,7 +44,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
         this.productState.setErrorCategories(error)
       },
       complete: () => {
-        this.productState.setLoadingCategoires(false)
+        this.productState.setLoadingCategories(false)
       }
     })
   }

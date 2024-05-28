@@ -1,1 +1,73 @@
-<p>products-manager works!</p>
+<div *ngIf="productState.state$ | async as state" class="flex flex-col gap-16 items-center">
+  <!--CREATE CATEGORY FORM-->
+  <div class="w-126 bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
+    <h1 class="text-accent text-4xl marcellus
+               font-bold mt-2 mr-2 drop-shadow-md
+               select-none">Create Category</h1>
+    <form [formGroup]="createCategoryForm" class="flex flex-col gap-4 items-center">
+      <div class="flex flex-col gap-2 w-full">
+        <div class="flex flex-col gap-2">
+          <label for="create-category-name" class="marcellus text-accent">Name</label>
+          <input
+            [class.border-red-700]="createCategoryForm.get('name')?.touched && (
+          createCategoryForm.get('name')!.hasError('required') ||
+          createCategoryForm.get('name')!.hasError('name')
+        )"
+            type="text" class="input input-bordered w-full max-w-xs" pInputText formControlName="name" id="create-category-name"/>
+        </div>
+        <p class="text-red-700" *ngIf="createCategoryForm.get('name')?.touched && createCategoryForm.get('name')!.hasError('required')">Category name required.</p>
+      </div>
+      <h2 class="self-start">Category Properties</h2>
+      <div formArrayName="properties">
+        <div *ngFor="let property of categoryProperties; let i = index" class="flex flex-col gap-2">
+          <div class="relative">
+            <div class="pi pi-times absolute -top-2 -right-2 cursor-pointer p-2 bg-base-200 rounded-full drop-shadow-md" (click)="removeProperty(i)"></div>
+          </div>
+          <input type="text" class="input input-bordered w-full max-w-xs" [formControlName]="i" [id]="'property' + i"/>
+          <p class="text-red-700" *ngIf="createCategoryForm.get('properties.' + i)?.touched && createCategoryForm.get('properties.' + i)?.hasError('required')">Property name required.</p>
+        </div>
+      </div>
+      <button class="btn btn-accent btn-lg mb-3 marcellus" (click)="addProperty()">Add Property</button>
+      <button class="btn btn-accent btn-lg mb-3 marcellus" (click)="createCategory()" [disabled]="createCategoryForm.invalid">Submit</button>
+    </form>
+  </div>
+
+  <!--CREATE PRODUCT FORM-->
+  <div class="w-126 bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
+    <h1 class="text-accent text-4xl marcellus
+               font-bold mt-2 mr-2 drop-shadow-md
+               select-none">Create Product</h1>
+    <select class="select w-full drop-shadow-md" [(ngModel)]="createProductSelectedCategory" (change)="updateCreatePropertiesPropertiesFormGroup()">
+      <option disabled selected [ngValue]="null">Choose the category</option>
+      <option *ngFor="let category of state.categories" [ngValue]="category">{{ category.name }}</option>
+    </select>
+    <form *ngIf="createProductSelectedCategory" [formGroup]="createProductForm" (ngSubmit)="createProduct()" class="flex flex-col gap-4 items-center">
+      <div class="flex flex-col gap-2">
+        <label for="create-product-name" class="marcellus text-accent">Name</label>
+        <input type="text" class="input input-bordered w-full max-w-xs" formControlName="name" id="create-product-name"/>
+        <p class="text-red-700" *ngIf="createProductForm.get('name')?.touched && createProductForm.get('name')?.hasError('required')">Name is required.</p>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="price" class="marcellus text-accent">Price</label>
+        <input type="number" min="0" class="input input-bordered w-full max-w-xs" formControlName="price" id="price"/>
+        <p class="text-red-700" *ngIf="createProductForm.get('price')?.touched && createProductForm.get('price')?.hasError('required')">Price is required.</p>
+        <p class="text-red-700" *ngIf="createProductForm.get('price')?.touched && createProductForm.get('price')?.hasError('min')">Price must be greater than or equal to 0.</p>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="imageUrl" class="marcellus text-accent">Image URL</label>
+        <input type="text" class="input input-bordered w-full max-w-xs" formControlName="imageUrl" id="imageUrl"/>
+        <p class="text-red-700" *ngIf="createProductForm.get('imageUrl')?.touched && createProductForm.get('imageUrl')?.hasError('required')">Image URL is required.</p>
+      </div>
+
+      <div *ngFor="let property of createProductSelectedCategory.properties" class="flex flex-col gap-2">
+        <label for="{{property.name}}" class="marcellus text-accent">{{property.name}}</label>
+        <input type="text" class="input input-bordered w-full max-w-xs" formControlName="{{property.name}}" id="{{property.name}}"/>
+        <p class="text-red-700" *ngIf="createProductForm.get(property.name)?.touched && createProductForm.get(property.name)?.hasError('required')">{{property.name}} is required.</p>
+      </div>
+
+      <button type="submit" class="btn btn-accent btn-lg mb-3 marcellus" [disabled]="createProductForm.invalid">Create Product</button>
+    </form>
+  </div>
+</div>

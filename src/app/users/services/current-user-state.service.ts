@@ -122,6 +122,10 @@ export class CurrentUserStateService {
     })
   }
 
+  getToken() {
+    return this.stateSubject.value.token;
+  }
+
   getOrders() {
     this.setLoadingOrders(true)
 

@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Product} from "../models/product.model";
 import {Category} from "../models/category.model";
+import {CreateProductRequest} from "../models/create-product-request.model";
+import {CreateCategoryRequest} from "../models/create-category-request.model";
+import {UpdateProductRequest} from "../models/update-product-request.model";
+import {Token} from "../../users/models/token.model";
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +61,34 @@ export class ProductService {
 
   getProductById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.server}/product/${id}`)
+  }
+
+  createProduct(request: CreateProductRequest, token: Token): Observable<Product> {
+    return this.http.post<Product>(`${this.server}/create-product`, request, this.generateHeaders(token))
+  }
+
+  createCategory(request: CreateCategoryRequest, token: Token): Observable<Category>  {
+    console.log(request)
+    console.log(this.generateHeaders(token))
+    return this.http.post<Category>(`${this.server}/create-category`, request, this.generateHeaders(token))
+  }
+
+  updateProduct(request: UpdateProductRequest, token: Token): Observable<Product>  {
+    return this.http.put<Product>(`${this.server}/update-product`, request, this.generateHeaders(token))
+  }
+
+  deleteProduct(productId: number, token: Token): Observable<Product>  {
+    return this.http.delete<Product>(`${this.server}/delete-product/${productId}`, this.generateHeaders(token))
+  }
+
+  deleteCategory(categoryId: number, token: Token): Observable<Category>  {
+    return this.http.delete<Category>(`${this.server}/delete-category/${categoryId}`, this.generateHeaders(token))
+  }
+
+  generateHeaders(token: Token): { headers: HttpHeaders } {
+    return { headers: new HttpHeaders({
+        'Authorization': `${token.tokenType} ${token.accessToken}`
+      })
+    }
   }
 }
