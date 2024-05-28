@@ -21,13 +21,16 @@ import {ChangePasswordComponent} from "./users/change-password/change-password.c
 import {YourOrdersComponent} from "./users/your-orders/your-orders.component";
 import {OrderStatusPipe} from "./pipes/order-status.pipe";
 import {ProductsListComponent} from "./products/products-list/products-list.component";
-import {ClothingListComponent} from "./products/clothing-list/clothing-list.component";
-import {TelevisionsListComponent} from "./products/televisions-list/televisions-list.component";
 import {RippleModule} from "primeng/ripple";
 import {DataViewModule} from "primeng/dataview";
 import {CartComponent} from "./users/cart/cart.component";
 import {PaymentCanceledComponent} from "./orders/payment-canceled/payment-canceled.component";
 import {PaymentSuccessfulComponent} from "./orders/payment-successful/payment-successful.component";
+import {ProductPageComponent} from "./products/product-page/product-page.component";
+import {
+  ProductRecommendationCarouselComponent
+} from "./products/product-recommendation-carousel/product-recommendation-carousel.component";
+import {CarouselModule} from "primeng/carousel";
 
 @NgModule({
   declarations: [
@@ -41,26 +44,27 @@ import {PaymentSuccessfulComponent} from "./orders/payment-successful/payment-su
     YourOrdersComponent,
     OrderStatusPipe,
     ProductsListComponent,
-    ClothingListComponent,
-    TelevisionsListComponent,
     CartComponent,
     PaymentSuccessfulComponent,
     PaymentCanceledComponent,
+    ProductPageComponent,
+    ProductRecommendationCarouselComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ReactiveFormsModule,
-        ButtonModule,
-        ToastModule,
-        InputTextModule,
-        MessageModule,
-        BrowserAnimationsModule,
-        HttpClientModule,
-        RippleModule,
-        DataViewModule,
-        FormsModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    ButtonModule,
+    ToastModule,
+    InputTextModule,
+    MessageModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    RippleModule,
+    DataViewModule,
+    FormsModule,
+    CarouselModule
+  ],
   providers: [
     ConfirmationService,
     MessageService,

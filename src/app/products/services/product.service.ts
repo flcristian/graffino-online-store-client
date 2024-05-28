@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Product} from "../models/product.model";
-import {Clothing} from "../models/clothing.model";
-import {Television} from "../models/television.model";
+import {Category} from "../models/category.model";
 
 @Injectable({
   providedIn: 'root'
@@ -13,19 +12,50 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getAllClothing(): Observable<Clothing[]> {
-    return this.http.get<Clothing[]>(this.server + "/all-clothing")
+  filterProducts(categoryId: number | null, search: string | null,
+                 properties: Map<string, string> | null, page: number | null,
+                 itemsPerPage: number | null, sort: string | null): Observable<Product[]>
+  {
+    let params = new HttpParams();
+
+    if (categoryId !== null) {
+      params = params.set('categoryId', categoryId.toString());
+    }
+
+    if (search !== null) {
+      params = params.set('search', search);
+    }
+
+    if(properties !== null) {
+      properties.forEach((value, key) => {
+        params = params.set(key, value);
+      });
+    }
+
+    if (page !== null) {
+      params = params.set('page', page.toString());
+    }
+
+    if (itemsPerPage !== null) {
+      params = params.set('itemsPerPage', itemsPerPage.toString());
+    }
+
+    if(sort !== null) {
+      params = params.set('sort', sort);
+    }
+
+    return this.http.get<Product[]>(`${this.server}/filter-products`, { params });
   }
 
-  getAllTelevisions(): Observable<Television[]> {
-    return this.http.get<Television[]>(this.server + "/all-televisions")
+  getFilterCriteria(categoryId: number): Observable<{ [key: string]: string[] }> {
+    return this.http.get<{ [key: string]: string[] }>(`${this.server}/filter-criteria/${categoryId}`)
   }
 
-  getClothingById(id: number): Observable<Clothing> {
-    return this.http.get<Clothing>(this.server + `/clothing/${id}`)
+  getAllCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.server}/all-categories`);
   }
 
-  getTelevisionById(id: number): Observable<Television> {
-    return this.http.get<Television>(this.server + `/television/${id}`)
+  getProductById(id: number): Observable<Product> {
+    return this.http.get<Product>(`${this.server}/product/${id}`)
   }
 }

@@ -1,5 +1,5 @@
 <ng-container *ngIf="state.state$ | async as state">
-  <div class="flex flex-col gap-6 w-126">
+  <div *ngIf="!state.loadingOrders && !state.errorOrders; else noOrders" class="flex flex-col gap-6 w-126">
     <div *ngFor="let order of state.orders"
          class="flex flex-row justify-between w-full
          cursor-pointer hover:drop-shadow-2xl transition-all
@@ -19,5 +19,7 @@
       </div>
     </div>
   </div>
-
+  <ng-template #noOrders>
+    <h2 class="text-4xl font-bold text-accent">You have no orders</h2>
+  </ng-template>
 </ng-container>
