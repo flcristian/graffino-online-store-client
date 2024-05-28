@@ -6,12 +6,12 @@ import {CurrentUserStateService} from "../services/current-user-state.service";
 import {Product} from "../../products/models/product.model";
 
 @Component({
-  selector: 'app-cart',
-  templateUrl: './cart.component.html'
+  selector: 'app-wishlist',
+  templateUrl: './wishlist.component.html'
 })
-export class CartComponent implements OnInit, OnDestroy {
+export class WishlistComponent implements OnInit, OnDestroy {
   subscriptions = new Subscription()
-  cart: Order | null = null
+  wishlist: Order | null = null
 
   constructor(
     private router: Router,
@@ -22,7 +22,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.state.state$.subscribe(data => {
         if(data.user == null) this.navigateToHome()
-        this.cart = data.cart
+        this.wishlist = data.wishlist
       })
     )
   }
@@ -35,31 +35,15 @@ export class CartComponent implements OnInit, OnDestroy {
     this.router.navigate(["home"])
   }
 
-  updateProductCount() {
-    this.state.setCart(this.cart)
-  }
-
-  getProductsCost(): number {
-    let total: number = 0;
-
-    this.cart!.orderDetails.forEach(od => total += od.product!.price * od.count)
-
-    return total
-  }
-
-  getTotalCost(): number {
-    return this.getProductsCost() + 10
-  }
-
-  removeFromCart(id: number) {
-    this.state.removeFromCart(id)
+  removeFromWishlist(id: number) {
+    this.state.removeFromWishlist(id)
   }
 
   navigateToProduct(id: number) {
     this.router.navigate(['/product', id]);
   }
 
-  addToWishlist(product: Product) {
-    this.state.addToWishlist(product)
+  addToCart(product: Product) {
+    this.state.addToCart(product)
   }
 }

@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {Product} from "../models/product.model";
 import {ProductService} from "../services/product.service";
+import {CurrentUserStateService} from "../../users/services/current-user-state.service";
 
 @Component({
   selector: 'app-product-recommendation-carousel',
@@ -20,7 +21,8 @@ export class ProductRecommendationCarouselComponent implements OnInit, OnDestroy
 
   constructor(
     private router: Router,
-    protected service: ProductService
+    protected service: ProductService,
+    private userState: CurrentUserStateService
   ) { }
 
   ngOnInit() {
@@ -43,5 +45,17 @@ export class ProductRecommendationCarouselComponent implements OnInit, OnDestroy
         this.products = products;
       }
     })
+  }
+
+  addToCart(product: Product) {
+    this.userState.addToCart(product)
+  }
+
+  addToWishlist(product: Product) {
+    this.userState.addToWishlist(product)
+  }
+
+  navigateToProduct(id: number) {
+    this.router.navigate(['/product', id]);
   }
 }

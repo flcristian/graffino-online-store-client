@@ -17,8 +17,8 @@
             <p class="text-xl text-accent font-bold">${{product.price.toFixed(2)}}</p>
             <input type="number" min="1" placeholder="Count" class="input input-bordered w-20 text-sm" [(ngModel)]="orderDetail.count" (ngModelChange)="updateProductCount()"/>
             <div class="flex flex-col items-end">
-              <p class="text-lg text-accent cursor-pointer underline hover:font-bold select-none">Wishlist</p>
-              <p class="text-lg text-accent cursor-pointer underline hover:font-bold select-none" (click)="removeFromCart(product.id)">Delete</p>
+              <p class="text-lg text-accent cursor-pointer underline hover:font-bold select-none" (click)="addToWishlist(product)">Wishlist</p>
+              <p class="text-lg text-accent cursor-pointer underline hover:font-bold select-none" (click)="removeFromCart(product.id)">Remove</p>
             </div>
           </div>
         </ng-container>

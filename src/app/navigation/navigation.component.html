@@ -38,8 +38,19 @@
           <div (click)="navigateToCart()"
                class="flex flex-col drop-shadow-md items-center
                hover:drop-shadow-2xl transition-all cursor-pointer">
-            <i class="pi pi-shopping-bag text-3xl text-accent"></i>
+            <i class="pi pi-shopping-cart text-3xl text-accent"></i>
             <p class="text-sm font-bold">Cart</p>
+          </div>
+        </div>
+        <div class="flex flex-row gap-10">
+          <div class="indicator">
+            <span *ngIf="wishlist!.orderDetails.length > 0" class="indicator-item badge bg-red-400 text-white pointer-events-none">{{wishlist!.orderDetails.length}}</span>
+            <div (click)="navigateToWishlist()"
+                 class="flex flex-col drop-shadow-md items-center
+               hover:drop-shadow-2xl transition-all cursor-pointer">
+              <i class="pi pi-heart text-3xl text-accent"></i>
+              <p class="text-sm font-bold">Wishlist</p>
+            </div>
           </div>
         </div>
         <div (click)="navigateToAccount()"

@@ -11,6 +11,7 @@ import {CartComponent} from "./users/cart/cart.component";
 import {PaymentSuccessfulComponent} from "./orders/payment-successful/payment-successful.component";
 import {PaymentCanceledComponent} from "./orders/payment-canceled/payment-canceled.component";
 import {ProductPageComponent} from "./products/product-page/product-page.component";
+import {WishlistComponent} from "./users/wishlist/wishlist.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'cart', component: CartComponent },
+  { path: 'wishlist', component: WishlistComponent },
   { path: 'products', component: ProductsListComponent },
   { path: 'account',
     component: CustomerAccountPageComponent,

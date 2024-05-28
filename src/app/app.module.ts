@@ -31,6 +31,8 @@ import {
   ProductRecommendationCarouselComponent
 } from "./products/product-recommendation-carousel/product-recommendation-carousel.component";
 import {CarouselModule} from "primeng/carousel";
+import { FooterComponent } from './footer/footer.component';
+import {WishlistComponent} from "./users/wishlist/wishlist.component";
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import {CarouselModule} from "primeng/carousel";
     PaymentCanceledComponent,
     ProductPageComponent,
     ProductRecommendationCarouselComponent,
+    FooterComponent,
+    WishlistComponent
   ],
   imports: [
     BrowserModule,

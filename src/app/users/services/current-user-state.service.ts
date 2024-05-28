@@ -26,6 +26,7 @@ export class CurrentUserStateService {
     user: null,
     orders: [],
     cart: null,
+    wishlist: null,
     errorUser: null,
     loadingUser: false,
     errorOrders: null,
@@ -153,7 +154,7 @@ export class CurrentUserStateService {
       product: product
     }
 
-    let index = this.getIndexOfOrderDetail(orderDetail.productId)
+    let index = this.stateSubject.value.cart!.orderDetails.findIndex(od => od.productId == product.id)
     if(index === -1) {
       cart.orderDetails.push(orderDetail)
     }
@@ -167,12 +168,45 @@ export class CurrentUserStateService {
   removeFromCart(id: number) {
     let cart = this.stateSubject.value.cart!
 
-    let index = this.getIndexOfOrderDetail(id)
+    let index = this.stateSubject.value.cart!.orderDetails.findIndex(od => od.productId == id)
     if(index !== -1) {
       cart.orderDetails.splice(index, 1)
     }
 
     this.setCart(cart)
+  }
+
+  addToWishlist(product: Product) {
+    let wishlist = this.stateSubject.value.wishlist!
+
+    let orderDetail: OrderDetail = {
+      id: 1,
+      orderId: wishlist!.id,
+      productId: product.id,
+      count: 1,
+      product: product
+    }
+
+    let index = this.stateSubject.value.wishlist!.orderDetails.findIndex(od => od.productId == product.id)
+    if(index === -1) {
+      wishlist.orderDetails.push(orderDetail)
+    }
+    else {
+      this.messageService.add({ summary: 'Failed', detail: `Item is already in your wishlist.` });
+    }
+
+    this.setWishlist(wishlist)
+  }
+
+  removeFromWishlist(id: number) {
+    let wishlist = this.stateSubject.value.wishlist!
+
+    let index = this.stateSubject.value.wishlist!.orderDetails.findIndex(od => od.productId == id)
+    if(index !== -1) {
+      wishlist.orderDetails.splice(index, 1)
+    }
+
+    this.setWishlist(wishlist)
   }
 
   changePassword(currentPassword: string, newPassword: string) {
@@ -230,19 +264,6 @@ export class CurrentUserStateService {
     this.orderService.createCheckoutSession(request)
   }
 
-  private getIndexOfOrderDetail(productId: number): number {
-    let orderDetails = this.stateSubject.value.cart!.orderDetails;
-
-    let index = -1;
-    for(let i = 0; i < orderDetails.length; i++){
-      if(orderDetails[i].productId == productId) {
-        index = i;
-      }
-    }
-
-    return index;
-  }
-
   // STATE SETTERS
   setToken(token: Token | null) {
     this.setState({token})
@@ -258,6 +279,10 @@ export class CurrentUserStateService {
 
   setCart(cart: Order | null) {
     this.setState({cart})
+  }
+
+  setWishlist(wishlist: Order | null) {
+    this.setState({wishlist})
   }
 
   setErrorUser(errorUser: string | null) {
