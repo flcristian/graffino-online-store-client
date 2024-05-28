@@ -33,6 +33,10 @@ import {
 import {CarouselModule} from "primeng/carousel";
 import { FooterComponent } from './footer/footer.component';
 import {WishlistComponent} from "./users/wishlist/wishlist.component";
+import {AdministratorPageComponent} from "./administrator/administrator-page/administrator-page.component";
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import {ProductsManagerComponent} from "./administrator/products-manager/products-manager.component";
+import {CustomersManagerComponent} from "./administrator/customers-manager/customers-manager.component";
 
 @NgModule({
   declarations: [
@@ -52,7 +56,11 @@ import {WishlistComponent} from "./users/wishlist/wishlist.component";
     ProductPageComponent,
     ProductRecommendationCarouselComponent,
     FooterComponent,
-    WishlistComponent
+    WishlistComponent,
+    AdministratorPageComponent,
+    UnauthorizedComponent,
+    ProductsManagerComponent,
+    CustomersManagerComponent
   ],
   imports: [
     BrowserModule,

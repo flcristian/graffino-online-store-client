@@ -12,7 +12,7 @@
             [class.border-red-700]="registerForm.get('email')?.touched&&(
           registerForm.get('email')!.hasError('required') ||
           registerForm.get('email')!.hasError('email')
-          )"
+          )" (keyup.enter)="checkAndRegister()"
             type="text" class="input input-bordered w-full max-w-xs" pInputText formControlName="email" id="email"/>
         </div>
         <p class="text-red-700" *ngIf="registerForm.get('email')?.touched&&registerForm.get('email')!.hasError('required')">Email required.</p>
@@ -24,7 +24,7 @@
           <input
             [class.border-red-700]="registerForm.get('password')?.touched&&(
           registerForm.get('password')!.hasError('required')
-          )"
+          )" (keyup.enter)="checkAndRegister()"
             type="password" class="input input-bordered w-full max-w-xs" pInputText formControlName="password" id="password"/>
         </div>
         <p class="text-red-700" *ngIf="registerForm.get('password')?.touched&&registerForm.get('password')!.hasError('required')">Password required.</p>
@@ -41,7 +41,7 @@
             [class.border-red-700]="registerForm.get('confirmPassword')?.touched&&(
           registerForm.get('confirmPassword')!.hasError('required') ||
           registerForm.hasError('passwordsDoNotMatch')
-          )"
+          )" (keyup.enter)="checkAndRegister()"
             type="password" class="input input-bordered w-full max-w-xs" pInputText formControlName="confirmPassword" id="confirmPassword"/>
         </div>
         <p class="text-red-700" *ngIf="registerForm.get('confirmPassword')?.touched&&registerForm.get('confirmPassword')!.hasError('required')">You must confirm your password.</p>

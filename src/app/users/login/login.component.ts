@@ -52,6 +52,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.state.login(request)
   }
 
+  checkAndLogin() {
+    if(this.loginForm.valid) {
+      this.login()
+    }
+  }
+
   navigateToRegister() {
     this.router.navigate(["register"])
   }

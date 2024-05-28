@@ -61,6 +61,12 @@ export class RegisterComponent {
     this.router.navigate(["login"])
   }
 
+  checkAndRegister() {
+    if (this.registerForm.valid) {
+      this.register();
+    }
+  }
+
   // PRIVATE METHODS
 
   private validateContainsCapitalLetter(control: FormControl): ValidationErrors | null {

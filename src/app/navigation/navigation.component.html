@@ -59,6 +59,13 @@
           <i class="pi pi-user text-3xl text-accent"></i>
           <p class="text-sm font-bold">Account</p>
         </div>
+        <div *ngIf="this.user!.roles.indexOf('Administrator') !== -1"
+            (click)="navigateToAdmin()"
+            class="flex flex-col drop-shadow-md items-center
+            hover:drop-shadow-2xl transition-all cursor-pointer">
+          <i class="pi pi-lock text-3xl text-accent"></i>
+          <p class="text-sm font-bold">Admin</p>
+        </div>
       </div>
     </ng-template>
   </section>

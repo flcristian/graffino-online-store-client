@@ -264,6 +264,10 @@ export class CurrentUserStateService {
     this.orderService.createCheckoutSession(request)
   }
 
+  isAdmin(): boolean {
+    return !!(this.stateSubject.value.user && this.stateSubject.value.user.roles.indexOf("Administrator") !== -1);
+  }
+
   // STATE SETTERS
   setToken(token: Token | null) {
     this.setState({token})

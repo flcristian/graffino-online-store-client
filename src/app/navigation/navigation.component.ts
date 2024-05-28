@@ -46,7 +46,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
       id: "614176e5-98c8-473a-986e-e87515b2291a",
       email: "qflorescucristian@gmail.com",
       emailConfirmed: true,
-      roles: []
+      roles: ["Administrator"]
     }
     let cart: Order = {
       id: 0,
@@ -114,5 +114,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   navigateToWishlist() {
     this.router.navigate(["wishlist"])
+  }
+
+  navigateToAdmin() {
+    this.router.navigate(["admin"])
   }
 }
