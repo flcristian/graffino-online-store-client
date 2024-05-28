@@ -16,6 +16,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
   selected: number = -1
   user: User | null = null
   cart: Order | null = null
+  wishlist: Order | null = null
 
   constructor(
     private route: ActivatedRoute,
@@ -32,6 +33,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
       this.state.state$.subscribe(data => {
         this.user = data.user
         this.cart = data.cart
+        this.wishlist = data.wishlist
       })
     )
 
@@ -54,9 +56,18 @@ export class NavigationComponent implements OnInit, OnDestroy {
       lastDateUpdated: new Date(),
       orderDetails: []
     }
+    let wishlist: Order = {
+      id: 0,
+      customer: user,
+      customerId: user.id,
+      status: 0,
+      lastDateUpdated: new Date(),
+      orderDetails: []
+    }
     this.state.setToken(token)
     this.state.setUser(user)
     this.state.setCart(cart)
+    this.state.setWishlist(wishlist)
   }
 
   ngOnDestroy() {
@@ -99,5 +110,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   navigateToAccount() {
     this.router.navigate(["account"])
+  }
+
+  navigateToWishlist() {
+    this.router.navigate(["wishlist"])
   }
 }

@@ -1,0 +1,31 @@
+<div *ngIf="wishlist && wishlist!.orderDetails.length > 0; else noWishlist" class="p-10 flex flex-col gap-10">
+  <h1 class="text-4xl text-accent font-bold">My Wishlist</h1>
+  <div class="flex flex-col gap-4">
+    <div *ngFor="let orderDetail of wishlist.orderDetails"
+         class="w-full bg-base-200 rounded-lg shadow-inner p-5 flex flex-row justify-between">
+      <ng-container *ngIf="orderDetail.product as product">
+        <div class="flex flex-row gap-5">
+          <img (click)="navigateToProduct(product.id)"
+               src="{{product.imageUrl}}" class="max-w-24 rounded-sm drop-shadow-md cursor-pointer transition-all hover:drop-shadow-2xl object-cover" alt="">
+          <div class="flex flex-col justify-between">
+            <h2 (click)="navigateToProduct(product.id)"
+                class="text-lg text-accent cursor-pointer font-bold hover:underline">{{product.name}}</h2>
+          </div>
+        </div>
+        <div class="flex flex-col justify-between items-end gap-4">
+          <p class="text-xl text-accent font-bold">${{product.price.toFixed(2)}}</p>
+          <div class="flex flex-col items-end">
+            <p class="text-lg text-accent cursor-pointer underline hover:font-bold select-none" (click)="addToCart(product)">Add To Cart</p>
+            <p class="text-lg text-accent cursor-pointer underline hover:font-bold select-none" (click)="removeFromWishlist(product.id)">Remove</p>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+<ng-template #noWishlist>
+  <div class="flex flex-col gap-2 items-center justify-center h-80">
+    <h1 class="text-2xl font-bold">You have no items in your wishlist!</h1>
+    <p>Add some products to your wishlist and you will see them here.</p>
+  </div>
+</ng-template>

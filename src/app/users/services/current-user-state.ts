@@ -7,6 +7,7 @@ export interface CurrentUserState {
   user: User | null,
   orders: Order[],
   cart: Order | null,
+  wishlist: Order | null,
   errorUser: string | null,
   loadingUser: boolean,
   errorOrders: string | null,
