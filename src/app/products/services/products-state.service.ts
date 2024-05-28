@@ -28,7 +28,7 @@ export class ProductsStateService {
   ) { }
 
   filterProducts(categoryId: number | null, search: string | null,
-                 properties: Map<string, string>, page: number | null,
+                 properties: Map<string, string> | null, page: number | null,
                  itemsPerPage: number | null, sort: string | null)
   {
     this.setLoadingProducts(true)
@@ -116,5 +116,30 @@ export class ProductsStateService {
 
   setState(partialState: Partial<ProductsState>){
     this.stateSubject.next({...this.stateSubject.value,...partialState})
+  }
+
+  filterProductsExcept(categoryId: number | null, search: string | null,
+                       properties: Map<string, string> | null, page: number | null,
+                       itemsPerPage: number | null, sort: string | null, currentProductId: number) {
+    this.setLoadingProducts(true)
+    this.productService.filterProducts(categoryId, search, properties, page, itemsPerPage, sort).pipe(
+      finalize(() => {
+
+        this.setLoadingProducts(false)
+      })
+    )
+      .subscribe({
+        next: (products: Product[]) => {
+          if(products) this.setErrorProducts(null)
+
+          products.splice(products.findIndex(product => product.id === currentProductId), 1)
+          this.setProducts(products)
+        },
+        error: (error) => {
+          if(error.toString() === "Error: Server-side error: There are no products matching your search and filter criteria." && categoryId)
+            this.getFilterCriteria(categoryId)
+          this.setErrorProducts(error)
+        }
+      })
   }
 }

@@ -13,7 +13,7 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   filterProducts(categoryId: number | null, search: string | null,
-                 properties: Map<string, string>, page: number | null,
+                 properties: Map<string, string> | null, page: number | null,
                  itemsPerPage: number | null, sort: string | null): Observable<Product[]>
   {
     let params = new HttpParams();
@@ -26,9 +26,11 @@ export class ProductService {
       params = params.set('search', search);
     }
 
-    properties.forEach((value, key) => {
-      params = params.set(key, value);
-    });
+    if(properties !== null) {
+      properties.forEach((value, key) => {
+        params = params.set(key, value);
+      });
+    }
 
     if (page !== null) {
       params = params.set('page', page.toString());

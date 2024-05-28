@@ -21,6 +21,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   }
 
   ignoredMessages = [
+    "This customer has no orders.",
     "There are no products matching your search and filter criteria.",
     "The customer has no cart.",
     "Unexpected error occurred."

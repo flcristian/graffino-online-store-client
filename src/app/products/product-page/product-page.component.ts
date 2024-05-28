@@ -50,4 +50,10 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   addToCart(product: Product) {
     this.userState.addToCart(product)
   }
+
+  navigateToProducts() {
+    this.router.navigate(["products"])
+  }
+
+  protected readonly Number = Number;
 }
