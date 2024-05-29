@@ -55,5 +55,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     this.router.navigate(["products"])
   }
 
-  protected readonly Number = Number;
+  addToWishlist(product: Product) {
+    this.userState.addToWishlist(product)
+  }
 }

@@ -37,6 +37,8 @@ import {AdministratorPageComponent} from "./administrator/administrator-page/adm
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import {ProductsManagerComponent} from "./administrator/products-manager/products-manager.component";
 import {CustomersManagerComponent} from "./administrator/customers-manager/customers-manager.component";
+import { CategoriesManagerComponent } from './administrator/categories-manager/categories-manager.component';
+import {ConfirmPopupModule} from "primeng/confirmpopup";
 
 @NgModule({
   declarations: [
@@ -60,7 +62,8 @@ import {CustomersManagerComponent} from "./administrator/customers-manager/custo
     AdministratorPageComponent,
     UnauthorizedComponent,
     ProductsManagerComponent,
-    CustomersManagerComponent
+    CustomersManagerComponent,
+    CategoriesManagerComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +78,8 @@ import {CustomersManagerComponent} from "./administrator/customers-manager/custo
     RippleModule,
     DataViewModule,
     FormsModule,
-    CarouselModule
+    CarouselModule,
+    ConfirmPopupModule
   ],
   providers: [
     ConfirmationService,

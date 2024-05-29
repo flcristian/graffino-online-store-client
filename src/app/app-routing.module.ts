@@ -16,6 +16,7 @@ import {AdministratorPageComponent} from "./administrator/administrator-page/adm
 import {UnauthorizedComponent} from "./unauthorized/unauthorized.component";
 import {ProductsManagerComponent} from "./administrator/products-manager/products-manager.component";
 import {CustomersManagerComponent} from "./administrator/customers-manager/customers-manager.component";
+import {CategoriesManagerComponent} from "./administrator/categories-manager/categories-manager.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'admin',
     component: AdministratorPageComponent,
     children: [
+      { path: 'categories', component: CategoriesManagerComponent },
       { path: 'products', component: ProductsManagerComponent },
       { path: 'customers', component: CustomersManagerComponent },
     ]

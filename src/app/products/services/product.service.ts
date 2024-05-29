@@ -7,6 +7,7 @@ import {CreateProductRequest} from "../models/create-product-request.model";
 import {CreateCategoryRequest} from "../models/create-category-request.model";
 import {UpdateProductRequest} from "../models/update-product-request.model";
 import {Token} from "../../users/models/token.model";
+import {UpdateCategoryRequest} from "../models/update-category-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -68,13 +69,15 @@ export class ProductService {
   }
 
   createCategory(request: CreateCategoryRequest, token: Token): Observable<Category>  {
-    console.log(request)
-    console.log(this.generateHeaders(token))
     return this.http.post<Category>(`${this.server}/create-category`, request, this.generateHeaders(token))
   }
 
   updateProduct(request: UpdateProductRequest, token: Token): Observable<Product>  {
     return this.http.put<Product>(`${this.server}/update-product`, request, this.generateHeaders(token))
+  }
+
+  updateCategory(request: UpdateCategoryRequest, token: Token): Observable<Category> {
+    return this.http.put<Category>(`${this.server}/update-category`, request, this.generateHeaders(token))
   }
 
   deleteProduct(productId: number, token: Token): Observable<Product>  {

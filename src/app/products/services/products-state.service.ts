@@ -9,6 +9,7 @@ import {CreateProductRequest} from "../models/create-product-request.model";
 import {CreateCategoryRequest} from "../models/create-category-request.model";
 import {UpdateProductRequest} from "../models/update-product-request.model";
 import {Token} from "../../users/models/token.model";
+import {UpdateCategoryRequest} from "../models/update-category-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -90,6 +91,11 @@ export class ProductsStateService {
       })
     ).subscribe({
       next: (product: Product) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: `Product ${product.name} successfully created!`
+        })
         this.setErrorProducts(null);
         this.addProduct(product);
       },
@@ -107,6 +113,11 @@ export class ProductsStateService {
       })
     ).subscribe({
       next: (category: Category) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: `Category ${category.name} successfully created!`
+        })
         this.setErrorCategories(null);
         this.addCategory(category);
       },
@@ -129,6 +140,23 @@ export class ProductsStateService {
       },
       error: (error) => {
         this.setErrorProducts(error);
+      }
+    });
+  }
+
+  updateCategory(request: UpdateCategoryRequest, token: Token) {
+    this.setLoadingCategories(true);
+    this.productService.updateCategory(request, token).pipe(
+      finalize(() => {
+        this.setLoadingCategories(false);
+      })
+    ).subscribe({
+      next: (category: Category) => {
+        this.setErrorCategories(null);
+        this.updateCategoryInState(category);
+      },
+      error: (error) => {
+        this.setErrorCategories(error);
       }
     });
   }
@@ -182,6 +210,13 @@ export class ProductsStateService {
       product.id === updatedProduct.id ? updatedProduct : product
     );
     this.setProducts(products);
+  }
+
+  updateCategoryInState(updatedCategory: Category) {
+    const categorys = this.stateSubject.value.categories.map(category =>
+      category.id === updatedCategory.id ? updatedCategory : category
+    );
+    this.setCategories(categorys);
   }
 
   removeProduct(productId: number) {

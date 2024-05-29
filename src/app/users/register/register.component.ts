@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {MessageService} from "primeng/api";
@@ -10,7 +10,7 @@ import {RegisterRequest} from "../models/register-request.model";
   selector: 'app-register',
   templateUrl: './register.component.html'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription()
   registerForm: FormGroup = new FormGroup({})
 
@@ -21,6 +21,10 @@ export class RegisterComponent {
   ) { }
 
   ngOnInit(){
+    if(this.state.loggedIn()) {
+      this.router.navigate(["home"])
+    }
+
     this.initializeForms();
   }
 

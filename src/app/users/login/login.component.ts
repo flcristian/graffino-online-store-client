@@ -22,6 +22,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(){
+    if(this.state.loggedIn()) {
+      this.router.navigate(["home"])
+    }
+
     this.initializeForms();
   }
 

@@ -25,4 +25,8 @@ export class AdministratorPageComponent implements OnInit {
   selectCustomers() {
     this.router.navigate(["admin/customers"])
   }
+
+  selectCategories() {
+    this.router.navigate(["admin/categories"])
+  }
 }
