@@ -39,6 +39,8 @@ import {ProductsManagerComponent} from "./administrator/products-manager/product
 import {CustomersManagerComponent} from "./administrator/customers-manager/customers-manager.component";
 import { CategoriesManagerComponent } from './administrator/categories-manager/categories-manager.component';
 import {ConfirmPopupModule} from "primeng/confirmpopup";
+import {TableModule} from "primeng/table";
+import {OverlayPanelModule} from "primeng/overlaypanel";
 
 @NgModule({
   declarations: [
@@ -79,7 +81,9 @@ import {ConfirmPopupModule} from "primeng/confirmpopup";
     DataViewModule,
     FormsModule,
     CarouselModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    TableModule,
+    OverlayPanelModule
   ],
   providers: [
     ConfirmationService,

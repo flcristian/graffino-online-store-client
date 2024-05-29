@@ -8,6 +8,7 @@ import {Token} from "../../users/models/token.model";
 import {CurrentUserStateService} from "../../users/services/current-user-state.service";
 import {Subscription} from "rxjs";
 import {Category} from "../../products/models/category.model";
+import {Product} from "../../products/models/product.model";
 
 @Component({
   selector: 'app-products-manager',
@@ -20,7 +21,7 @@ export class ProductsManagerComponent implements OnInit, OnDestroy {
   updateProductForm: FormGroup = new FormGroup({});
   categoryProperties: string[] = [];
   token: Token | null = null;
-  createProductSelectedCategory: Category | null = null;
+  selectedCategory: Category | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -122,16 +123,20 @@ export class ProductsManagerComponent implements OnInit, OnDestroy {
     this.initializeCreateCategoryForm()
   }
 
+  updateSelectedCategory() {
+    this.productState.filterProducts(this.selectedCategory!.id, null, null, null, null, null);
+  }
+
   updateCreatePropertiesPropertiesFormGroup(): void {
-    if(this.createProductSelectedCategory) {
+    if(this.selectedCategory) {
       Object.keys(this.createProductForm.controls).forEach(key => {
         if (key !== 'name' && key !== 'price' && key !== 'categoryId' && key !== 'imageUrl') {
           this.createProductForm.removeControl(key);
         }
       });
 
-      if (this.createProductSelectedCategory && this.createProductSelectedCategory.properties) {
-        this.createProductSelectedCategory.properties.forEach(property => {
+      if (this.selectedCategory && this.selectedCategory.properties) {
+        this.selectedCategory.properties.forEach(property => {
           this.createProductForm.addControl(property.name, this.fb.control("", Validators.required));
         });
       }
@@ -146,15 +151,15 @@ export class ProductsManagerComponent implements OnInit, OnDestroy {
     const request: CreateProductRequest = {
       name: this.createProductForm.value.name,
       price: this.createProductForm.value.price,
-      categoryId: this.createProductSelectedCategory?.id as number,
+      categoryId: this.selectedCategory?.id as number,
       imageUrl: this.createProductForm.value.imageUrl,
       productProperties: []
     };
 
-    for(let i = 0; i < this.createProductSelectedCategory!.properties.length; i++) {
+    for(let i = 0; i < this.selectedCategory!.properties.length; i++) {
       request.productProperties.push({
-        propertyId: this.createProductSelectedCategory!.properties[i].id,
-        value: this.createProductForm.get(this.createProductSelectedCategory!.properties[i].name)!.value
+        propertyId: this.selectedCategory!.properties[i].id,
+        value: this.createProductForm.get(this.selectedCategory!.properties[i].name)!.value
       })
     }
 
@@ -178,5 +183,17 @@ export class ProductsManagerComponent implements OnInit, OnDestroy {
 
     this.productState.updateProduct(request, this.token);
     this.initializeUpdateProductForm()
+  }
+
+  onRowEditSave(product: Product) {
+    console.log(product)
+  }
+
+  onRowEditCancel(product: any, i: any) {
+
+  }
+
+  calculateColumnWidth() {
+    return 92 / (4 + this.selectedCategory!.properties.length);
   }
 }

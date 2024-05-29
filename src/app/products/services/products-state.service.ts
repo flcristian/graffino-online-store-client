@@ -135,6 +135,11 @@ export class ProductsStateService {
       })
     ).subscribe({
       next: (product: Product) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: `Product ${product.name} successfully updated!`
+        })
         this.setErrorProducts(null);
         this.updateProductInState(product);
       },
@@ -152,6 +157,11 @@ export class ProductsStateService {
       })
     ).subscribe({
       next: (category: Category) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: `Category ${category.name} successfully updated!`
+        })
         this.setErrorCategories(null);
         this.updateCategoryInState(category);
       },
@@ -168,7 +178,12 @@ export class ProductsStateService {
         this.setLoadingProducts(false);
       })
     ).subscribe({
-      next: () => {
+      next: (product: Product) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: `Product ${product.name} successfully deleted!`
+        })
         this.setErrorProducts(null);
         this.removeProduct(productId);
       },
@@ -185,7 +200,12 @@ export class ProductsStateService {
         this.setLoadingCategories(false);
       })
     ).subscribe({
-      next: () => {
+      next: (category: Category) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: `Category ${category.name} successfully deleted!`
+        })
         this.setErrorCategories(null);
         this.removeCategory(categoryId);
       },
