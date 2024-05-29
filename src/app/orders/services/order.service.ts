@@ -4,13 +4,14 @@ import {Order} from "../models/order.model";
 import {Observable} from "rxjs";
 import {loadStripe, Stripe} from "@stripe/stripe-js";
 import {CheckoutRequest} from "../models/checkout-request.model";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private server: string = "http://localhost:5005/api/v1/Orders";
-  private checkoutServer: string = "http://localhost:5005/api/v1/Checkout"
+  private server: string = `${environment.apiUrl}/api/v1/Orders`;
+  private checkoutServer: string = "/api/v1/Checkout"
   stripe: Stripe | null = null
 
   constructor(private http: HttpClient) { }

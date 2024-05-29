@@ -186,11 +186,6 @@ export class ProductsManagerComponent implements OnInit, OnDestroy {
   }
 
   onRowEditSave(product: Product) {
-    console.log(product)
-  }
-
-  onRowEditCancel(product: any, i: any) {
-
   }
 
   calculateColumnWidth() {
