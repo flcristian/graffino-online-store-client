@@ -11,6 +11,7 @@ import {UpdateProductRequest} from "../models/update-product-request.model";
 import {Token} from "../../users/models/token.model";
 import {UpdateCategoryRequest} from "../models/update-category-request.model";
 import {ProductProperty} from "../models/product-property.model";
+import {FilterProductsResponse} from "../models/filter-products-response.model";
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class ProductsStateService {
   stateSubject = new BehaviorSubject<ProductsState>({
     categories: [],
     products: [],
+    totalPages: null,
     filterCriteria: {},
     errorCategories: null,
     errorProducts: null,
@@ -48,10 +50,11 @@ export class ProductsStateService {
       })
     )
       .subscribe({
-        next: (products: Product[]) => {
-          if(products) this.setErrorProducts(null)
+        next: (response: FilterProductsResponse) => {
+          if(response) this.setErrorProducts(null)
 
-          this.setProducts(products)
+          this.setProducts(response.products)
+          this.setTotalPages(response.totalPages)
           if(categoryId) this.getFilterCriteria(categoryId)
         },
         error: (error) => {
@@ -291,6 +294,9 @@ export class ProductsStateService {
     this.setState({loadingFilterCriteria})
   }
 
+  setTotalPages(totalPages: number) {
+    this.setState({totalPages})
+  }
 
   setState(partialState: Partial<ProductsState>){
     this.stateSubject.next({...this.stateSubject.value,...partialState})

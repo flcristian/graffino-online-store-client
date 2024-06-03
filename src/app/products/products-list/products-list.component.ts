@@ -13,6 +13,8 @@ import {ProductsStateService} from "../services/products-state.service";
 export class ProductsListComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription()
   selectedCategory: number = 1;
+  currentPage: number = 1;
+  totalPages: number = 1;
 
   constructor(
     private router: Router,
@@ -28,6 +30,14 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
     this.subscriptions.add(
       this.getAllCategories()
+    )
+
+    this.subscriptions.add(
+      this.productState.state$.subscribe(data => {
+        if(data.totalPages) {
+          this.totalPages = data.totalPages
+        }
+      })
     )
   }
 
@@ -67,6 +77,8 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       }
       if (!queryParams.hasOwnProperty('page')) {
         queryParams['page'] = 1;
+      } else {
+        this.currentPage = queryParams['page']
       }
       if (!queryParams.hasOwnProperty('itemsPerPage')) {
         queryParams['itemsPerPage'] = 12;
@@ -97,15 +109,17 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   }
 
   selectCategory(categoryId: number) {
-    const queryParams = { ...this.route.snapshot.queryParams };
-
-    queryParams['categoryId'] = categoryId;
+    let newQueryParams: any = {};
+    newQueryParams['categoryId'] = categoryId
+    newQueryParams['page'] = 1
+    newQueryParams['itemsPerPage'] = 12
 
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: queryParams,
-      queryParamsHandling: 'merge'
-    });
+      queryParams: newQueryParams
+    })
+
+    this.usedProperties = new Map()
   }
 
   searchText: string = ""
@@ -217,4 +231,19 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   addToCart(product: Product) {
     this.userState.addToCart(product)
   }
+
+  goToPage(page: number) {
+    if (page < 1 || page > this.totalPages) {
+      return;
+    }
+    this.currentPage = page
+    const queryParams = { ...this.route.snapshot.queryParams, page: page };
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: queryParams,
+      queryParamsHandling: 'merge'
+    });
+  }
+
+  protected readonly Number = Number;
 }
