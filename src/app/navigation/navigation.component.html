@@ -1,5 +1,73 @@
-<nav class="navbar md:h-24 bg-gradient-to-t from-base-200 to-white px-10 py-5 grid grid-cols-2 gap-4 md:flex md:flex-row justify-between z-50 relative drop-shadow-md"
-     [ngClass]="{'navbar-hide-effect': startEffect}"
+<nav class="navbar md:h-24 bg-gradient-to-t from-base-200 to-white px-10 py-5 grid grid-cols-2 gap-4 md:flex md:flex-row justify-between z-50 relative drop-shadow-md">
+  <!-- (LOGO) -->
+  <section>
+    <h1 class="text-black text-4xl marcellus
+               font-bold drop-shadow-md select-none
+               cursor-pointer transition-all hover:drop-shadow-2xl"
+        (click)="navigateToHome()">LOGO</h1>
+  </section>
+
+  <!-- (ACCOUNT) -->
+  <section class="flex flex-col items-end md:flex-row md:items-center gap-2 order-last md:order-none">
+    <div *ngIf="!this.user; else loggedIn"
+         class="flex flex-col drop-shadow-md items-center
+        hover:drop-shadow-2xl transition-all cursor-pointer"
+         (click)="navigateToLogin()">
+      <i class="pi pi-sign-in transition-all text-2xl lg:text-3xl text-accent"></i>
+      <p class="transition-all text-xs lg:text-sm font-bold">Sign In</p>
+    </div>
+    <ng-template #loggedIn>
+      <div class="flex flex-row transition-all gap-4 lg:gap-6">
+        <div class="indicator">
+          <span *ngIf="cart!.orderDetails.length > 0" class="indicator-item badge bg-red-400 text-white pointer-events-none">{{cart!.orderDetails.length}}</span>
+          <div (click)="navigateToCart()"
+               class="flex flex-col drop-shadow-md items-center
+               hover:drop-shadow-2xl transition-all cursor-pointer">
+            <i class="pi pi-shopping-cart transition-all text-2xl lg:text-3xl text-accent"></i>
+            <p class="transition-all text-xs lg:text-sm font-bold">Cart</p>
+          </div>
+        </div>
+        <div class="indicator">
+          <span *ngIf="wishlist!.orderDetails.length > 0" class="indicator-item badge bg-red-400 text-white pointer-events-none">{{wishlist!.orderDetails.length}}</span>
+          <div (click)="navigateToWishlist()"
+               class="flex flex-col drop-shadow-md items-center
+               hover:drop-shadow-2xl transition-all cursor-pointer">
+            <i class="pi pi-heart transition-all text-2xl lg:text-3xl text-accent"></i>
+            <p class="transition-all text-xs lg:text-sm font-bold">Wishlist</p>
+          </div>
+        </div>
+        <div (click)="navigateToAccount()"
+             class="flex flex-col drop-shadow-md items-center
+          hover:drop-shadow-2xl transition-all cursor-pointer">
+          <i class="pi pi-user transition-all text-2xl lg:text-3xl text-accent"></i>
+          <p class="transition-all text-xs lg:text-sm font-bold">Account</p>
+        </div>
+        <div *ngIf="this.user!.roles.indexOf('Administrator') !== -1"
+             (click)="navigateToAdmin()"
+             class="flex flex-col drop-shadow-md items-center
+            hover:drop-shadow-2xl transition-all cursor-pointer">
+          <i class="pi pi-lock transition-all text-2xl lg:text-3xl text-accent"></i>
+          <p class="transition-all text-xs lg:text-sm font-bold">Admin</p>
+        </div>
+      </div>
+    </ng-template>
+  </section>
+
+  <!-- (LINKS) -->
+  <section class="col-span-2 flex flex-row justify-center gap-2 md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:order-none order-last">
+    <h2 class="text-black text-2xl marcellus
+               font-bold drop-shadow-md select-none
+               cursor-pointer transition-all hover:drop-shadow-2xl"
+        (click)="navigateToHome()">Home</h2>
+
+    <h2 class="text-black text-2xl marcellus
+               font-bold drop-shadow-md select-none
+               cursor-pointer transition-all hover:drop-shadow-2xl"
+        (click)="navigateToProducts()">Products</h2>
+  </section>
+</nav>
+
+<nav class="fixed -top-80 navbar md:h-24 bg-gradient-to-t from-base-200 to-white px-10 py-5 grid grid-cols-2 gap-4 md:flex md:flex-row justify-between z-50 drop-shadow-md"
      [ngClass]="{'navbar-sticky': isSticky}">
   <!-- (LOGO) -->
   <section>
