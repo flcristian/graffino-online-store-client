@@ -6,13 +6,14 @@ import {loadStripe, Stripe} from "@stripe/stripe-js";
 import {CheckoutRequest} from "../models/checkout-request.model";
 import {UpdateOrderRequest} from "../models/update-order-request.model";
 import {Token} from "../../users/models/token.model";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private server: string = "http://localhost:5005/api/v1/Orders";
-  private checkoutServer: string = "http://localhost:5005/api/v1/Checkout"
+  private server: string = `${environment.apiUrl}/api/v1/Orders`;
+  private checkoutServer: string = `${environment.apiUrl}/api/v1/Checkout`
   stripe: Stripe | null = null
 
   constructor(private http: HttpClient) { }

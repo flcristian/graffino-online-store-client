@@ -5,10 +5,10 @@ import {User} from "../models/user.model";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-customer-account-page',
-  templateUrl: './customer-account-page.component.html'
+  selector: 'app-account-page',
+  templateUrl: './account-page.component.html'
 })
-export class CustomerAccountPageComponent implements OnInit, OnDestroy{
+export class AccountPageComponent implements OnInit, OnDestroy{
   subscriptions = new Subscription()
   user: User | null = null
 

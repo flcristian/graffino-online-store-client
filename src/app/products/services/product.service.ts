@@ -9,12 +9,13 @@ import {UpdateProductRequest} from "../models/update-product-request.model";
 import {Token} from "../../users/models/token.model";
 import {UpdateCategoryRequest} from "../models/update-category-request.model";
 import {FilterProductsResponse} from "../models/filter-products-response.model";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private server: string = "http://localhost:5005/api/v1/Products";
+  private server: string = `${environment.apiUrl}/api/v1/Products`;
 
   constructor(private http: HttpClient) { }
 

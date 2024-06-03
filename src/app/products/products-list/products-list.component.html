@@ -77,22 +77,14 @@
 
   <div>
     <div *ngIf="state.errorProducts || state.loadingProducts"
-         class="w-full flex flex-col gap-2 justify-center items-center h-80">
+         class="w-full flex flex-col gap-2 justify-center items-center min-h-136">
         <span *ngIf="state.loadingProducts" class="loading loading-ring w-20"
               [class.text-red-700]="state.errorProducts"></span>
-        <div *ngIf="state.errorProducts &&
-             state.errorProducts != 'Error: Server-side error: There are no products matching your search and filter criteria.'; else serverIssue"
-             class="flex flex-col items-center">
-          <i class="pi pi-exclamation-triangle text-red-700 text-6xl"></i>
-          <p class="text-red-700 text-lg">Something went wrong</p>
+        <div *ngIf="state.errorProducts"
+             class="flex flex-col items-center p-20">
+          <i class="pi pi-exclamation-triangle text-red-700 text-6xl text-center"></i>
+          <p class="text-red-700 text-lg text-center">There are no products matching your search and filter criteria</p>
         </div>
-        <ng-template #serverIssue>
-          <div *ngIf="state.errorProducts"
-               class="flex flex-col items-center">
-            <i class="pi pi-exclamation-triangle text-red-700 text-6xl"></i>
-            <p class="text-red-700 text-lg">There are no products matching your search and filter criteria</p>
-          </div>
-        </ng-template>
     </div>
     <div *ngIf="!state.errorProducts && !state.loadingProducts" class="w-full grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-10 p-10">
       <section *ngFor="let product of state.products" class="card card-compact bg-base-100 drop-shadow-lg transition-all hover:drop-shadow-2xl relative">
@@ -107,8 +99,8 @@
             </div>
           </div>
           <div class="w-full flex flex-row gap-4">
-            <button class="btn btn-primary text-white flex-1 sm:text-xs md:text-md 2xl:text-lg" (click)="navigateToProduct(product.id)">Details</button>
-            <button class="btn btn-primary text-white flex-1 sm:text-xs md:text-md 2xl:text-lg" (click)="addToCart(product)">Add To Cart</button>
+            <button class="btn btn-primary text-white flex-1 sm:text-xs md:text-md 2xl:text-lg transition-all hover:drop-shadow-md" (click)="navigateToProduct(product.id)">Details</button>
+            <button class="btn btn-primary text-white flex-1 sm:text-xs md:text-md 2xl:text-lg transition-all hover:drop-shadow-md" (click)="addToCart(product)">Add To Cart</button>
           </div>
         </article>
       </section>

@@ -1,8 +1,8 @@
-<ng-container *ngIf="orderState.state$ | async as state">
-  <div class="w-full bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
-    <h1 class="text-accent text-4xl marcellus
-               font-bold mt-2 mr-2 drop-shadow-md
-               select-none">Orders</h1>
+<div *ngIf="orderState.state$ | async as state" class="flex flex-col gap-16 items-center">
+  <div class="w-full bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10 md:max-w-124 lg:max-w-176 xl:max-w-full">
+    <h1 class="text-accent transition-all text-3xl lg:text-4xl text-center marcellus
+           font-bold mt-2 mr-2 drop-shadow-md
+             select-none">Orders</h1>
     <p-table
       class="w-full"
       [value]="state.orders"
@@ -87,4 +87,4 @@
       </ng-template>
     </p-table>
   </div>
-</ng-container>
+</div>

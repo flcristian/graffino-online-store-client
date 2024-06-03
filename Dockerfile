@@ -1,5 +1,5 @@
 # Stage 1: Build Angular App
-FROM node:14 AS build
+FROM node:20 AS build
 
 WORKDIR /usr/src/app
 
@@ -13,7 +13,7 @@ RUN npm install
 COPY . .
 
 # Build the Angular app
-RUN npm run build --prod
+RUN npm run build
 
 # Stage 2: Setup Nginx to serve the Angular app
 FROM nginx:latest
@@ -25,7 +25,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d
 
 # Copy the built Angular app from the previous stage
-COPY --from=build /usr/src/app/dist/proiect /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist/graffino-online-store-client/browser/ /usr/share/nginx/html/
 
 # Expose port 80
 EXPOSE 80

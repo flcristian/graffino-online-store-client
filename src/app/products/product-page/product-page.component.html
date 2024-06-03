@@ -41,8 +41,8 @@
               </div>
             </div>
             <div class="flex flex-col gap-2">
-              <button class="btn btn-primary" (click)="addToCart(product)">Add To Cart</button>
-              <button class="btn btn-secondary text-white" (click)="addToWishlist(product)">Add To Wishlist</button>
+              <button class="btn btn-primary transition-all hover:drop-shadow-md" (click)="addToCart(product)">Add To Cart</button>
+              <button class="btn btn-secondary text-white transition-all hover:drop-shadow-md" (click)="addToWishlist(product)">Add To Wishlist</button>
             </div>
           </div>
         </section>
@@ -54,13 +54,13 @@
     </div>
   </ng-container>
   <ng-template #loadingOrError>
-    <div class="flex flex-col h-full w-full items-center justify-center gap-4">
+    <div class="flex flex-col min-h-136 h-full w-full items-center justify-center gap-4">
       <span *ngIf="state.loading && !state.error" class="loading loading-ring w-20"></span>
-      <div *ngIf="state.error" class="flex flex-col items-center justify-center">
+      <div *ngIf="state.error" class="flex flex-col items-center justify-center p-20">
         <i class="pi pi-question-circle text-red-700 text-6xl"></i>
         <div class="flex flex-col items-center">
-          <p class="text-red-700 text-xl">Product doesn't exist</p>
-          <p class="text-red-700 text-lg underline transition-all cursor-pointer hover:font-bold" (click)="navigateToProducts()">Go back to products</p>
+          <p class="text-red-700 text-xl text-center">Product doesn't exist</p>
+          <p class="text-red-700 text-lg underline transition-all cursor-pointer hover:font-bold text-center" (click)="navigateToProducts()">Go back to products</p>
         </div>
       </div>
     </div>

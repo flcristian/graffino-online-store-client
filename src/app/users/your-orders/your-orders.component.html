@@ -1,9 +1,9 @@
 <ng-container *ngIf="state.state$ | async as state">
-  <div *ngIf="!state.loadingOrders && !state.errorOrders; else noOrders" class="flex flex-col gap-6 w-126 min-h-136">
+  <div *ngIf="!state.loadingOrders && !state.errorOrders; else noOrders" class="flex flex-col lg:grid lg:grid-cols-2 gap-6 w-full min-h-136">
     <div *ngFor="let order of state.orders"
          class="flex flex-row justify-between w-full
          cursor-pointer hover:drop-shadow-2xl transition-all
-         bg-base-200 p-3 rounded-lg drop-shadow-md" (click)="navigateToOrder(order.id)">
+         bg-base-200 p-3 rounded-lg drop-shadow-md h-24" (click)="navigateToOrder(order.id)">
       <div class="flex flex-col justify-between gap-3">
         <h1 class="text-lg font-bold">Order #{{order.id}}</h1>
         <div class="flex flex-row gap-2">
@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="flex flex-col justify-end">
-        <div class="flex flex-row gap-2">
+        <div class="flex flex-col sm:flex-row sm:gap-2">
           <h1 class="font-bold">Last Date Updated: </h1>
           <h1>{{ order.lastDateUpdated | date}}</h1>
         </div>

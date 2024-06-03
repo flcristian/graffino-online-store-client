@@ -1,9 +1,9 @@
 <div *ngIf="productState.state$ | async as state" class="flex flex-col gap-16 items-center">
-  <div class="w-full bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
-    <h1 class="text-accent text-4xl marcellus
-               font-bold mt-2 mr-2 drop-shadow-md
-               select-none">Products</h1>
-    <select class="select w-96 drop-shadow-md self-center" [(ngModel)]="tableSelectedCategory" (change)="updateSelectedCategory()">
+  <div class="w-full bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10 md:max-w-124 lg:max-w-176 2xl:max-w-full">
+    <h1 class="text-accent transition-all text-3xl lg:text-4xl text-center marcellus
+           font-bold mt-2 mr-2 drop-shadow-md
+             select-none">Products</h1>
+    <select class="select max-w-full w-72 drop-shadow-md" [(ngModel)]="tableSelectedCategory" (change)="updateSelectedCategory()">
       <option disabled selected [ngValue]="null">Choose the category</option>
       <option *ngFor="let category of state.categories" [ngValue]="category">{{ category.name }}</option>
     </select>
@@ -94,11 +94,11 @@
     </p-table>
   </div>
 
-  <div class="w-full bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
-    <h1 class="text-accent text-4xl marcellus
-               font-bold mt-2 mr-2 drop-shadow-md
-               select-none">Add a product</h1>
-    <select class="select w-96 drop-shadow-md self-center" [(ngModel)]="createProductSelectedCategory" (change)="updateCreatePropertiesPropertiesFormGroup()">
+  <div class="w-full bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10 md:max-w-124 lg:max-w-176 2xl:max-w-full">
+    <h1 class="text-accent transition-all text-3xl lg:text-4xl text-center marcellus
+           font-bold mt-2 mr-2 drop-shadow-md
+             select-none">Add a product</h1>
+    <select class="select max-w-full w-72 drop-shadow-md" [(ngModel)]="createProductSelectedCategory" (change)="updateCreatePropertiesPropertiesFormGroup()">
       <option disabled selected [ngValue]="null">Choose the category</option>
       <option *ngFor="let category of state.categories" [ngValue]="category">{{ category.name }}</option>
     </select>
