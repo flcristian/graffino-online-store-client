@@ -41,6 +41,7 @@
       <h1 class="text-2xl font-bold">Total:</h1>
       <h1 class="text-xl font-bold">${{getTotalCost().toFixed(2)}}</h1>
     </div>
+    <button class="btn btn-accent" (click)="this.state.checkout()">Place Order</button>
   </div>
 </div>
 <ng-template #noCart>
