@@ -10,6 +10,7 @@ import {CreateCategoryRequest} from "../models/create-category-request.model";
 import {UpdateProductRequest} from "../models/update-product-request.model";
 import {Token} from "../../users/models/token.model";
 import {UpdateCategoryRequest} from "../models/update-category-request.model";
+import {ProductProperty} from "../models/product-property.model";
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +58,7 @@ export class ProductsStateService {
           if(error.toString() === "Error: Server-side error: There are no products matching your search and filter criteria." && categoryId)
             this.getFilterCriteria(categoryId)
           this.setErrorProducts(error)
+          this.setProducts([])
         }
       })
   }
@@ -222,6 +224,8 @@ export class ProductsStateService {
   }
 
   addProduct(product: Product) {
+    let products = this.stateSubject.value.products;
+    if(product.categoryId  !== products[0].categoryId) return
     this.setProducts([...this.stateSubject.value.products, product]);
   }
 

@@ -2,14 +2,14 @@
   <div class="w-full bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
     <h1 class="text-accent text-4xl marcellus
                font-bold mt-2 mr-2 drop-shadow-md
-               select-none">Products</h1>
-    <select class="select w-96 drop-shadow-md self-center" [(ngModel)]="selectedCategory" (change)="updateSelectedCategory()">
+               select-none">Product</h1>
+    <select class="select w-96 drop-shadow-md self-center" [(ngModel)]="tableSelectedCategory" (change)="updateSelectedCategory()">
       <option disabled selected [ngValue]="null">Choose the category</option>
       <option *ngFor="let category of state.categories" [ngValue]="category">{{ category.name }}</option>
     </select>
     <p-table
       class="w-full"
-      *ngIf="selectedCategory"
+      *ngIf="tableSelectedCategory"
       [value]="state.products"
       [paginator]="true"
       [rows]="10"
@@ -25,7 +25,8 @@
           <th class="bg-base-300 text-accent border-b-2 border-base-300" [style.width.%]="calculateColumnWidth()">Name</th>
           <th class="bg-base-300 text-accent border-b-2 border-base-300" [style.width.%]="calculateColumnWidth()">Price</th>
           <th class="bg-base-300 text-accent border-b-2 border-base-300" [style.width.%]="calculateColumnWidth()">Image Url</th>
-          <th *ngFor="let property of selectedCategory.properties" class="bg-base-300 text-accent border-b-2 border-base-300" [style.width.%]="calculateColumnWidth()">{{property.name}}</th>
+          <th *ngFor="let property of tableSelectedCategory.properties" class="bg-base-300 text-accent border-b-2 border-base-300" [style.width.%]="calculateColumnWidth()">{{property.name}}</th>
+          <th class="bg-base-300 text-accent border-r-2 border-b-2 border-base-300" style="width:8%"></th>
           <th class="bg-base-300 text-accent border-r-2 border-b-2 border-base-300" style="width:8%"></th>
         </tr>
       </ng-template>
@@ -37,7 +38,7 @@
           <td class="border-l-2 border-base-300">
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <input class="bg-base-200 p-2 rounded border border-accent" type="text" [(ngModel)]="product.name" required>
+                <input class="bg-base-200 p-2 rounded border border-accent w-24" type="text" [(ngModel)]="product.name" required>
               </ng-template>
               <ng-template pTemplate="output">
                 {{product.name}}
@@ -47,7 +48,7 @@
           <td class="border-l-2 border-base-300">
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <input class="bg-base-200 p-2 rounded border border-accent" type="text" [(ngModel)]="product.price" required>
+                <input class="bg-base-200 p-2 rounded border border-accent w-24" type="text" [(ngModel)]="product.price" required>
               </ng-template>
               <ng-template pTemplate="output">
                 {{product.price}}
@@ -57,7 +58,7 @@
           <td class="border-l-2 border-base-300">
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <input class="bg-base-200 p-2 rounded border border-accent" type="text" [(ngModel)]="product.imageUrl" required>
+                <input class="bg-base-200 p-2 rounded border border-accent max-w-full" type="text" [(ngModel)]="product.imageUrl" required>
               </ng-template>
               <ng-template pTemplate="output">
                 {{product.imageUrl}}
@@ -66,7 +67,7 @@
           <td *ngFor="let property of product.productProperties" class="border-l-2 border-base-300">
             <p-cellEditor>
               <ng-template pTemplate="input">
-                <input class="bg-base-200 p-2 rounded border border-accent" type="text" [(ngModel)]="property.value" required>
+                <input class="bg-base-200 p-2 rounded border border-accent w-24" type="text" [(ngModel)]="property.value" required>
               </ng-template>
               <ng-template pTemplate="output">
                 {{property.value}}
@@ -80,18 +81,28 @@
               <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times"></button>
             </div>
           </td>
+          <td class="border-x-2 border-base-300">
+            <button pButton type="button" icon="pi pi-trash" (click)="confirmDelete($event, product.id)"></button>
+          </td>
         </tr>
       </ng-template>
-      <ng-template pTemplate="footer" let-totalRecords>
-        <tr *ngIf="totalRecords === 0">
-          <td [attr.colspan]="1" class="text-center text-red-500 bg-base-200">There are no products</td>
+      <ng-template pTemplate="footer">
+        <tr *ngIf="state.products.length === 0">
+          <td [attr.colspan]="6 + this.tableSelectedCategory!.properties.length" class="text-center text-red-500 bg-base-200">There are no products</td>
         </tr>
       </ng-template>
     </p-table>
   </div>
-</div>
 
-<!--
+  <div class="w-full bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
+    <h1 class="text-accent text-4xl marcellus
+               font-bold mt-2 mr-2 drop-shadow-md
+               select-none">Add a product</h1>
+    <select class="select w-96 drop-shadow-md self-center" [(ngModel)]="createProductSelectedCategory" (change)="updateCreatePropertiesPropertiesFormGroup()">
+      <option disabled selected [ngValue]="null">Choose the category</option>
+      <option *ngFor="let category of state.categories" [ngValue]="category">{{ category.name }}</option>
+    </select>
+
     <form *ngIf="createProductSelectedCategory" [formGroup]="createProductForm" (ngSubmit)="createProduct()" class="flex flex-col gap-4 items-center">
       <div class="flex flex-col gap-2">
         <label for="create-product-name" class="marcellus text-accent">Name</label>
@@ -120,4 +131,18 @@
 
       <button type="submit" class="btn btn-accent btn-lg mb-3 marcellus" [disabled]="createProductForm.invalid">Create Product</button>
     </form>
--->
+  </div>
+</div>
+
+<p-toast />
+<p-confirmPopup>
+  <ng-template pTemplate="headless" let-message>
+    <div class="p-4">
+      <h1 class="text-lg font-bold">{{ message.message }}</h1>
+      <div class="flex justify-center items-center gap-2 mt-3">
+        <button class="btn btn-primary" (click)="accept()">Confirm</button>
+        <button class="btn btn-secondary text-white" (click)="reject()">Cancel</button>
+      </div>
+    </div>
+  </ng-template>
+</p-confirmPopup>

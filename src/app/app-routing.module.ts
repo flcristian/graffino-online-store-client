@@ -15,8 +15,9 @@ import {WishlistComponent} from "./users/wishlist/wishlist.component";
 import {AdministratorPageComponent} from "./administrator/administrator-page/administrator-page.component";
 import {UnauthorizedComponent} from "./unauthorized/unauthorized.component";
 import {ProductsManagerComponent} from "./administrator/products-manager/products-manager.component";
-import {CustomersManagerComponent} from "./administrator/customers-manager/customers-manager.component";
 import {CategoriesManagerComponent} from "./administrator/categories-manager/categories-manager.component";
+import {OrdersManagerComponent} from "./administrator/orders-manager/orders-manager.component";
+import {OrderPageComponent} from "./orders/order-page/order-page.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -32,9 +33,11 @@ const routes: Routes = [
     children: [
       { path: 'categories', component: CategoriesManagerComponent },
       { path: 'products', component: ProductsManagerComponent },
-      { path: 'customers', component: CustomersManagerComponent },
+      { path: 'orders', component: OrdersManagerComponent },
     ]
   },
+
+  { path: 'order/:id', component: OrderPageComponent },
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

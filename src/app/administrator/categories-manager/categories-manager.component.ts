@@ -28,8 +28,7 @@ export class CategoriesManagerComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     protected productState: ProductsStateService,
     private userState: CurrentUserStateService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {

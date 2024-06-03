@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CurrentUserStateService} from "../services/current-user-state.service";
 import {Subscription} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-your-orders',
@@ -10,7 +11,8 @@ export class YourOrdersComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription()
 
   constructor(
-    protected state: CurrentUserStateService
+    protected state: CurrentUserStateService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -19,5 +21,9 @@ export class YourOrdersComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe()
+  }
+
+  navigateToOrder(id: number) {
+    this.router.navigate(['/order', id]);
   }
 }

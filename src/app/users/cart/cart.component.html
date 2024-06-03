@@ -1,4 +1,4 @@
-<div *ngIf="cart && cart!.orderDetails.length > 0; else noCart" class="grid grid-cols-5 p-10 gap-10">
+<div *ngIf="cart && cart!.orderDetails.length > 0; else noCart" class="flex flex-col gap-10 p-10 w-full lg:grid lg:grid-cols-5">
   <div class="col-span-3 flex flex-col gap-10">
     <h1 class="text-4xl text-accent font-bold">My Cart</h1>
     <div class="flex flex-col gap-4">
@@ -10,15 +10,15 @@
               src="{{product.imageUrl}}" class="max-w-24 rounded-sm drop-shadow-md cursor-pointer transition-all hover:drop-shadow-2xl object-cover" alt="">
             <div class="flex flex-col justify-between">
               <h2 (click)="navigateToProduct(product.id)"
-                class="text-lg text-accent cursor-pointer font-bold hover:underline">{{product.name}}</h2>
+                class="text-lg transition-all md:text-2xl text-accent cursor-pointer font-bold hover:underline">{{product.name}}</h2>
             </div>
           </div>
           <div class="flex flex-col justify-between items-end gap-4">
-            <p class="text-xl text-accent font-bold">${{product.price.toFixed(2)}}</p>
+            <p class="text-xl transition-all md:text-2xl text-accent font-bold">${{product.price.toFixed(2)}}</p>
             <input type="number" min="1" placeholder="Count" class="input input-bordered w-20 text-sm" [(ngModel)]="orderDetail.count" (ngModelChange)="updateProductCount()"/>
             <div class="flex flex-col items-end">
-              <p class="text-lg text-accent cursor-pointer underline hover:font-bold select-none" (click)="addToWishlist(product)">Wishlist</p>
-              <p class="text-lg text-accent cursor-pointer underline hover:font-bold select-none" (click)="removeFromCart(product.id)">Remove</p>
+              <p class="text-lg transition-all md:text-xl text-accent cursor-pointer underline hover:font-bold select-none" (click)="addToWishlist(product)">Wishlist</p>
+              <p class="text-lg transition-all md:text-xl text-accent cursor-pointer underline hover:font-bold select-none" (click)="removeFromCart(product.id)">Remove</p>
             </div>
           </div>
         </ng-container>
@@ -26,22 +26,21 @@
     </div>
   </div>
   <div class="col-span-2 w-full h-80 p-5 bg-base-200 shadow-inner rounded-xl flex flex-col justify-between gap-4">
-    <h1 class="text-2xl font-bold text-accent">Order Summary</h1>
+    <h1 class="text-4xl font-bold text-accent">Cart Summary</h1>
     <div class="flex flex-col gap-2 w-full">
       <div class="flex flex-row justify-between">
-        <p>Products Cost:</p>
-        <p>${{getProductsCost().toFixed(2)}}</p>
+        <p class="text-lg">Products Cost:</p>
+        <p class="text-xl font-bold">${{getProductsCost().toFixed(2)}}</p>
       </div>
       <div class="flex flex-row justify-between">
-        <p>Transport Cost:</p>
-        <p>$10.00</p>
+        <p class="text-lg">Transport Cost:</p>
+        <p class="text-xl font-bold">$10.00</p>
       </div>
     </div>
     <div class="flex flex-col">
-      <h1 class="text-lg font-bold">Total:</h1>
-      <h1 class="text-lg font-bold">${{getTotalCost().toFixed(2)}}</h1>
+      <h1 class="text-2xl font-bold">Total:</h1>
+      <h1 class="text-xl font-bold">${{getTotalCost().toFixed(2)}}</h1>
     </div>
-    <button class="btn btn-accent" (click)="this.state.checkout()">Place Order</button>
   </div>
 </div>
 <ng-template #noCart>

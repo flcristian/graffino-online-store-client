@@ -1,7 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ProductsStateService} from "../../products/services/products-state.service";
-import {CreateCategoryRequest} from "../../products/models/create-category-request.model";
 import {CreateProductRequest} from "../../products/models/create-product-request.model";
 import {UpdateProductRequest} from "../../products/models/update-product-request.model";
 import {Token} from "../../users/models/token.model";
@@ -9,6 +8,8 @@ import {CurrentUserStateService} from "../../users/services/current-user-state.s
 import {Subscription} from "rxjs";
 import {Category} from "../../products/models/category.model";
 import {Product} from "../../products/models/product.model";
+import {ConfirmPopup} from "primeng/confirmpopup";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-products-manager',
@@ -16,17 +17,18 @@ import {Product} from "../../products/models/product.model";
 })
 export class ProductsManagerComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription()
-  createCategoryForm: FormGroup = new FormGroup({});
   createProductForm: FormGroup = new FormGroup({});
-  updateProductForm: FormGroup = new FormGroup({});
-  categoryProperties: string[] = [];
   token: Token | null = null;
-  selectedCategory: Category | null = null;
+  tableSelectedCategory: Category | null = null;
+  createProductSelectedCategory: Category | null = null;
+
+  @ViewChild(ConfirmPopup) confirmPopup!: ConfirmPopup;
 
   constructor(
     private fb: FormBuilder,
     protected productState: ProductsStateService,
-    private userState: CurrentUserStateService
+    private userState: CurrentUserStateService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -57,16 +59,7 @@ export class ProductsManagerComponent implements OnInit, OnDestroy {
   }
 
   initializeForms(): void {
-    this.initializeCreateCategoryForm()
     this.initializeCreateProductForm()
-    this.initializeUpdateProductForm()
-  }
-
-  initializeCreateCategoryForm() {
-    this.createCategoryForm = this.fb.group({
-      name: ["", Validators.required],
-      properties: this.fb.array([])
-    });
   }
 
   initializeCreateProductForm() {
@@ -78,65 +71,20 @@ export class ProductsManagerComponent implements OnInit, OnDestroy {
     });
   }
 
-  initializeUpdateProductForm() {
-    this.updateProductForm = this.fb.group({
-      id: ["", Validators.required],
-      name: ["", Validators.required],
-      price: ["", Validators.required],
-      imageUrl: ["", Validators.required],
-      productProperties: this.fb.array([])
-    });
-  }
-
-  addProperty(): void {
-    const propertiesArray = this.createCategoryForm.get('properties') as FormArray;
-    const controlName = `property${propertiesArray.length}`;
-    propertiesArray.push(this.fb.control("", Validators.required));
-    this.categoryProperties.push(controlName);
-  }
-
-  removeProperty(index: number): void {
-    const propertiesArray = this.createCategoryForm.get('properties') as FormArray;
-    if (index >= 0 && index < propertiesArray.length) {
-      propertiesArray.removeAt(index);
-      this.categoryProperties.splice(index, 1);
-    }
-  }
-
-  createCategory() {
-    if (this.createCategoryForm.invalid || !this.token) {
-      return;
-    }
-
-    const request: CreateCategoryRequest = {
-      name: this.createCategoryForm.value.name,
-      properties: []
-    };
-
-    for(let i = 0; i < this.createCategoryForm.value.properties.length; i++) {
-      request.properties.push({
-        name: this.createCategoryForm.value.properties[i]
-      })
-    }
-
-    this.productState.createCategory(request, this.token);
-    this.initializeCreateCategoryForm()
-  }
-
   updateSelectedCategory() {
-    this.productState.filterProducts(this.selectedCategory!.id, null, null, null, null, null);
+    this.productState.filterProducts(this.tableSelectedCategory!.id, null, null, null, null, null);
   }
 
   updateCreatePropertiesPropertiesFormGroup(): void {
-    if(this.selectedCategory) {
+    if(this.createProductSelectedCategory) {
       Object.keys(this.createProductForm.controls).forEach(key => {
         if (key !== 'name' && key !== 'price' && key !== 'categoryId' && key !== 'imageUrl') {
           this.createProductForm.removeControl(key);
         }
       });
 
-      if (this.selectedCategory && this.selectedCategory.properties) {
-        this.selectedCategory.properties.forEach(property => {
+      if (this.createProductSelectedCategory && this.createProductSelectedCategory.properties) {
+        this.createProductSelectedCategory.properties.forEach(property => {
           this.createProductForm.addControl(property.name, this.fb.control("", Validators.required));
         });
       }
@@ -151,15 +99,15 @@ export class ProductsManagerComponent implements OnInit, OnDestroy {
     const request: CreateProductRequest = {
       name: this.createProductForm.value.name,
       price: this.createProductForm.value.price,
-      categoryId: this.selectedCategory?.id as number,
+      categoryId: this.createProductSelectedCategory?.id as number,
       imageUrl: this.createProductForm.value.imageUrl,
       productProperties: []
     };
 
-    for(let i = 0; i < this.selectedCategory!.properties.length; i++) {
+    for(let i = 0; i < this.createProductSelectedCategory!.properties.length; i++) {
       request.productProperties.push({
-        propertyId: this.selectedCategory!.properties[i].id,
-        value: this.createProductForm.get(this.selectedCategory!.properties[i].name)!.value
+        propertyId: this.createProductSelectedCategory!.properties[i].id,
+        value: this.createProductForm.get(this.createProductSelectedCategory!.properties[i].name)!.value
       })
     }
 
@@ -168,27 +116,54 @@ export class ProductsManagerComponent implements OnInit, OnDestroy {
     this.updateCreatePropertiesPropertiesFormGroup()
   }
 
-  updateProduct() {
-    if (this.updateProductForm.invalid || !this.token) {
+  updateProduct(product: Product) {
+    if (!this.token) {
       return;
     }
 
     const request: UpdateProductRequest = {
-      id: this.updateProductForm.value.id,
-      name: this.updateProductForm.value.name,
-      price: this.updateProductForm.value.price,
-      imageUrl: this.updateProductForm.value.imageUrl,
-      productProperties: this.updateProductForm.value.productProperties
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      productProperties: product.productProperties
     };
 
     this.productState.updateProduct(request, this.token);
-    this.initializeUpdateProductForm()
   }
 
   onRowEditSave(product: Product) {
+    this.updateProduct(product)
   }
 
   calculateColumnWidth() {
-    return 92 / (4 + this.selectedCategory!.properties.length);
+    return 84 / (4 + this.tableSelectedCategory!.properties.length);
+  }
+
+  accept() {
+    this.confirmPopup.accept();
+  }
+
+  reject() {
+    this.confirmPopup.reject();
+  }
+
+  confirmDelete(event: Event, id: number) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure you want to delete this product?',
+      accept: () => {
+        this.deleteProduct(id);
+      },
+      reject: () => { }
+    });
+  }
+
+  deleteProduct(id: number) {
+    if (!this.token) {
+      return;
+    }
+
+    this.productState.deleteProduct(id, this.token);
   }
 }
