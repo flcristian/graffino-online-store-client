@@ -1,0 +1,90 @@
+<ng-container *ngIf="orderState.state$ | async as state">
+  <div class="w-full bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
+    <h1 class="text-accent text-4xl marcellus
+               font-bold mt-2 mr-2 drop-shadow-md
+               select-none">Orders</h1>
+    <p-table
+      class="w-full"
+      [value]="state.orders"
+      [paginator]="true"
+      [rows]="10"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      dataKey="id"
+      editMode="row"
+      [globalFilterFields]="['id', 'customerId', 'customer.email', 'status', 'lastDateUpdated']"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="bg-base-300 text-accent border-l-2 border-b-2 border-base-300" style="width:18%">Id</th>
+          <th class="bg-base-300 text-accent border-l-2 border-b-2 border-base-300" style="width:18%">Customer Id</th>
+          <th class="bg-base-300 text-accent border-l-2 border-b-2 border-base-300" style="width:18%">Customer Email</th>
+          <th class="bg-base-300 text-accent border-l-2 border-b-2 border-base-300" style="width:18%">Status</th>
+          <th class="bg-base-300 text-accent border-l-2 border-b-2 border-base-300" style="width:18%">Last Date Updated</th>
+          <th class="bg-base-300 text-accent border-r-2 border-b-2 border-base-300" style="width:5%"></th>
+          <th class="bg-base-300 text-accent border-r-2 border-b-2 border-base-300" style="width:5%"></th>
+        </tr>
+        <tr>
+          <th class="bg-base-300 text-accent border-l-2 border-b-2 border-base-300" style="width:18%"></th>
+          <th class="bg-base-300 text-accent border-l-2 border-b-2 border-base-300" style="width:18%"></th>
+          <th class="bg-base-300 text-accent border-l-2 border-b-2 border-base-300" style="width:18%">
+            <p-columnFilter type="text" field="customer.email" matchMode="contains"></p-columnFilter>
+          </th>
+          <th class="bg-base-300 text-accent border-l-2 border-b-2 border-base-300" style="width:18%"></th>
+          <th class="bg-base-300 text-accent border-l-2 border-b-2 border-base-300" style="width:18%"></th>
+          <th class="bg-base-300 text-accent border-r-2 border-b-2 border-base-300" style="width:5%"></th>
+          <th class="bg-base-300 text-accent border-r-2 border-b-2 border-base-300" style="width:5%"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-order let-editing="editing">
+        <tr [pEditableRow]="order" class="bg-base-200 text-accent border-b-2 border-base-300">
+          <td class="border-l-2 border-base-300">
+            <span class="p-5 rounded-xl">{{order.id}}</span>
+          </td>
+          <td class="border-l-2 border-base-300">
+            <span class="rounded-xl">{{order.customerId}}</span>
+          </td>
+          <td class="border-l-2 border-base-300">
+            <span class="rounded-xl">{{order.customer!.email}}</span>
+          </td>
+          <td class="border-l-2 border-base-300">
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <select class="bg-base-200 p-2 rounded border border-accent w-full" [(ngModel)]="order.status" required>
+                  <option [value]="1">Processing</option>
+                  <option [value]="2">Shipping</option>
+                  <option [value]="3">Shipped</option>
+                  <option [value]="4">Complete</option>
+                </select>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{order.status | orderStatus}}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td class="border-l-2 border-base-300">
+            <span class="p-5 rounded-xl">{{order.lastDateUpdated}}</span>
+          </td>
+          <td class="border-l-2 border-base-300">
+            <div class="flex align-items-center justify-content-center gap-2">
+              <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil"></button>
+              <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(order)"></button>
+              <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times"></button>
+            </div>
+          </td>
+          <td class="border-x-2 border-base-300">
+            <div class="flex align-items-center justify-content-center gap-2">
+              <button pButton type="button" icon="pi pi-eye" (click)="navigateToOrder(order.id)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <tr *ngIf="state.orders.length === 0">
+          <td [attr.colspan]="5" class="text-center text-red-500 bg-base-200">There are no orders</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</ng-container>

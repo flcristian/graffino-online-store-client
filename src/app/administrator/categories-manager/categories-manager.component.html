@@ -1,0 +1,92 @@
+<div *ngIf="productState.state$ | async as state" class="flex flex-col gap-16 items-center">
+  <!--CREATE-->
+  <div class="w-126 bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
+    <h1 class="text-accent text-4xl marcellus
+               font-bold mt-2 mr-2 drop-shadow-md
+               select-none">Create a category</h1>
+    <form [formGroup]="createCategoryForm" class="flex flex-col gap-4 items-center">
+      <div class="flex flex-col gap-2 w-full">
+        <div class="flex flex-col gap-2">
+          <label for="create-category-name" class="marcellus text-accent">Name</label>
+          <input
+            [class.border-red-700]="createCategoryForm.get('name')?.touched && (
+          createCategoryForm.get('name')!.hasError('required') ||
+          createCategoryForm.get('name')!.hasError('name')
+        )"
+            type="text" class="input input-bordered w-full max-w-xs" pInputText formControlName="name" id="create-category-name"/>
+        </div>
+        <p class="text-red-700" *ngIf="createCategoryForm.get('name')?.touched && createCategoryForm.get('name')!.hasError('required')">Category name required.</p>
+      </div>
+      <h2 class="self-start">Category Properties</h2>
+      <div formArrayName="properties">
+        <div *ngFor="let property of categoryProperties; let i = index" class="flex flex-col gap-2">
+          <div class="relative">
+            <div class="pi pi-times absolute -top-2 -right-2 cursor-pointer p-2 bg-base-200 rounded-full drop-shadow-md" (click)="removeProperty(i)"></div>
+          </div>
+          <input type="text" class="input input-bordered w-full max-w-xs" [formControlName]="i" [id]="'property' + i"/>
+          <p class="text-red-700" *ngIf="createCategoryForm.get('properties.' + i)?.touched && createCategoryForm.get('properties.' + i)?.hasError('required')">Property name required.</p>
+        </div>
+      </div>
+      <button class="btn btn-accent btn-lg mb-3 marcellus" (click)="addProperty()">Add Property</button>
+      <button class="btn btn-accent btn-lg mb-3 marcellus" (click)="confirmCreate($event)" [disabled]="createCategoryForm.invalid">Submit</button>
+    </form>
+  </div>
+
+  <!--UPDATE-->
+  <div class="w-126 bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
+    <h1 class="text-accent text-4xl marcellus
+               font-bold mt-2 mr-2 drop-shadow-md
+               select-none">Update a category</h1>
+    <form [formGroup]="updateCategoryForm" class="flex flex-col gap-4 items-center">
+      <div class="flex flex-col gap-2 w-full">
+        <div class="flex flex-col gap-2">
+          <select class="select w-full drop-shadow-md" formControlName="id" id="update-category-id">
+            <option disabled selected [ngValue]="0">Choose the category</option>
+            <option *ngFor="let category of state.categories" [ngValue]="category.id">{{ category.name }}</option>
+          </select>
+        </div>
+        <p class="text-red-700" *ngIf="updateCategoryForm.get('id')?.touched && updateCategoryForm.get('id')!.hasError('required')">Category ID required.</p>
+      </div>
+      <div class="flex flex-col gap-2 w-full">
+        <div class="flex flex-col gap-2">
+          <label for="update-category-name" class="marcellus text-accent">New Name</label>
+          <input
+            [class.border-red-700]="updateCategoryForm.get('name')?.touched && updateCategoryForm.get('name')!.hasError('required')"
+            type="text" class="input input-bordered w-full max-w-xs" pInputText formControlName="name" id="update-category-name"/>
+        </div>
+        <p class="text-red-700" *ngIf="updateCategoryForm.get('name')?.touched && updateCategoryForm.get('name')!.hasError('required')">Category name required.</p>
+      </div>
+      <button class="btn btn-accent btn-lg mb-3 marcellus" (click)="confirmUpdate($event)" [disabled]="updateCategoryForm.invalid">Submit</button>
+    </form>
+  </div>
+
+  <!--DELETE-->
+  <div class="w-126 bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
+    <h1 class="text-accent text-4xl marcellus font-bold mt-2 mr-2 drop-shadow-md select-none">Delete a category</h1>
+    <form [formGroup]="deleteCategoryForm" class="flex flex-col gap-4 items-center">
+      <div class="flex flex-col gap-2 w-full">
+        <div class="flex flex-col gap-2">
+          <select class="select w-full drop-shadow-md" formControlName="id" id="delete-category-id">
+            <option disabled selected [ngValue]="null">Choose the category</option>
+            <option *ngFor="let category of state.categories" [ngValue]="category.id">{{ category.name }}</option>
+          </select>
+        </div>
+        <p class="text-red-700" *ngIf="deleteCategoryForm.get('id')?.touched && deleteCategoryForm.get('id')!.hasError('required')">Category ID required.</p>
+      </div>
+      <button class="btn btn-accent btn-lg mb-3 marcellus" (click)="confirmDelete($event)" [disabled]="deleteCategoryForm.invalid">Submit</button>
+    </form>
+  </div>
+</div>
+
+<p-toast />
+<p-confirmPopup>
+  <ng-template pTemplate="headless" let-message>
+    <div class="p-4">
+      <h1 class="text-lg font-bold">{{ message.message }}</h1>
+      <div class="flex justify-center items-center gap-2 mt-3">
+        <button class="btn btn-primary" (click)="accept()">Confirm</button>
+        <button class="btn btn-secondary text-white" (click)="reject()">Cancel</button>
+      </div>
+    </div>
+  </ng-template>
+</p-confirmPopup>

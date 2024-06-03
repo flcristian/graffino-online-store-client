@@ -8,7 +8,6 @@ export class OrderStatusPipe implements PipeTransform {
   transform(value: number): string {
     let statuses: string[] = [
       "None",
-      "Cart",
       "Processing",
       "Shipping",
       "Shipped",

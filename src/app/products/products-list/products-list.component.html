@@ -92,7 +92,7 @@
     <div *ngIf="!state.errorProducts && !state.loadingProducts" class="w-full grid grid-cols-4 gap-10 p-10">
       <section *ngFor="let product of state.products" class="card card-compact bg-base-100 drop-shadow-lg transition-all hover:drop-shadow-2xl relative">
         <div *ngIf="isNotOlderThanThreeDays(product.dateAdded)" class="absolute -top-2 -right-2 p-2 notosansjp bg-red-500 text-white font-bold rounded-lg">NEW</div>
-        <figure><img (click)="navigateToProduct(product.id)" class="rounded-t-2xl cursor-pointer" src="{{product.imageUrl}}" alt="{{product.name}}"/></figure>
+        <img (click)="navigateToProduct(product.id)" class="rounded-t-2xl cursor-pointer w-full max-h-80 object-cover" src="{{product.imageUrl}}" alt="{{product.name}}"/>
         <article class="card-body flex flex-col justify-between">
           <div>
             <h2 class="card-title text-accent text-2xl">{{product.name}}</h2>
@@ -103,7 +103,7 @@
           </div>
           <div class="w-full flex flex-row gap-4">
             <button class="btn btn-primary flex-1" (click)="navigateToProduct(product.id)">View Details</button>
-            <button class="btn btn-secondary text-white flex-1" (click)="addToCart(product)">Add To Cart</button>
+            <button class="btn btn-primary text-white flex-1" (click)="addToCart(product)">Add To Cart</button>
           </div>
         </article>
       </section>

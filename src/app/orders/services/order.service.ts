@@ -1,9 +1,11 @@
 import {Injectable, OnInit} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Order} from "../models/order.model";
 import {Observable} from "rxjs";
 import {loadStripe, Stripe} from "@stripe/stripe-js";
 import {CheckoutRequest} from "../models/checkout-request.model";
+import {UpdateOrderRequest} from "../models/update-order-request.model";
+import {Token} from "../../users/models/token.model";
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +42,24 @@ export class OrderService {
     if (!this.stripe) {
       this.initializeStripe()
     }
+  }
+
+  getAllOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.server}/all-orders`)
+  }
+
+  updateOrder(request: UpdateOrderRequest, token: Token): Observable<Order> {
+    return this.http.put<Order>(`${this.server}/update`, request, this.generateHeaders(token))
+  }
+
+  generateHeaders(token: Token): { headers: HttpHeaders } {
+    return { headers: new HttpHeaders({
+        'Authorization': `${token.tokenType} ${token.accessToken}`
+      })
+    }
+  }
+
+  getOrderById(id: number): Observable<Order> {
+    return this.http.get<Order>(`${this.server}/order/${id}`)
   }
 }

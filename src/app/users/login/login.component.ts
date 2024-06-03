@@ -22,6 +22,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(){
+    if(this.state.loggedIn()) {
+      this.router.navigate(["home"])
+    }
+
     this.initializeForms();
   }
 
@@ -50,6 +54,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     };
 
     this.state.login(request)
+  }
+
+  checkAndLogin() {
+    if(this.loginForm.valid) {
+      this.login()
+    }
   }
 
   navigateToRegister() {

@@ -5,6 +5,12 @@ import {ProductService} from "./product.service";
 import {MessageService} from "primeng/api";
 import {Product} from "../models/product.model";
 import {Category} from "../models/category.model";
+import {CreateProductRequest} from "../models/create-product-request.model";
+import {CreateCategoryRequest} from "../models/create-category-request.model";
+import {UpdateProductRequest} from "../models/update-product-request.model";
+import {Token} from "../../users/models/token.model";
+import {UpdateCategoryRequest} from "../models/update-category-request.model";
+import {ProductProperty} from "../models/product-property.model";
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +30,11 @@ export class ProductsStateService {
   state$: Observable<ProductsState> = this.stateSubject.asObservable()
 
   constructor(
-    private productService: ProductService
+    private productService: ProductService,
+    private messageService: MessageService
   ) { }
+
+  // SERVICE CALLS
 
   filterProducts(categoryId: number | null, search: string | null,
                  properties: Map<string, string> | null, page: number | null,
@@ -49,6 +58,7 @@ export class ProductsStateService {
           if(error.toString() === "Error: Server-side error: There are no products matching your search and filter criteria." && categoryId)
             this.getFilterCriteria(categoryId)
           this.setErrorProducts(error)
+          this.setProducts([])
         }
       })
   }
@@ -71,8 +81,176 @@ export class ProductsStateService {
   }
 
   getAllCategories() {
-    this.setLoadingCategoires(true)
+    this.setLoadingCategories(true)
     return this.productService.getAllCategories()
+  }
+
+  createProduct(request: CreateProductRequest, token: Token) {
+    this.setLoadingProducts(true);
+    this.productService.createProduct(request, token).pipe(
+      finalize(() => {
+        this.setLoadingProducts(false);
+      })
+    ).subscribe({
+      next: (product: Product) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: `Product ${product.name} successfully created!`
+        })
+        this.setErrorProducts(null);
+        this.addProduct(product);
+      },
+      error: (error) => {
+        this.setErrorProducts(error);
+      }
+    });
+  }
+
+  createCategory(request: CreateCategoryRequest, token: Token) {
+    this.setLoadingCategories(true);
+    this.productService.createCategory(request, token).pipe(
+      finalize(() => {
+        this.setLoadingCategories(false);
+      })
+    ).subscribe({
+      next: (category: Category) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: `Category ${category.name} successfully created!`
+        })
+        this.setErrorCategories(null);
+        this.addCategory(category);
+      },
+      error: (error) => {
+        this.setErrorCategories(error);
+      }
+    });
+  }
+
+  updateProduct(request: UpdateProductRequest, token: Token) {
+    this.setLoadingProducts(true);
+    this.productService.updateProduct(request, token).pipe(
+      finalize(() => {
+        this.setLoadingProducts(false);
+      })
+    ).subscribe({
+      next: (product: Product) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: `Product ${product.name} successfully updated!`
+        })
+        this.setErrorProducts(null);
+        this.updateProductInState(product);
+      },
+      error: (error) => {
+        this.setErrorProducts(error);
+      }
+    });
+  }
+
+  updateCategory(request: UpdateCategoryRequest, token: Token) {
+    this.setLoadingCategories(true);
+    this.productService.updateCategory(request, token).pipe(
+      finalize(() => {
+        this.setLoadingCategories(false);
+      })
+    ).subscribe({
+      next: (category: Category) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: `Category ${category.name} successfully updated!`
+        })
+        this.setErrorCategories(null);
+        this.updateCategoryInState(category);
+      },
+      error: (error) => {
+        this.setErrorCategories(error);
+      }
+    });
+  }
+
+  deleteProduct(productId: number, token: Token) {
+    this.setLoadingProducts(true);
+    this.productService.deleteProduct(productId, token).pipe(
+      finalize(() => {
+        this.setLoadingProducts(false);
+      })
+    ).subscribe({
+      next: (product: Product) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: `Product ${product.name} successfully deleted!`
+        })
+        this.setErrorProducts(null);
+        this.removeProduct(productId);
+      },
+      error: (error) => {
+        this.setErrorProducts(error);
+      }
+    });
+  }
+
+  deleteCategory(categoryId: number, token: Token) {
+    this.setLoadingCategories(true);
+    this.productService.deleteCategory(categoryId, token).pipe(
+      finalize(() => {
+        this.setLoadingCategories(false);
+      })
+    ).subscribe({
+      next: (category: Category) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success!',
+          detail: `Category ${category.name} successfully deleted!`
+        })
+        this.setErrorCategories(null);
+        this.removeCategory(categoryId);
+      },
+      error: (error) => {
+        this.setErrorCategories(error);
+      }
+    });
+  }
+
+  // STATE UPDATERS
+
+  addCategory(category: Category) {
+    this.setCategories([...this.stateSubject.value.categories, category]);
+  }
+
+  addProduct(product: Product) {
+    let products = this.stateSubject.value.products;
+    if(product.categoryId  !== products[0].categoryId) return
+    this.setProducts([...this.stateSubject.value.products, product]);
+  }
+
+  updateProductInState(updatedProduct: Product) {
+    const products = this.stateSubject.value.products.map(product =>
+      product.id === updatedProduct.id ? updatedProduct : product
+    );
+    this.setProducts(products);
+  }
+
+  updateCategoryInState(updatedCategory: Category) {
+    const categorys = this.stateSubject.value.categories.map(category =>
+      category.id === updatedCategory.id ? updatedCategory : category
+    );
+    this.setCategories(categorys);
+  }
+
+  removeProduct(productId: number) {
+    const products = this.stateSubject.value.products.filter(product => product.id !== productId);
+    this.setProducts(products);
+  }
+
+  removeCategory(categoryId: number) {
+    const categories = this.stateSubject.value.categories.filter(category => category.id !== categoryId);
+    this.setCategories(categories);
   }
 
   // STATE SETTERS
@@ -101,7 +279,7 @@ export class ProductsStateService {
     this.setState({errorFilterCriteria})
   }
 
-  setLoadingCategoires(loadingCategories: boolean) {
+  setLoadingCategories(loadingCategories: boolean) {
     this.setState({loadingCategories})
   }
 
@@ -116,30 +294,5 @@ export class ProductsStateService {
 
   setState(partialState: Partial<ProductsState>){
     this.stateSubject.next({...this.stateSubject.value,...partialState})
-  }
-
-  filterProductsExcept(categoryId: number | null, search: string | null,
-                       properties: Map<string, string> | null, page: number | null,
-                       itemsPerPage: number | null, sort: string | null, currentProductId: number) {
-    this.setLoadingProducts(true)
-    this.productService.filterProducts(categoryId, search, properties, page, itemsPerPage, sort).pipe(
-      finalize(() => {
-
-        this.setLoadingProducts(false)
-      })
-    )
-      .subscribe({
-        next: (products: Product[]) => {
-          if(products) this.setErrorProducts(null)
-
-          products.splice(products.findIndex(product => product.id === currentProductId), 1)
-          this.setProducts(products)
-        },
-        error: (error) => {
-          if(error.toString() === "Error: Server-side error: There are no products matching your search and filter criteria." && categoryId)
-            this.getFilterCriteria(categoryId)
-          this.setErrorProducts(error)
-        }
-      })
   }
 }

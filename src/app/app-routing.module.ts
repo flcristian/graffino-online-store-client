@@ -12,18 +12,37 @@ import {PaymentSuccessfulComponent} from "./orders/payment-successful/payment-su
 import {PaymentCanceledComponent} from "./orders/payment-canceled/payment-canceled.component";
 import {ProductPageComponent} from "./products/product-page/product-page.component";
 import {WishlistComponent} from "./users/wishlist/wishlist.component";
+import {AdministratorPageComponent} from "./administrator/administrator-page/administrator-page.component";
+import {UnauthorizedComponent} from "./unauthorized/unauthorized.component";
+import {ProductsManagerComponent} from "./administrator/products-manager/products-manager.component";
+import {CategoriesManagerComponent} from "./administrator/categories-manager/categories-manager.component";
+import {OrdersManagerComponent} from "./administrator/orders-manager/orders-manager.component";
+import {OrderPageComponent} from "./orders/order-page/order-page.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'account', redirectTo: 'account/your-orders', pathMatch: 'full' },
-  { path: 'products', redirectTo: 'products', pathMatch: 'full' },
-  { path: 'product/:id', component: ProductPageComponent },
+  { path: 'admin', redirectTo: 'admin/products', pathMatch: 'full' },
+
   { path: 'home', component: HomeComponent },
+  { path: 'products', component: ProductsListComponent },
+  { path: 'product/:id', component: ProductPageComponent },
+
+  { path: 'admin',
+    component: AdministratorPageComponent,
+    children: [
+      { path: 'categories', component: CategoriesManagerComponent },
+      { path: 'products', component: ProductsManagerComponent },
+      { path: 'orders', component: OrdersManagerComponent },
+    ]
+  },
+
+  { path: 'order/:id', component: OrderPageComponent },
+
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'cart', component: CartComponent },
   { path: 'wishlist', component: WishlistComponent },
-  { path: 'products', component: ProductsListComponent },
   { path: 'account',
     component: CustomerAccountPageComponent,
     children: [
@@ -31,8 +50,10 @@ const routes: Routes = [
       { path: 'your-orders', component: YourOrdersComponent },
     ]
   },
+
   { path: 'payment-successful', component: PaymentSuccessfulComponent },
-  { path: 'payment-canceled', component: PaymentCanceledComponent }
+  { path: 'payment-canceled', component: PaymentCanceledComponent },
+  { path: 'unauthorized', component: UnauthorizedComponent },
 ];
 
 @NgModule({

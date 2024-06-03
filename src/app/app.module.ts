@@ -33,6 +33,16 @@ import {
 import {CarouselModule} from "primeng/carousel";
 import { FooterComponent } from './footer/footer.component';
 import {WishlistComponent} from "./users/wishlist/wishlist.component";
+import {AdministratorPageComponent} from "./administrator/administrator-page/administrator-page.component";
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import {ProductsManagerComponent} from "./administrator/products-manager/products-manager.component";
+import { CategoriesManagerComponent } from './administrator/categories-manager/categories-manager.component';
+import {ConfirmPopupModule} from "primeng/confirmpopup";
+import {TableModule} from "primeng/table";
+import {OverlayPanelModule} from "primeng/overlaypanel";
+import { OrdersManagerComponent } from './administrator/orders-manager/orders-manager.component';
+import {DropdownModule} from "primeng/dropdown";
+import { OrderPageComponent } from './orders/order-page/order-page.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +62,13 @@ import {WishlistComponent} from "./users/wishlist/wishlist.component";
     ProductPageComponent,
     ProductRecommendationCarouselComponent,
     FooterComponent,
-    WishlistComponent
+    WishlistComponent,
+    AdministratorPageComponent,
+    UnauthorizedComponent,
+    ProductsManagerComponent,
+    CategoriesManagerComponent,
+    OrdersManagerComponent,
+    OrderPageComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +83,11 @@ import {WishlistComponent} from "./users/wishlist/wishlist.component";
     RippleModule,
     DataViewModule,
     FormsModule,
-    CarouselModule
+    CarouselModule,
+    ConfirmPopupModule,
+    TableModule,
+    OverlayPanelModule,
+    DropdownModule
   ],
   providers: [
     ConfirmationService,

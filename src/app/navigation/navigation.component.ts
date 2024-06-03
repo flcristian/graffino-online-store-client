@@ -39,14 +39,14 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
     let token: Token = {
       tokenType: "Bearer",
-      accessToken: "CfDJ8KPlH2Bs_pFHrhdy1pG9SJmX-ki6So69M6jY_QtxabxxDNZbNqiWHSdhr9EDMQ810ZqZwW6eyGKqZlEE0TNWQ3CzzO5fkAqmiIVJ4g6Hpr3pMJlhGzAvTn6qzmk1O_quiSa1Hv9RVTX3FTTkd6YWEeLRgbtY__dOx3G0hezcDRihY_hf548YebgL-sQBT9IZzKobIzvIAgllNg39KyHG3WBjOCYh0rGkbH8KE5dXmRNnZMpDlkaW60Zoj-rTboWxY34pI2WAfJPDp0qGuR4pJvZRgZ80qSU7mf9mMynti6hMk351Fa-wt1YiTNbNjXluI-I4NyOQ_pGyV-BfhZYRB48aEWVbERvFsJQfhJrihhkmE5SlSpgne9EY4cHXqLoC8WAizSWboLy9i3ktPaG3etV1tFIoXIL8o6zXB0nBQl3XWhtXjB41YLtNmlJOytiwBoKe1jT_1PvLsNN7instFhpIwTNEQ3QGFltwsWGGC6ZhBJ1gh_kW_VCSgDDVrrXYX0dIELrMrgtg5h-6Hf01fQh5s3ZA6-cEtZoIgxIpAYD4B9emuvA8Budl_2YOBWX8F-L6SRnvB4p7krEJ8RFeEpgXbScgWmWXvehqFX4-YRF48BFsBzDvrl1s3VxjzvI2J6ms2xQIrGYFyocxUnkvJtXQPRheVx5Rph4qCprWp1PaGVLDmxNuJaYbUVORCqJGONK7MbyiqWsPABaDA4vc6s9N7PWS3ZBCPaIwan2eGBdQagHKvlXs981SUm2PIbfHmSw0_AtFL_z5hNx-VBSfAQ3jMqK9JBAcSDrp_FZIDu1ziqS1lPXJUW6PkpkwtKmGOUVm_J4TaF2ySz_skxiZuRE"
+      accessToken: "CfDJ8DswkO2bWyNHhZsQUZkwQnLresTL7vV866KWFqTTcoXZN0iKArZSkj0W8pirNQBG0XNFTYHUgrl9S_jw0qoKQ7InD9nXj_wZW-onOLecbbXIcEIQdn97dU9NOExmsb0MBcyILGPdVC3pxqyZN1tFv8IEqFSnxE6CyBTwq1EJcsgeMoq_ifKl1O4lq53QfChOgoZc-pe2LQe1ujQPcH2QE5gMCn-VjrQvDuDXnweybhGxiXYBrAA3K-w6ohdLlaqc11JT5ocO0Gn0LIq_cr0fG9sUE69Yj4AU2e5q6gjDFl5-jtzl1TaS6rsw0FXaMjGmafqnhHoIMc6xceECIctEYd3RXCZr3gbvm_KuG5CrokiiKou7MtDdwK5VsVGmo_cr8Z-7QJ1oOzG-DQKdtR9mm4FbjEbyClrUbFCIL9nZ_16buGfc8tg-3QLtJgwlp2Xf_zNctKOCoQKwaftGG8HHGupoAxEybGtPm_jsmKcYuhYE7NixxXjQ_VSlB9f0vlRc-wPpIwl0GC6cmgNSsZYpnObLxEcxxq-S7gWCbYqLaWMveshNWWM6fjEyjA73-ruhOon7z7kYKF5A61Oc0E5atbtfzlRzmAFGK8ChzNKhLNaqIL5V_zMb4UflROT1hBW0FrfDd9VztWF1CtLNPr-0RXXfVaCM1fP-S6FfZLZDEbne8aIHoUOnEc6MNcYd-HaE46upEcUl_46klTDeI8sPa2jM_nHCf-M5sWkvzYBZOF_cTlaMo-tVA_gRET4bC34rBUrSa2ausGMDg1wmktMtKoLXSvVUWoWV5pj9pr_Nltc_YP_agi86sNHAHconjr8BXoqsPKhMDmYRhYhrkGI35l8"
     }
 
     let user: User = {
       id: "614176e5-98c8-473a-986e-e87515b2291a",
       email: "qflorescucristian@gmail.com",
       emailConfirmed: true,
-      roles: []
+      roles: ["Administrator"]
     }
     let cart: Order = {
       id: 0,
@@ -114,5 +114,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   navigateToWishlist() {
     this.router.navigate(["wishlist"])
+  }
+
+  navigateToAdmin() {
+    this.router.navigate(["admin"])
   }
 }

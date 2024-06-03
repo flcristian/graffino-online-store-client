@@ -109,7 +109,16 @@ export class CurrentUserStateService {
           lastDateUpdated: new Date(),
           orderDetails: []
         }
+        let wishlist: Order = {
+          id: 0,
+          customer: user,
+          customerId: user.id,
+          status: 0,
+          lastDateUpdated: new Date(),
+          orderDetails: []
+        }
         this.setCart(cart)
+        this.setWishlist(wishlist)
 
         this.router.navigate(["home"])
       },
@@ -120,6 +129,10 @@ export class CurrentUserStateService {
         this.setLoadingUser(false)
       }
     })
+  }
+
+  getToken() {
+    return this.stateSubject.value.token;
   }
 
   getOrders() {
@@ -264,6 +277,10 @@ export class CurrentUserStateService {
     this.orderService.createCheckoutSession(request)
   }
 
+  isAdmin(): boolean {
+    return !!(this.stateSubject.value.user && this.stateSubject.value.user.roles.indexOf("Administrator") !== -1);
+  }
+
   // STATE SETTERS
   setToken(token: Token | null) {
     this.setState({token})
@@ -311,5 +328,26 @@ export class CurrentUserStateService {
 
   setState(partialState: Partial<CurrentUserState>){
     this.stateSubject.next({...this.stateSubject.value,...partialState})
+  }
+
+  logout() {
+    this.stateSubject.next({
+      token: null,
+      user: null,
+      orders: [],
+      cart: null,
+      wishlist: null,
+      errorUser: null,
+      loadingUser: false,
+      errorOrders: null,
+      loadingOrders: false,
+      errorCart: null,
+      loadingCart: false
+    })
+    this.router.navigate(["login"])
+  }
+
+  loggedIn() {
+    return this.stateSubject.value.user != null && this.stateSubject.value.token != null;
   }
 }

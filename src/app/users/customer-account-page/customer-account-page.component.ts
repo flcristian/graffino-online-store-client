@@ -41,4 +41,8 @@ export class CustomerAccountPageComponent implements OnInit, OnDestroy{
   navigateToHome() {
     this.router.navigate(["home"])
   }
+
+  logout() {
+    this.state.logout()
+  }
 }
