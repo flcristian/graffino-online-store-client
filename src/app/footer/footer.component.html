@@ -1,23 +1,23 @@
-<div class="h-56 bg-accent grid grid-cols-2 gap-10 py-10 px-20">
-  <div class="flex flex-col justify-center">
+<div class="bg-accent flex flex-col lg:grid grid-cols-2 gap-10 py-10 px-20">
+  <div class="flex flex-col justify-center items-center md:items-start">
     <h1 class="text-xl w-fit text-white transition-all cursor-pointer select-none hover:font-bold">© Graffino Online Store</h1>
     <p class="text-sm text-white select-none">Since 2024</p>
   </div>
-  <div class="flex flex-row gap-20 justify-end">
-    <div class="flex flex-col items-end">
+  <div class="2xs:flex 2xs:flex-col 2xs:items-center md:grid grid-cols-2 lg:flex lg:flex-row 2xs:gap-10 md:gap-20 justify-end">
+    <div class="flex flex-col items-center md:items-start lg:items-end">
       <h1 class="text-3xl text-white select-none">Links:</h1>
       <a class="text-lg text-white cursor-pointer hover:underline select-none">Instagram</a>
       <a class="text-lg text-white cursor-pointer hover:underline select-none">YouTube</a>
       <a class="text-lg text-white cursor-pointer hover:underline select-none">Tik Tok</a>
       <a class="text-lg text-white cursor-pointer hover:underline select-none">X</a>
     </div>
-    <div class="flex flex-col gap-2">
-      <h1 class="text-3xl text-white select-none">Subscribe to our newsletter!</h1>
-      <label class="input input-bordered flex items-center gap-2 text-accent">
+    <div class="flex flex-col gap-2 w-full items-center md:items-start">
+      <h1 class="text-xl transition-all xl:text-3xl text-white select-none">Subscribe to our newsletter!</h1>
+      <label class="input input-bordered flex items-center gap-2 text-accent w-80">
         Email
-        <input type="text" class="grow placeholder-primary" [(ngModel)]="email" placeholder="you@email.com" />
+        <input type="text" class="grow placeholder-primary w-80" [(ngModel)]="email" placeholder="you@email.com" />
       </label>
-      <button class="btn btn-primary" (click)="subscribe()">Subscribe</button>
+      <button class="btn btn-primary w-80" (click)="subscribe()">Subscribe</button>
     </div>
   </div>
 </div>
