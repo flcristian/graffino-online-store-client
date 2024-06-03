@@ -1,4 +1,6 @@
-<nav class="navbar md:h-24 bg-gradient-to-t from-base-200 to-white px-10 py-5 grid grid-cols-2 gap-4 md:flex md:flex-row justify-between z-50 relative drop-shadow-md">
+<nav class="navbar md:h-24 bg-gradient-to-t from-base-200 to-white px-10 py-5 grid grid-cols-2 gap-4 md:flex md:flex-row justify-between z-50 relative drop-shadow-md"
+     [ngClass]="{'navbar-hide-effect': startEffect}"
+     [ngClass]="{'navbar-sticky': isSticky}">
   <!-- (LOGO) -->
   <section>
     <h1 class="text-black text-4xl marcellus

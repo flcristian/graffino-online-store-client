@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {filter, Subscription} from "rxjs";
 import {CurrentUserStateService} from "../users/services/current-user-state.service";
@@ -17,12 +17,21 @@ export class NavigationComponent implements OnInit, OnDestroy {
   user: User | null = null
   cart: Order | null = null
   wishlist: Order | null = null
+  isSticky: boolean = false;
+  startEffect: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     protected state: CurrentUserStateService
   ) { }
+
+  @HostListener('window:scroll', ['$event'])
+  checkScroll() {
+    const scrollPosition = document.documentElement.scrollTop || document.body.scrollTop || 0;
+    this.startEffect = scrollPosition >= 250
+    this.isSticky = scrollPosition >= 300;
+  }
 
   ngOnInit() {
     this.subscriptions.add(

@@ -20,6 +20,8 @@ export class ProductRecommendationCarouselComponent implements OnInit, OnDestroy
   @Input() sort: string | null = null;
   @Input() properties: Map<string, string> | null = null;
 
+  responsiveOptions: any[] | undefined;
+
   constructor(
     private router: Router,
     protected service: ProductService,
@@ -30,6 +32,24 @@ export class ProductRecommendationCarouselComponent implements OnInit, OnDestroy
     this.subscriptions.add(
       this.getProducts()
     )
+
+    this.responsiveOptions = [
+      {
+        breakpoint: '1280px',
+        numVisible: 3,
+        numScroll: 1
+      },
+      {
+        breakpoint: '1024px',
+        numVisible: 2,
+        numScroll: 1
+      },
+      {
+        breakpoint: '768px',
+        numVisible: 1,
+        numScroll: 1
+      }
+    ];
   }
 
   ngOnDestroy() {
