@@ -16,6 +16,7 @@ import {OrderDetail} from "../../order-details/models/order-detail.model";
 import {Product} from "../../products/models/product.model";
 import {CheckoutProductDetailDTO} from "../../orders/models/checkout-product-detail-dto";
 import {CheckoutRequest} from "../../orders/models/checkout-request.model";
+import {LocalStorageService} from "../../utlity/services/local-storage.service";
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,8 @@ export class CurrentUserStateService {
     private messageService: MessageService,
     private userService: UserService,
     private orderService: OrderService,
-    private router: Router
+    private router: Router,
+    private localStorageService: LocalStorageService
   ) { }
 
   // SERVICE CALLS
@@ -99,8 +101,6 @@ export class CurrentUserStateService {
           return;
         }
 
-        this.setUser(user)
-        this.getOrders()
         let cart: Order = {
           id: 0,
           customer: user,
@@ -117,8 +117,25 @@ export class CurrentUserStateService {
           lastDateUpdated: new Date(),
           orderDetails: []
         }
-        this.setCart(cart)
-        this.setWishlist(wishlist)
+
+        let storageState = this.localStorageService.retrieveLoggedInUser()
+        if(storageState !== null) {
+          this.setState({
+            user: storageState.user,
+            token: token,
+            cart: storageState.cart,
+            wishlist: storageState.wishlist
+          })
+        } else {
+          this.setState({
+            user: user,
+            token: token,
+            cart: cart,
+            wishlist: wishlist
+          })
+        }
+
+        this.getOrders()
 
         this.router.navigate(["home"])
       },
@@ -239,6 +256,7 @@ export class CurrentUserStateService {
       ).subscribe({
       next: () => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: `Successfully changed your password.` });
+        this.logout()
       },
       error: (error) => {
         this.setErrorUser(error)
@@ -287,19 +305,22 @@ export class CurrentUserStateService {
   }
 
   setUser(user: User | null) {
-    this.setState({user})
+    this.setState({ user });
+    this.saveStateToLocalStorage()
+  }
+
+  setCart(cart: Order | null) {
+    this.setState({ cart });
+    this.saveStateToLocalStorage()
+  }
+
+  setWishlist(wishlist: Order | null) {
+    this.setState({ wishlist });
+    this.saveStateToLocalStorage()
   }
 
   setOrders(orders: Order[]) {
     this.setState({orders})
-  }
-
-  setCart(cart: Order | null) {
-    this.setState({cart})
-  }
-
-  setWishlist(wishlist: Order | null) {
-    this.setState({wishlist})
   }
 
   setErrorUser(errorUser: string | null) {
@@ -330,6 +351,19 @@ export class CurrentUserStateService {
     this.stateSubject.next({...this.stateSubject.value,...partialState})
   }
 
+  saveStateToLocalStorage() {
+    let currentUser = this.stateSubject.value.user;
+    if(currentUser) {
+      this.localStorageService.saveUser({
+        user: currentUser,
+        token: this.stateSubject.value.token,
+        tokenDate: null,
+        cart: this.stateSubject.value.cart!,
+        wishlist: this.stateSubject.value.wishlist!
+      });
+    }
+  }
+
   logout() {
     this.stateSubject.next({
       token: null,
@@ -345,6 +379,11 @@ export class CurrentUserStateService {
       loadingCart: false
     })
     this.router.navigate(["login"])
+
+    let currentUser = this.stateSubject.value.user
+    if(currentUser) {
+      this.localStorageService.logUserOut(currentUser.email)
+    }
   }
 
   loggedIn() {
