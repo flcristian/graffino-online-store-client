@@ -34,10 +34,13 @@ export class LocalStorageService {
 
   logUserOut(email: string) {
     const existingUsersJson = localStorage.getItem("users");
+    console.log("powerrau")
 
     if (existingUsersJson) {
       const existingUsers: CurrentUserLocalStorage[] = JSON.parse(existingUsersJson);
       const userIndex = existingUsers.findIndex(state => state.user.email === email);
+
+      console.log(userIndex)
 
       if (userIndex !== -1) {
         existingUsers[userIndex].token = null;
@@ -51,7 +54,7 @@ export class LocalStorageService {
     if (serializedData) {
       let users: CurrentUserLocalStorage[] = JSON.parse(serializedData);
 
-      let index = users.findIndex(u => u.token !== null)
+      let index = users.findIndex(state => state.token !== null)
       if(index === -1) return null
 
       return users[index]
@@ -68,5 +71,18 @@ export class LocalStorageService {
     const hoursDifference = timeDifference / (1000 * 60 * 60);
 
     return hoursDifference >= 1;
+  }
+
+  retrieveUser(email: string): CurrentUserLocalStorage | null {
+    const serializedData = localStorage.getItem("users");
+    if (serializedData) {
+      let users: CurrentUserLocalStorage[] = JSON.parse(serializedData);
+
+      let index = users.findIndex(state => state.user.email === email)
+      if(index === -1) return null
+
+      return users[index]
+    }
+    return null;
   }
 }

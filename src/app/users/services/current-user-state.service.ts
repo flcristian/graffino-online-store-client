@@ -118,8 +118,8 @@ export class CurrentUserStateService {
           orderDetails: []
         }
 
-        let storageState = this.localStorageService.retrieveLoggedInUser()
-        if(storageState !== null && storageState.user.email === user.email) {
+        let storageState = this.localStorageService.retrieveUser(user.email)
+        if(storageState !== null) {
           this.setState({
             user: storageState.user,
             token: token,
@@ -363,6 +363,11 @@ export class CurrentUserStateService {
   }
 
   logout() {
+    let currentUser = this.stateSubject.value.user
+    if(currentUser) {
+      this.localStorageService.logUserOut(currentUser.email)
+    }
+
     this.stateSubject.next({
       token: null,
       user: null,
@@ -377,11 +382,6 @@ export class CurrentUserStateService {
       loadingCart: false
     })
     this.router.navigate(["login"])
-
-    let currentUser = this.stateSubject.value.user
-    if(currentUser) {
-      this.localStorageService.logUserOut(currentUser.email)
-    }
   }
 
   loggedIn() {
