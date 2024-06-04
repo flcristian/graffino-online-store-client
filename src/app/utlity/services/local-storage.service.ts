@@ -34,13 +34,10 @@ export class LocalStorageService {
 
   logUserOut(email: string) {
     const existingUsersJson = localStorage.getItem("users");
-    console.log("powerrau")
 
     if (existingUsersJson) {
       const existingUsers: CurrentUserLocalStorage[] = JSON.parse(existingUsersJson);
       const userIndex = existingUsers.findIndex(state => state.user.email === email);
-
-      console.log(userIndex)
 
       if (userIndex !== -1) {
         existingUsers[userIndex].token = null;
