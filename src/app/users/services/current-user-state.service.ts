@@ -119,7 +119,7 @@ export class CurrentUserStateService {
         }
 
         let storageState = this.localStorageService.retrieveLoggedInUser()
-        if(storageState !== null) {
+        if(storageState !== null && storageState.user.email === user.email) {
           this.setState({
             user: storageState.user,
             token: token,
@@ -306,17 +306,14 @@ export class CurrentUserStateService {
 
   setUser(user: User | null) {
     this.setState({ user });
-    this.saveStateToLocalStorage()
   }
 
   setCart(cart: Order | null) {
     this.setState({ cart });
-    this.saveStateToLocalStorage()
   }
 
   setWishlist(wishlist: Order | null) {
     this.setState({ wishlist });
-    this.saveStateToLocalStorage()
   }
 
   setOrders(orders: Order[]) {
@@ -349,6 +346,7 @@ export class CurrentUserStateService {
 
   setState(partialState: Partial<CurrentUserState>){
     this.stateSubject.next({...this.stateSubject.value,...partialState})
+    this.saveStateToLocalStorage()
   }
 
   saveStateToLocalStorage() {

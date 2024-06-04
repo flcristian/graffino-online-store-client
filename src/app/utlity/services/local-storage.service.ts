@@ -53,7 +53,7 @@ export class LocalStorageService {
 
       let index = users.findIndex(u => u.token !== null)
       if(index === -1) return null
-      
+
       return users[index]
     }
     return null;
