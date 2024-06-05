@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { MessageService } from "primeng/api";
-import { catchError, Observable, throwError } from "rxjs";
+import {catchError, Observable, of, throwError} from "rxjs";
 import {Router} from "@angular/router";
 import {CurrentUserStateService} from "../users/services/current-user-state.service";
 
@@ -49,7 +49,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       return `Email or password is incorrect. Please try again.`;
     }
 
-    if (url.includes('/register') && error.status === 400) {
+    if (url.includes('/register') && error.status === 0) {
       this.userState.logout()
       return `Email already used.`;
     }
