@@ -3,7 +3,7 @@
     <div *ngFor="let order of state.orders"
          class="flex flex-row justify-between w-full
          cursor-pointer hover:drop-shadow-2xl transition-all
-         bg-base-200 p-3 rounded-lg drop-shadow-md h-24" (click)="navigateToOrder(order.id)">
+         glass p-3 rounded-lg drop-shadow-md h-24" (click)="navigateToOrder(order.id)">
       <div class="flex flex-col justify-between gap-3">
         <h1 class="text-lg font-bold">Order #{{order.id}}</h1>
         <div class="flex flex-row gap-2">

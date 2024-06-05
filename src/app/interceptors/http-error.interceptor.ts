@@ -16,7 +16,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     return next.handle(request)
       .pipe(
         catchError((error: HttpErrorResponse) => {
-          const errorMessage = this.getErrorMessage(error);
+          const errorMessage = this.getErrorMessage(error, request.url);
           if (!this.ignoreError(error, request.url)) {
             this.displayError(error, errorMessage, request.url);
           }
@@ -43,10 +43,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     return false;
   }
 
-  private getErrorMessage(error: HttpErrorResponse): string {
-    if (error.status === 401) {
+  private getErrorMessage(error: HttpErrorResponse, url: string): string {
+    if (url.includes('/login') && error.status === 0) {
       this.userState.logout()
-      return `Invalid login credentials! Please try again.`;
+      return `Email or password is incorrect. Please try again.`;
     }
 
     if (error.error instanceof ErrorEvent) {
@@ -69,8 +69,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       detail: errorMessage
     }
 
-    console.log(error, url)
-    if (url.includes('/login') && error.status === 401) message.summary = "Email or password are wrong.";
+    if (url.includes('/login') && error.status === 0) message.summary = "Invalid credentials";
 
     this.messageService.add(message);
   }
