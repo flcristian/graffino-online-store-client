@@ -55,7 +55,7 @@ export class ProductsStateService {
 
           this.setProducts(response.products)
           this.setTotalPages(response.totalPages)
-          if(categoryId) this.getFilterCriteria(categoryId)
+          if(categoryId && response.products.length > 0) this.getFilterCriteria(categoryId)
         },
         error: (error) => {
           if(error.toString() === "Error: Server-side error: There are no products matching your search and filter criteria." && categoryId)

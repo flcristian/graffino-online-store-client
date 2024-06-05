@@ -1,4 +1,4 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Order} from "../models/order.model";
 import {Observable} from "rxjs";
@@ -6,17 +6,22 @@ import {loadStripe, Stripe} from "@stripe/stripe-js";
 import {CheckoutRequest} from "../models/checkout-request.model";
 import {UpdateOrderRequest} from "../models/update-order-request.model";
 import {Token} from "../../users/models/token.model";
-import {environment} from "../../../environments/environment";
+import {ConfigService} from "../../system/config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private server: string = `${environment.apiUrl}/api/v1/Orders`;
-  private checkoutServer: string = `${environment.apiUrl}/api/v1/Checkout`
+  private apiUrl: string = '';
+  private server: string = ''
+  private checkoutServer: string = ''
   stripe: Stripe | null = null
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private config: ConfigService) {
+    this.apiUrl = config.getHostName();
+    this.server = `${this.apiUrl}/api/v1/Orders`
+    this.checkoutServer = `${this.apiUrl}/api/v1/Checkout`
+  }
 
   private async initializeStripe() {
     this.stripe = await loadStripe('pk_test_51PJKj4RqnOYJkgzarSGG6XTIbPFHJfwcGgN2M4RWAnsPFTrwoOHFTPbeTmrb1DJodczhaUK3a42ni44Qm1DKjf8n00yZIAorfx');

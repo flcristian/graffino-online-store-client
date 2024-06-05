@@ -18,7 +18,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         catchError((error: HttpErrorResponse) => {
           const errorMessage = this.getErrorMessage(error);
           if (!this.ignoreError(error, request.url)) {
-            this.displayError(error, errorMessage);
+            this.displayError(error, errorMessage, request.url);
           }
           return throwError(() => new Error(errorMessage));
         })
@@ -60,13 +60,17 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     return `Unexpected error occurred.`;
   }
 
-  private displayError(error: HttpErrorResponse, errorMessage: string): void {
+  private displayError(error: HttpErrorResponse, errorMessage: string, url: string): void {
     const summary = `${error.statusText}`;
 
-    this.messageService.add({
+    let message = {
       severity: 'error',
       summary,
       detail: errorMessage
-    });
+    }
+
+    if (url.includes('/login') && error.status === 401) message.summary = "Email or password are wrong.";
+
+    this.messageService.add(message);
   }
 }

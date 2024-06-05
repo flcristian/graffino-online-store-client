@@ -9,15 +9,19 @@ import {UpdateProductRequest} from "../models/update-product-request.model";
 import {Token} from "../../users/models/token.model";
 import {UpdateCategoryRequest} from "../models/update-category-request.model";
 import {FilterProductsResponse} from "../models/filter-products-response.model";
-import {environment} from "../../../environments/environment";
+import {ConfigService} from "../../system/config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private server: string = `${environment.apiUrl}/api/v1/Products`;
+  private apiUrl: string = ''
+  private server: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private config: ConfigService) {
+    this.apiUrl = config.getHostName();
+    this.server = `${this.apiUrl}/api/v1/Products`
+  }
 
   filterProducts(categoryId: number | null, search: string | null,
                  properties: Map<string, string> | null, page: number | null,

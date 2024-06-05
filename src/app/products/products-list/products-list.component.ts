@@ -15,6 +15,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   selectedCategory: number = 1;
   currentPage: number = 1;
   totalPages: number = 1;
+  categories: Category[] = []
 
   constructor(
     private router: Router,
@@ -48,6 +49,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   private getAllCategories() {
     return this.productState.getAllCategories().subscribe({
       next: (categories: Category[]) => {
+        this.categories = categories
         this.productState.setCategories(categories)
       },
       error: (error) => {
@@ -86,7 +88,9 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
       this.router.navigate(['products'], { queryParams });
 
-      this.applyFilters(params)
+      if(this.categories.length > 0){
+        this.applyFilters(params)
+      }
     })
   }
 

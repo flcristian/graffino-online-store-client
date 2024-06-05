@@ -8,6 +8,7 @@ import {LocalStorageService} from "./utlity/services/local-storage.service";
   styleUrl: './app.component.sass'
 })
 export class AppComponent implements OnInit {
+  title= "graffino-online-store-client";
   constructor(
     private localStorageService: LocalStorageService,
     private currentUserStateService: CurrentUserStateService

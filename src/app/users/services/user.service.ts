@@ -7,16 +7,21 @@ import {LoginResponse} from "../models/login-response.model";
 import {Token} from "../models/token.model";
 import {User} from "../models/user.model";
 import {ChangePasswordRequest} from "../models/change-password-request.model";
-import {environment} from "../../../environments/environment";
+import {ConfigService} from "../../system/config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private authenticationServer: string = `${environment.apiUrl}`;
-  private userServer: string = `${environment.apiUrl}/api/v1/Users`;
+  private apiUrl: string = '';
+  private authenticationServer: string = '';
+  private userServer: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private config: ConfigService) {
+    this.apiUrl = config.getHostName();
+    this.authenticationServer = this.apiUrl;
+    this.userServer = `${this.apiUrl}/api/v1/Users`
+  }
 
   login(request: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.authenticationServer}/login`, request);
