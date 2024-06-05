@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { MessageService } from "primeng/api";
-import { catchError, Observable, throwError } from "rxjs";
+import {catchError, Observable, of, throwError} from "rxjs";
 import {Router} from "@angular/router";
 import {CurrentUserStateService} from "../users/services/current-user-state.service";
 
@@ -20,7 +20,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           if (!this.ignoreError(error, request.url)) {
             this.displayError(error, errorMessage, request.url);
           }
-          return throwError(() => new Error(errorMessage));
+          if(error.status !== 0 && error.status !== 401) return throwError(() => new Error(errorMessage));
+          return of({} as HttpEvent<any>);
         })
       );
   }
