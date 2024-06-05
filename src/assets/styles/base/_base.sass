@@ -10,27 +10,6 @@
 h1,h2,h3,a,p
   font-family: "Marcellus", serif
 
-.title-shadow
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5)
-
-.text-shadow-large
-  text-shadow: 6px 6px 12px rgba(0, 0, 0, 0.5)
-
-.bg-rainbow
-  background: linear-gradient(to bottom right, #ff6b6b, #ffb347, #4ecdc4)
-  background-size: 100% 100%
-  background-position: 50%
-
-.visible-navbar
-  opacity: 1
-  position: fixed
-  transition: opacity 0.3s ease
-
-.hidden-navbar
-  opacity: 0
-  position: absolute
-  transition: opacity 0.3s ease
-
 .app-main-body > :nth-child(3)
   display: flex
   flex-grow: 1
@@ -43,3 +22,12 @@ p-columnfilterformelement > *
   min-width: 4rem
   padding: 10px
   font-weight: 400
+
+.navbar-sticky
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  width: 100%
+  z-index: 1000
+  transition: all 0.35s ease

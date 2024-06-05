@@ -1,29 +1,31 @@
 <ng-container *ngIf="productState.state$ | async as state">
   <ng-container *ngIf="!state.loading && !state.error; else loadingOrError">
     <div *ngIf="state.product as product;" class="p-10">
-      <div class="flex flex-row justify-center gap-2">
+      <div class="flex flex-col md:flex-row items-center justify-center gap-2">
         <img onclick="image_zoom.showModal()"
-             class="max-h-136 rounded-xl object-cover self-end shadow-gray-400 shadow-lg cursor-zoom-in"
+             class="md:max-w-96 md:max-h-136 rounded-xl object-cover shadow-gray-400 shadow-lg cursor-zoom-in"
              src="{{product.imageUrl}}" alt="PRODUCT IMAGE">
 
         <dialog id="image_zoom" class="modal">
           <form method="dialog" class="modal-backdrop">
             <button>close</button>
           </form>
-          <div class="modal-box relative p-2 max-w-fit">
+          <div class="modal-box relative p-0 max-w-fit">
             <div class="absolute modal-action z-20 right-7">
               <form method="dialog">
-                <button class="btn btn-circle btn-accent font-bold">X</button>
+                <button class="btn btn-circle btn-accent font-bold">
+                  <i class="pi pi-times"></i>
+                </button>
               </form>
             </div>
             <div class="carousel max-w-fit rounded-lg">
               <div class="carousel-item relative max-w-fit">
-                <img src="{{product.imageUrl}}" class="w-256 h-auto" />
+                <img src="{{product.imageUrl}}" class="w-256 h-auto"  alt="{{product.name}} Image"/>
               </div>
             </div>
           </div>
         </dialog>
-        <section class="xl:col-span-2 min-w-96">
+        <section class="xl:col-span-2 w-full md:w-80 lg:w-96 ">
           <div class="flex flex-col bg-base-100 shadow-xl p-5 justify-between gap-16 rounded-lg">
             <div>
               <h1 class="text-3xl font-bold text-primary drop-shadow-md">{{product.name}}</h1>
@@ -39,8 +41,8 @@
               </div>
             </div>
             <div class="flex flex-col gap-2">
-              <button class="btn btn-primary" (click)="addToCart(product)">Add To Cart</button>
-              <button class="btn btn-secondary text-white" (click)="addToWishlist(product)">Add To Wishlist</button>
+              <button class="btn btn-primary transition-all hover:drop-shadow-md" (click)="addToCart(product)">Add To Cart</button>
+              <button class="btn btn-secondary text-white transition-all hover:drop-shadow-md" (click)="addToWishlist(product)">Add To Wishlist</button>
             </div>
           </div>
         </section>
@@ -52,13 +54,13 @@
     </div>
   </ng-container>
   <ng-template #loadingOrError>
-    <div class="flex flex-col h-full w-full items-center justify-center gap-4">
+    <div class="flex flex-col min-h-136 h-full w-full items-center justify-center gap-4">
       <span *ngIf="state.loading && !state.error" class="loading loading-ring w-20"></span>
-      <div *ngIf="state.error" class="flex flex-col items-center justify-center">
+      <div *ngIf="state.error" class="flex flex-col items-center justify-center p-20">
         <i class="pi pi-question-circle text-red-700 text-6xl"></i>
         <div class="flex flex-col items-center">
-          <p class="text-red-700 text-xl">Product doesn't exist</p>
-          <p class="text-red-700 text-lg underline transition-all cursor-pointer hover:font-bold" (click)="navigateToProducts()">Go back to products</p>
+          <p class="text-red-700 text-xl text-center">Product doesn't exist</p>
+          <p class="text-red-700 text-lg underline transition-all cursor-pointer hover:font-bold text-center" (click)="navigateToProducts()">Go back to products</p>
         </div>
       </div>
     </div>

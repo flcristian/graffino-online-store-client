@@ -4,6 +4,7 @@ import {Subscription} from "rxjs";
 import {Product} from "../models/product.model";
 import {ProductService} from "../services/product.service";
 import {CurrentUserStateService} from "../../users/services/current-user-state.service";
+import {FilterProductsResponse} from "../models/filter-products-response.model";
 
 @Component({
   selector: 'app-product-recommendation-carousel',
@@ -19,6 +20,8 @@ export class ProductRecommendationCarouselComponent implements OnInit, OnDestroy
   @Input() sort: string | null = null;
   @Input() properties: Map<string, string> | null = null;
 
+  responsiveOptions: any[] | undefined;
+
   constructor(
     private router: Router,
     protected service: ProductService,
@@ -29,6 +32,24 @@ export class ProductRecommendationCarouselComponent implements OnInit, OnDestroy
     this.subscriptions.add(
       this.getProducts()
     )
+
+    this.responsiveOptions = [
+      {
+        breakpoint: '1280px',
+        numVisible: 3,
+        numScroll: 1
+      },
+      {
+        breakpoint: '1024px',
+        numVisible: 2,
+        numScroll: 1
+      },
+      {
+        breakpoint: '768px',
+        numVisible: 1,
+        numScroll: 1
+      }
+    ];
   }
 
   ngOnDestroy() {
@@ -37,12 +58,12 @@ export class ProductRecommendationCarouselComponent implements OnInit, OnDestroy
 
   private getProducts() {
     return this.service.filterProducts(this.categoryId, null, this.properties, null, null, this.sort).subscribe({
-      next: (products: Product[]) => {
+      next: (response: FilterProductsResponse) => {
         if(this.currentProductId !== -1) {
-          products.splice(products.findIndex(p => p.id == this.currentProductId), 1)
+          response.products.splice(response.products.findIndex(p => p.id == this.currentProductId), 1)
         }
 
-        this.products = products;
+        this.products = response.products;
       }
     })
   }

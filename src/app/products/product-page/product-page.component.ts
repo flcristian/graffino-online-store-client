@@ -21,11 +21,12 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.productId = this.route.snapshot.params['id'];
-
-    this.subscriptions.add(
-      this.getProduct()
-    )
+    this.route.params.subscribe(params => {
+      this.productId = params['id']
+      this.subscriptions.add(
+        this.getProduct()
+      )
+    })
   }
 
   ngOnDestroy() {

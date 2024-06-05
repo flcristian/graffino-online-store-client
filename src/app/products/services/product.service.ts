@@ -8,18 +8,24 @@ import {CreateCategoryRequest} from "../models/create-category-request.model";
 import {UpdateProductRequest} from "../models/update-product-request.model";
 import {Token} from "../../users/models/token.model";
 import {UpdateCategoryRequest} from "../models/update-category-request.model";
+import {FilterProductsResponse} from "../models/filter-products-response.model";
+import {ConfigService} from "../../system/config.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private server: string = "http://localhost:5005/api/v1/Products";
+  private apiUrl: string = ''
+  private server: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private config: ConfigService) {
+    this.apiUrl = config.getHostName();
+    this.server = `${this.apiUrl}/api/v1/Products`
+  }
 
   filterProducts(categoryId: number | null, search: string | null,
                  properties: Map<string, string> | null, page: number | null,
-                 itemsPerPage: number | null, sort: string | null): Observable<Product[]>
+                 itemsPerPage: number | null, sort: string | null): Observable<FilterProductsResponse>
   {
     let params = new HttpParams();
 
@@ -49,7 +55,7 @@ export class ProductService {
       params = params.set('sort', sort);
     }
 
-    return this.http.get<Product[]>(`${this.server}/filter-products`, { params });
+    return this.http.get<FilterProductsResponse>(`${this.server}/filter-products`, { params });
   }
 
   getFilterCriteria(categoryId: number): Observable<{ [key: string]: string[] }> {

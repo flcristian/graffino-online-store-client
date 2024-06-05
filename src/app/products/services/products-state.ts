@@ -4,6 +4,7 @@ import {Category} from "../models/category.model";
 export interface ProductsState {
   categories: Category[],
   products: Product[],
+  totalPages: number | null,
   filterCriteria: { [key: string]: string[] },
   errorCategories: string | null,
   errorProducts: string | null,

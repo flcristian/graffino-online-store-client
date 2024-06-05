@@ -1,9 +1,9 @@
 <div *ngIf="productState.state$ | async as state" class="flex flex-col gap-16 items-center">
   <!--CREATE-->
-  <div class="w-126 bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
-    <h1 class="text-accent text-4xl marcellus
-               font-bold mt-2 mr-2 drop-shadow-md
-               select-none">Create a category</h1>
+  <div class="w-full bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10 max-w-136">
+    <h1 class="text-accent transition-all text-3xl lg:text-4xl text-center marcellus
+           font-bold mt-2 mr-2 drop-shadow-md
+             select-none">Create a category</h1>
     <form [formGroup]="createCategoryForm" class="flex flex-col gap-4 items-center">
       <div class="flex flex-col gap-2 w-full">
         <div class="flex flex-col gap-2">
@@ -33,14 +33,14 @@
   </div>
 
   <!--UPDATE-->
-  <div class="w-126 bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
-    <h1 class="text-accent text-4xl marcellus
-               font-bold mt-2 mr-2 drop-shadow-md
-               select-none">Update a category</h1>
+  <div class="w-full bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10 max-w-136">
+    <h1 class="text-accent transition-all text-3xl lg:text-4xl text-center marcellus
+         font-bold mt-2 mr-2 drop-shadow-md
+           select-none">Update a category</h1>
     <form [formGroup]="updateCategoryForm" class="flex flex-col gap-4 items-center">
       <div class="flex flex-col gap-2 w-full">
         <div class="flex flex-col gap-2">
-          <select class="select w-full drop-shadow-md" formControlName="id" id="update-category-id">
+          <select class="select max-w-full w-72 drop-shadow-md" formControlName="id" id="update-category-id">
             <option disabled selected [ngValue]="0">Choose the category</option>
             <option *ngFor="let category of state.categories" [ngValue]="category.id">{{ category.name }}</option>
           </select>
@@ -61,12 +61,14 @@
   </div>
 
   <!--DELETE-->
-  <div class="w-126 bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10">
-    <h1 class="text-accent text-4xl marcellus font-bold mt-2 mr-2 drop-shadow-md select-none">Delete a category</h1>
+  <div class="w-full bg-base-100 shadow-xl flex flex-col items-center p-5 rounded-2xl gap-10 max-w-136">
+    <h1 class="text-accent transition-all text-3xl lg:text-4xl text-center marcellus
+         font-bold mt-2 mr-2 drop-shadow-md
+           select-none">Delete a category</h1>
     <form [formGroup]="deleteCategoryForm" class="flex flex-col gap-4 items-center">
       <div class="flex flex-col gap-2 w-full">
         <div class="flex flex-col gap-2">
-          <select class="select w-full drop-shadow-md" formControlName="id" id="delete-category-id">
+          <select class="select max-w-full w-72 drop-shadow-md" formControlName="id" id="delete-category-id">
             <option disabled selected [ngValue]="null">Choose the category</option>
             <option *ngFor="let category of state.categories" [ngValue]="category.id">{{ category.name }}</option>
           </select>

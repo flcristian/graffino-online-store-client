@@ -2,27 +2,27 @@
   <div *ngIf="!state.errorCategories && !state.loadingCategories" class="flex flex-row flex-wrap px-10 py-5 gap-4">
     <a *ngFor="let category of state.categories"
        (click)="selectCategory(category.id)"
-       class="py-2 px-6 select-none cursor-pointer rounded-full text-white hover:bg-primary transition-all"
+       class="2xs:py-1 2xs:px-4 2xs:text-sm sm:text-lg sm:py-2 sm:px-6 select-none cursor-pointer rounded-full text-white hover:bg-primary transition-all"
        [class.bg-secondary]="selectedCategory !== category.id"
        [class.bg-primary]="selectedCategory === category.id">
        {{category.name}}</a>
   </div>
 
-  <div class="flex flex-col w-full px-10 relative z-[100]"
+  <div class="w-full px-10 relative z-[100] flex flex-col items-center"
     [class.mt-10]="state.errorCategories || state.loadingCategories">
-    <div class="w-full h-14 bg-base-200 shadow-inner drop-shadow-sm rounded-full flex justify-between items-center py-2 px-8">
-      <label for="my-drawer">
+    <div class="w-full sm:h-14 bg-base-200 shadow-inner drop-shadow-sm rounded-xl grid grid-cols-2 gap-4 sm:flex sm:flex-row justify-between items-center py-2 px-12 sm:px-8">
+      <!-- Filters button -->
+      <label for="my-drawer" class="order-1 sm:order-1 place-self-end sm:place-self-auto">
         <a class="font-bold text-lg bg-white px-4 py-1 rounded-full shadow-inner
-                  transition-all select-none
-                  drop-shadow-sm cursor-pointer hover:bg-base-300" pRipple>Filters</a>
+              transition-all select-none
+              drop-shadow-sm cursor-pointer hover:bg-base-300">Filters</a>
       </label>
-      <input type="text" [(ngModel)]="searchText" (keyup.enter)="search()" placeholder="Search clothing"
-             class="input w-full max-w-xs h-9 focus:bg-base-300 hover:bg-base-300 transition-all
-                  font-bold text-md placeholder-accent bg-white marcellus rounded-full" />
-      <div class="dropdown dropdown-bottom dropdown-end">
+
+      <!-- Sort dropdown -->
+      <div class="dropdown dropdown-bottom sm:dropdown-end order-2 sm:order-3 place-self-start sm:place-self-auto">
         <a tabindex="0" class="font-bold text-lg bg-white px-4 py-1 rounded-full shadow-inner
-                  transition-all select-none
-                  drop-shadow-sm cursor-pointer hover:bg-base-300">Sort</a>
+              transition-all select-none
+              drop-shadow-sm cursor-pointer hover:bg-base-300">Sort</a>
         <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 gap-2">
           <li>
             <ul>
@@ -40,6 +40,11 @@
           </li>
         </ul>
       </div>
+
+      <!-- Search input -->
+      <input type="text" [(ngModel)]="searchText" (keyup.enter)="search()" placeholder="Search clothing"
+             class="order-3 sm:order-2 input sm:max-w-xs h-9 focus:bg-base-300 hover:bg-base-300 transition-all
+              font-bold text-md placeholder-accent bg-white marcellus rounded-full col-span-2 w-full" />
     </div>
 
     <div *ngIf="state.filterCriteria" class="drawer z-[1]">
@@ -72,28 +77,20 @@
 
   <div>
     <div *ngIf="state.errorProducts || state.loadingProducts"
-         class="w-full flex flex-col gap-2 justify-center items-center h-80">
+         class="w-full flex flex-col gap-2 justify-center items-center min-h-136">
         <span *ngIf="state.loadingProducts" class="loading loading-ring w-20"
               [class.text-red-700]="state.errorProducts"></span>
-        <div *ngIf="state.errorProducts &&
-             state.errorProducts != 'Error: Server-side error: There are no products matching your search and filter criteria.'; else serverIssue"
-             class="flex flex-col items-center">
-          <i class="pi pi-exclamation-triangle text-red-700 text-6xl"></i>
-          <p class="text-red-700 text-lg">Something went wrong</p>
+        <div *ngIf="state.errorProducts"
+             class="flex flex-col items-center p-20">
+          <i class="pi pi-exclamation-triangle text-red-700 text-6xl text-center"></i>
+          <p class="text-red-700 text-lg text-center">There are no products matching your search and filter criteria</p>
         </div>
-        <ng-template #serverIssue>
-          <div *ngIf="state.errorProducts"
-               class="flex flex-col items-center">
-            <i class="pi pi-exclamation-triangle text-red-700 text-6xl"></i>
-            <p class="text-red-700 text-lg">There are no products matching your search and filter criteria</p>
-          </div>
-        </ng-template>
     </div>
-    <div *ngIf="!state.errorProducts && !state.loadingProducts" class="w-full grid grid-cols-4 gap-10 p-10">
+    <div *ngIf="!state.errorProducts && !state.loadingProducts" class="w-full grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-10 p-10">
       <section *ngFor="let product of state.products" class="card card-compact bg-base-100 drop-shadow-lg transition-all hover:drop-shadow-2xl relative">
         <div *ngIf="isNotOlderThanThreeDays(product.dateAdded)" class="absolute -top-2 -right-2 p-2 notosansjp bg-red-500 text-white font-bold rounded-lg">NEW</div>
         <img (click)="navigateToProduct(product.id)" class="rounded-t-2xl cursor-pointer w-full max-h-80 object-cover" src="{{product.imageUrl}}" alt="{{product.name}}"/>
-        <article class="card-body flex flex-col justify-between">
+        <article class="card-body flex flex-col justify-end">
           <div>
             <h2 class="card-title text-accent text-2xl">{{product.name}}</h2>
             <div class="flex flex-wrap gap-x-2">
@@ -102,11 +99,20 @@
             </div>
           </div>
           <div class="w-full flex flex-row gap-4">
-            <button class="btn btn-primary flex-1" (click)="navigateToProduct(product.id)">View Details</button>
-            <button class="btn btn-primary text-white flex-1" (click)="addToCart(product)">Add To Cart</button>
+            <button class="btn btn-primary text-white flex-1 sm:text-xs md:text-md 2xl:text-lg transition-all hover:drop-shadow-md" (click)="navigateToProduct(product.id)">Details</button>
+            <button class="btn btn-primary text-white flex-1 sm:text-xs md:text-md 2xl:text-lg transition-all hover:drop-shadow-md" (click)="addToCart(product)">Add To Cart</button>
           </div>
         </article>
       </section>
+    </div>
+    <div class="w-full flex justify-center items-center mb-4">
+      <button class="btn shadow-inner rounded-full flex items-center justify-center px-4" (click)="goToPage(Number(currentPage) - 1)" [disabled]="currentPage <= 1">
+        <i class="pi pi-arrow-left"></i>
+      </button>
+      <span class="shadow-inner mx-2 px-4 py-2 bg-base-200 rounded-full">{{currentPage}} / {{totalPages}}</span>
+      <button class="btn shadow-inner rounded-full flex items-center justify-center px-4" (click)="goToPage(Number(currentPage) + 1)" [disabled]="currentPage >= totalPages">
+        <i class="pi pi-arrow-right"></i>
+      </button>
     </div>
   </div>
 </ng-container>

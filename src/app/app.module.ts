@@ -16,7 +16,7 @@ import {ToastModule} from "primeng/toast";
 import {InputTextModule} from "primeng/inputtext";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MessageModule} from "primeng/message";
-import {CustomerAccountPageComponent} from "./users/customer-account-page/customer-account-page.component";
+import {AccountPageComponent} from "./users/account-page/account-page.component";
 import {ChangePasswordComponent} from "./users/change-password/change-password.component";
 import {YourOrdersComponent} from "./users/your-orders/your-orders.component";
 import {OrderStatusPipe} from "./pipes/order-status.pipe";
@@ -51,7 +51,7 @@ import { OrderPageComponent } from './orders/order-page/order-page.component';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    CustomerAccountPageComponent,
+    AccountPageComponent,
     ChangePasswordComponent,
     YourOrdersComponent,
     OrderStatusPipe,

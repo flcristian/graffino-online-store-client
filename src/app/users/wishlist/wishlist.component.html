@@ -6,7 +6,7 @@
       <ng-container *ngIf="orderDetail.product as product">
         <div class="flex flex-row gap-5">
           <img (click)="navigateToProduct(product.id)"
-               src="{{product.imageUrl}}" class="max-w-24 rounded-sm drop-shadow-md cursor-pointer transition-all hover:drop-shadow-2xl object-cover" alt="">
+               src="{{product.imageUrl}}" class="max-w-24 rounded-md drop-shadow-md cursor-pointer transition-all hover:drop-shadow-2xl object-cover" alt="">
           <div class="flex flex-col justify-between">
             <h2 (click)="navigateToProduct(product.id)"
                 class="text-lg transition-all md:text-2xl text-accent cursor-pointer font-bold hover:underline">{{product.name}}</h2>
@@ -15,8 +15,8 @@
         <div class="flex flex-col justify-between items-end gap-4">
           <p class="text-xl transition-all md:text-2xl text-accent font-bold">${{product.price.toFixed(2)}}</p>
           <div class="flex flex-col items-end">
-            <p class="text-lg transition-all md:text-xl text-accent cursor-pointer underline hover:font-bold select-none" (click)="addToCart(product)">Add To Cart</p>
-            <p class="text-lg transition-all md:text-xl text-accent cursor-pointer underline hover:font-bold select-none" (click)="removeFromWishlist(product.id)">Remove</p>
+            <p class="text-md transition-all md:text-xl text-accent cursor-pointer underline hover:font-bold select-none" (click)="addToCart(product)">Add To Cart</p>
+            <p class="text-md transition-all md:text-xl text-accent cursor-pointer underline hover:font-bold select-none" (click)="removeFromWishlist(product.id)">Remove</p>
           </div>
         </div>
       </ng-container>
@@ -24,8 +24,8 @@
   </div>
 </div>
 <ng-template #noWishlist>
-  <div class="flex flex-col gap-2 items-center justify-center h-80">
-    <h1 class="text-2xl font-bold">You have no items in your wishlist!</h1>
-    <p>Add some products to your wishlist and you will see them here.</p>
+  <div class="flex flex-col gap-2 items-center justify-center min-h-136 px-20">
+    <h1 class="text-2xl font-bold text-center">You have no items in your wishlist!</h1>
+    <p class="text-center">Add some products to your wishlist and you will see them here.</p>
   </div>
 </ng-template>

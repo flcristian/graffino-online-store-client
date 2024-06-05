@@ -8,6 +8,12 @@ module.exports = {
       maxHeight: {
         '136': '34rem',
       },
+      maxWidth: {
+        '124': '32rem',
+        '136': '34rem',
+        '176': '44rem',
+        '212': '53rem',
+      },
       minHeight: {
         '136': '34rem',
       },
