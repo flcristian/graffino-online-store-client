@@ -69,6 +69,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       detail: errorMessage
     }
 
+    console.log(error, url)
     if (url.includes('/login') && error.status === 401) message.summary = "Email or password are wrong.";
 
     this.messageService.add(message);
