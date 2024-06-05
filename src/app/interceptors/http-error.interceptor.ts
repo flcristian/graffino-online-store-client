@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { MessageService } from "primeng/api";
-import {catchError, Observable, of, throwError} from "rxjs";
+import { catchError, Observable, throwError } from "rxjs";
 import {Router} from "@angular/router";
 import {CurrentUserStateService} from "../users/services/current-user-state.service";
 
@@ -20,8 +20,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           if (!this.ignoreError(error, request.url)) {
             this.displayError(error, errorMessage, request.url);
           }
-          if(error.status !== 0 && error.status !== 401) return throwError(() => new Error(errorMessage));
-          return of({} as HttpEvent<any>);
+          return throwError(() => new Error(errorMessage));
         })
       );
   }
@@ -39,7 +38,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       return true;
     }
 
-    if (url.includes('/register') && error.status === 400) return true;
+    if(error.status === 0) return true
 
     return false;
   }
@@ -48,6 +47,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     if (url.includes('/login') && error.status === 0) {
       this.userState.logout()
       return `Email or password is incorrect. Please try again.`;
+    }
+
+    if (url.includes('/register') && error.status === 400) {
+      this.userState.logout()
+      return `Email already used.`;
     }
 
     if (error.error instanceof ErrorEvent) {
@@ -71,6 +75,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     }
 
     if (url.includes('/login') && error.status === 0) message.summary = "Invalid credentials";
+    if (url.includes('/register') && error.status === 0) message.summary = "Please try with a different email or sign in.";
 
     this.messageService.add(message);
   }
