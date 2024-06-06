@@ -42,16 +42,14 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   }
 
   private getErrorMessage(error: HttpErrorResponse, url: string): string {
-    console.log(error)
-
-    if (url.includes('/login') && error.status === 0) {
+    if (url.includes('/login') && error.status === 401) {
       this.userState.logout()
       return `Email or password is incorrect. Please try again.`;
     }
 
-    if (url.includes('/register') && error.status === 0) {
+    if (url.includes('/register') && error.status === 400) {
       this.userState.logout()
-      return `Email already used.`;
+      return `Please try with a different email or sign in.`;
     }
 
     if (error.error instanceof ErrorEvent) {
@@ -74,8 +72,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       detail: errorMessage
     }
 
-    if (url.includes('/login') && error.status === 0) message.summary = "Invalid credentials";
-    if (url.includes('/register') && error.status === 0) message.summary = "Please try with a different email or sign in.";
+    if (url.includes('/login') && error.status === 401) message.summary = "Invalid credentials";
+    if (url.includes('/register') && error.status === 400) message.summary = "Email already used.";
 
     this.messageService.add(message);
   }

@@ -66,7 +66,6 @@ export class CurrentUserStateService {
         this.router.navigate(["login"])
       },
       error: (error) => {
-        this.messageService.add({ severity: 'error', summary: 'Failed', detail: `Email already used, sign in or try again using another email.`})
         this.setErrorUser(error)
       },
       complete: () => {

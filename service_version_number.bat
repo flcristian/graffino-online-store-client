@@ -1,2 +1,2 @@
 @echo off
-set SERVICE_VERSION=v14
+set SERVICE_VERSION=v18
