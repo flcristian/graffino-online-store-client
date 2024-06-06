@@ -4,6 +4,7 @@ import {CurrentUserStateService} from "../../users/services/current-user-state.s
 import {Subscription} from "rxjs";
 import {ProductStateService} from "../services/product-state.service";
 import {Product} from "../models/product.model";
+import {ExchangeRateService} from "../../utlity/exchange-rate.service";
 
 @Component({
   selector: 'app-product-page',
@@ -12,12 +13,16 @@ import {Product} from "../models/product.model";
 export class ProductPageComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription()
   productId: number = -1
+  currency: string = "EUR"
+  exchangeRateRON: number = 5
+  exchangeRateUSD: number = 1
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     protected productState: ProductStateService,
-    protected userState: CurrentUserStateService
+    protected userState: CurrentUserStateService,
+    private exchangeRate: ExchangeRateService
   ) { }
 
   ngOnInit() {
@@ -27,6 +32,15 @@ export class ProductPageComponent implements OnInit, OnDestroy {
         this.getProduct()
       )
     })
+
+    this.currency = this.userState.getCurrency()
+
+    this.subscriptions.add(
+      this.exchangeRate.getExchangeRate().subscribe(data => {
+        this.exchangeRateRON = data.rates.RON
+        this.exchangeRateUSD = data.rates.USD
+      })
+    )
   }
 
   ngOnDestroy() {
@@ -58,5 +72,11 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   addToWishlist(product: Product) {
     this.userState.addToWishlist(product)
+  }
+
+  getProductPrice(price: number) {
+    if(this.currency === "RON") return price * this.exchangeRateRON
+    if(this.currency === "USD") return price * this.exchangeRateUSD
+    return price
   }
 }

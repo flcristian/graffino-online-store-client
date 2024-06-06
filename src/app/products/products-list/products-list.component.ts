@@ -5,6 +5,7 @@ import {Product} from "../models/product.model";
 import {CurrentUserStateService} from "../../users/services/current-user-state.service";
 import {Category} from "../models/category.model";
 import {ProductsStateService} from "../services/products-state.service";
+import {ExchangeRateService} from "../../utlity/exchange-rate.service";
 
 @Component({
   selector: 'app-products-list',
@@ -16,12 +17,16 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   totalPages: number = 1;
   categories: Category[] = []
+  currency: string = "EUR"
+  exchangeRateRON: number = 5
+  exchangeRateUSD: number = 1
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     protected productState: ProductsStateService,
-    protected userState: CurrentUserStateService
+    protected userState: CurrentUserStateService,
+    private exchangeRate: ExchangeRateService
   ) { }
 
   ngOnInit() {
@@ -38,6 +43,15 @@ export class ProductsListComponent implements OnInit, OnDestroy {
         if(data.totalPages) {
           this.totalPages = data.totalPages
         }
+      })
+    )
+
+    this.currency = this.userState.getCurrency()
+
+    this.subscriptions.add(
+      this.exchangeRate.getExchangeRate().subscribe(data => {
+        this.exchangeRateRON = data.rates.RON
+        this.exchangeRateUSD = data.rates.USD
       })
     )
   }
@@ -88,9 +102,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
       this.router.navigate(['products'], { queryParams });
 
-      if(this.categories.length > 0){
-        this.applyFilters(params)
-      }
+      this.applyFilters(params)
     })
   }
 
@@ -206,9 +218,15 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   usedProperties: Map<string, string> = new Map();
   filterProperty(name: string, value: string) {
     const queryParams = { ...this.route.snapshot.queryParams };
-    this.usedProperties.set(name, value);
-
-    queryParams[name] = value;
+    if(this.usedProperties.get(name) === value) {
+      this.usedProperties.delete(name)
+      queryParams[name] = null;
+    }
+    else
+    {
+      this.usedProperties.set(name, value);
+      queryParams[name] = value;
+    }
 
     this.router.navigate([], {
       relativeTo: this.route,
@@ -226,6 +244,12 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     const daysDifference = timeDifference / (1000 * 3600 * 24);
 
     return daysDifference <= 3;
+  }
+
+  getProductPrice(price: number) {
+    if(this.currency === "RON") return price * this.exchangeRateRON
+    if(this.currency === "USD") return price * this.exchangeRateUSD
+    return price
   }
 
   navigateToProduct(id: number) {

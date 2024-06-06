@@ -38,6 +38,10 @@ export class AccountPageComponent implements OnInit, OnDestroy{
     this.router.navigate(["account/change-password"])
   }
 
+  selectSiteSettings() {
+    this.router.navigate(["account/site-settings"])
+  }
+
   navigateToHome() {
     this.router.navigate(["home"])
   }

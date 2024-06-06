@@ -5,6 +5,7 @@ import {Product} from "../models/product.model";
 import {ProductService} from "../services/product.service";
 import {CurrentUserStateService} from "../../users/services/current-user-state.service";
 import {FilterProductsResponse} from "../models/filter-products-response.model";
+import {ExchangeRateService} from "../../utlity/exchange-rate.service";
 
 @Component({
   selector: 'app-product-recommendation-carousel',
@@ -19,13 +20,17 @@ export class ProductRecommendationCarouselComponent implements OnInit, OnDestroy
   @Input() categoryId: number | null = null;
   @Input() sort: string | null = null;
   @Input() properties: Map<string, string> | null = null;
+  currency: string = "EUR"
+  exchangeRateRON: number = 5
+  exchangeRateUSD: number = 1
 
   responsiveOptions: any[] | undefined;
 
   constructor(
     private router: Router,
     protected service: ProductService,
-    private userState: CurrentUserStateService
+    private userState: CurrentUserStateService,
+    private exchangeRate: ExchangeRateService
   ) { }
 
   ngOnInit() {
@@ -50,6 +55,15 @@ export class ProductRecommendationCarouselComponent implements OnInit, OnDestroy
         numScroll: 1
       }
     ];
+
+    this.currency = this.userState.getCurrency()
+
+    this.subscriptions.add(
+      this.exchangeRate.getExchangeRate().subscribe(data => {
+        this.exchangeRateRON = data.rates.RON
+        this.exchangeRateUSD = data.rates.USD
+      })
+    )
   }
 
   ngOnDestroy() {
@@ -78,5 +92,11 @@ export class ProductRecommendationCarouselComponent implements OnInit, OnDestroy
 
   navigateToProduct(id: number) {
     this.router.navigate(['/product', id]);
+  }
+
+  getProductPrice(price: number) {
+    if(this.currency === "RON") return price * this.exchangeRateRON
+    if(this.currency === "USD") return price * this.exchangeRateUSD
+    return price
   }
 }

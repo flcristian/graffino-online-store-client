@@ -43,6 +43,7 @@ import {OverlayPanelModule} from "primeng/overlaypanel";
 import { OrdersManagerComponent } from './administrator/orders-manager/orders-manager.component';
 import {DropdownModule} from "primeng/dropdown";
 import { OrderPageComponent } from './orders/order-page/order-page.component';
+import { WebsiteSettingsComponent } from './users/website-settings/website-settings.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { OrderPageComponent } from './orders/order-page/order-page.component';
     ProductsManagerComponent,
     CategoriesManagerComponent,
     OrdersManagerComponent,
-    OrderPageComponent
+    OrderPageComponent,
+    WebsiteSettingsComponent
   ],
   imports: [
     BrowserModule,

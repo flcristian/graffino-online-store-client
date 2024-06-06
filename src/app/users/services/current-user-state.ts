@@ -1,6 +1,7 @@
 import {User} from "../models/user.model";
 import {Token} from "../models/token.model";
 import {Order} from "../../orders/models/order.model";
+import {SiteSettings} from "../models/site-settings.model";
 
 export interface CurrentUserState {
   token: Token | null,
@@ -13,5 +14,6 @@ export interface CurrentUserState {
   errorOrders: string | null,
   loadingOrders: boolean,
   errorCart: string | null,
-  loadingCart: boolean
+  loadingCart: boolean,
+  settings: SiteSettings
 }

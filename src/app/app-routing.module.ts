@@ -18,6 +18,7 @@ import {ProductsManagerComponent} from "./administrator/products-manager/product
 import {CategoriesManagerComponent} from "./administrator/categories-manager/categories-manager.component";
 import {OrdersManagerComponent} from "./administrator/orders-manager/orders-manager.component";
 import {OrderPageComponent} from "./orders/order-page/order-page.component";
+import {WebsiteSettingsComponent} from "./users/website-settings/website-settings.component";
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -48,6 +49,7 @@ const routes: Routes = [
     children: [
       { path: 'change-password', component: ChangePasswordComponent },
       { path: 'your-orders', component: YourOrdersComponent },
+      { path: 'site-settings', component: WebsiteSettingsComponent },
     ]
   },
 

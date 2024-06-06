@@ -17,6 +17,7 @@ import {Product} from "../../products/models/product.model";
 import {CheckoutProductDetailDTO} from "../../orders/models/checkout-product-detail-dto";
 import {CheckoutRequest} from "../../orders/models/checkout-request.model";
 import {LocalStorageService} from "../../utlity/services/local-storage.service";
+import {SiteSettings} from "../models/site-settings.model";
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,12 @@ export class CurrentUserStateService {
     errorOrders: null,
     loadingOrders: false,
     errorCart: null,
-    loadingCart: false
+    loadingCart: false,
+    settings: {
+      currency: "EUR",
+      language: "en",
+      theme: "light"
+    }
   })
   state$: Observable<CurrentUserState> = this.stateSubject.asObservable()
 
@@ -117,6 +123,11 @@ export class CurrentUserStateService {
           lastDateUpdated: new Date(),
           orderDetails: []
         }
+        let settings: SiteSettings = {
+          currency: "EUR",
+          language: "en",
+          theme: "light"
+        }
 
         let storageState = this.localStorageService.retrieveUser(user.email)
         if(storageState !== null) {
@@ -124,14 +135,16 @@ export class CurrentUserStateService {
             user: storageState.user,
             token: token,
             cart: storageState.cart,
-            wishlist: storageState.wishlist
+            wishlist: storageState.wishlist,
+            settings: storageState.settings
           })
         } else {
           this.setState({
             user: user,
             token: token,
             cart: cart,
-            wishlist: wishlist
+            wishlist: wishlist,
+            settings: settings
           })
         }
 
@@ -299,6 +312,10 @@ export class CurrentUserStateService {
     return !!(this.stateSubject.value.user && this.stateSubject.value.user.roles.indexOf("Administrator") !== -1);
   }
 
+  getCurrency(): string {
+    return this.stateSubject.value.settings.currency
+  }
+
   // STATE SETTERS
   setToken(token: Token | null) {
     this.setState({token})
@@ -344,6 +361,31 @@ export class CurrentUserStateService {
     this.setState({loadingCart})
   }
 
+  setSettings(settings: SiteSettings) {
+    this.setState({settings})
+  }
+
+  setCurrency(currency: string) {
+    let settings = this.stateSubject.value.settings
+    settings.currency = currency
+
+    this.setState({settings})
+  }
+
+  setLanguage(language: string) {
+    let settings = this.stateSubject.value.settings
+    settings.language = language
+
+    this.setState({settings})
+  }
+
+  setTheme(theme: string) {
+    let settings = this.stateSubject.value.settings
+    settings.theme = theme
+
+    this.setState({settings})
+  }
+
   setState(partialState: Partial<CurrentUserState>){
     this.stateSubject.next({...this.stateSubject.value,...partialState})
     this.saveStateToLocalStorage()
@@ -357,7 +399,8 @@ export class CurrentUserStateService {
         token: this.stateSubject.value.token,
         tokenDate: null,
         cart: this.stateSubject.value.cart!,
-        wishlist: this.stateSubject.value.wishlist!
+        wishlist: this.stateSubject.value.wishlist!,
+        settings: this.stateSubject.value.settings
       });
     }
   }
@@ -379,7 +422,12 @@ export class CurrentUserStateService {
       errorOrders: null,
       loadingOrders: false,
       errorCart: null,
-      loadingCart: false
+      loadingCart: false,
+      settings: {
+        currency: "EUR",
+        language: "en",
+        theme: "light"
+      }
     })
     this.router.navigate(["login"])
   }

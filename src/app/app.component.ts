@@ -21,7 +21,8 @@ export class AppComponent implements OnInit {
         user: state.user,
         token: state.token,
         cart: state.cart,
-        wishlist: state.wishlist
+        wishlist: state.wishlist,
+        settings: state.settings
       })
     }
   }
