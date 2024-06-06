@@ -42,6 +42,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   }
 
   private getErrorMessage(error: HttpErrorResponse, url: string): string {
+    console.log(error)
+
     if (url.includes('/login') && error.status === 0) {
       this.userState.logout()
       return `Email or password is incorrect. Please try again.`;
