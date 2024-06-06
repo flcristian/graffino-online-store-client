@@ -37,7 +37,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         this.ignoredMessages.indexOf(error.error) !== -1) {
       return true;
     }
-    
+
+    if(error.status === 0) return true
+
     return false;
   }
 
