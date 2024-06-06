@@ -38,8 +38,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       return true;
     }
 
-    if(error.status === 0) return true
-
     return false;
   }
 
