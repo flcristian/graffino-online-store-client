@@ -228,7 +228,7 @@ export class ProductsStateService {
 
   addProduct(product: Product) {
     let products = this.stateSubject.value.products;
-    if(product.categoryId  !== products[0].categoryId) return
+    if(products[0].categoryId && product.categoryId == products[0].categoryId) return
     this.setProducts([...this.stateSubject.value.products, product]);
   }
 
